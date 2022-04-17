@@ -84,7 +84,14 @@ git commit -m ".."
 git push origin main
 ```
 
+## 错误
 
+```
+1045
+git config --global http.sslVerify "false"
+443
+关闭vpn
+```
 
 ## 配置
 

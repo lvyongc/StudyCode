@@ -1,0 +1,19 @@
+{
+  "name": "websocket-teach",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.3"
+  },
+  "dependencies": {
+    "moment": "^2.24.0",
+    "ws": "^7.2.3"
+  }
+}

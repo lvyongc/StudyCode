@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    时间
+    <div class="clock"></div>
+    <button onclick="handleStart()">开始</button>
+    <button onclick="handleStop()">停止</button>
+    <script>
+      const websocket = new WebSocket("ws://localhost:8080");
+
+      websocket.addEventListener("open", (e) => {
+        console.log("open");
+      });
+
+      websocket.addEventListener("message", (e) => {
+        console.log("message");
+        console.log(e);
+        document.querySelector(".clock").innerText = e.data;
+      });
+
+      websocket.addEventListener("error", (e) => {
+        console.log(e);
+      });
+
+      function handleStart(arguments) {
+        websocket.send("open");
+      }
+
+      function handleStop(arguments) {
+        websocket.send("stop");
+        document.querySelector(".clock").innerText = "";
+      }
+    </script>
+  </body>
+</html>
