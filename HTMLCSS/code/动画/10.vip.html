@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        @keyframes clothmove{
+            40%{
+                transform: translateY(-50px);
+            }
+        }
+        @keyframes ljmove{
+            0%{
+                transform: translateY(-40px) scale(1.2);
+            }
+            50%{
+                transform: translateY(20px) scale(1.2);
+            }
+            70%{
+                transform: translateY(20px) scale(1.2);
+            }
+            100%{
+                transform: translateY(0px) scale(1);
+            }
+        }
+        @keyframes ydmove{
+            0%{
+                transform: translateY(20px);
+            }
+            50%{
+                transform: translateY(-10px);
+            }
+            100%{
+                transform: translateY(0px);
+            }
+        }
+        .box{
+            background: orange;
+            padding: 100px;
+        }
+        .cloth{
+            width: 217px;
+            height: 175px;
+            background: url('img/vip.png') no-repeat 0px -606px;
+            position: relative;
+            animation: clothmove 1s;
+        }
+        .lj{
+            width: 38px;
+            height: 23px;
+            background: url('img/vip.png') no-repeat 0px -1249px;
+            position: absolute;
+            left: 50%;
+            margin-left: -19px;
+            top: 40px;
+            animation: ljmove 1s;
+        }
+        .yd{
+            width: 106px;
+            height: 8px;
+            background: url('img/vip.png') no-repeat 0px -1232px;
+            position: absolute;
+            left: 58px;
+            top: 120px;
+            animation: ydmove 1s;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <div class="cloth">
+            <div class="lj"></div>
+            <div class="yd"></div>
+        </div>
+    </div>
+</body>
+</html>

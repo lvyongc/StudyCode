@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        div{
+            width: 300px;
+            height: 500px;
+            border: 2px solid #000;
+            margin: 100px auto;
+            position: relative;
+        }
+        div::before{
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: #fff;
+            left: 50%;
+            margin-left: -30px;
+            margin-top: -28px;
+            transform: rotate(-135deg);
+            box-shadow: 3px 3px 4px -3px #000;
+
+        }
+    </style>
+</head>
+<body>
+    <div>
+
+    </div>
+</body>
+</html>

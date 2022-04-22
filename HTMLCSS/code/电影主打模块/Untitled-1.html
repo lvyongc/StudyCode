@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            margin: 0px;
+        }
+        img{
+            display: block;
+            vertical-align: top;
+        }
+        ul,li,h4,p{
+            margin: 0px;
+            padding: 0px;
+        }
+        ul,li{
+            list-style: none;
+        }
+        a{
+            text-decoration: none;
+        }
+        .box{
+            width: 654px;
+            height: 240px;
+            padding: 30px 30px 19px 30px;
+            box-sizing: border-box ;
+            background: url(images/bg.jpg) no-repeat;
+            border: 1px solid #333;
+        }
+        .con{
+            width: 594px;
+            height: 191px;
+        }
+        .sec_left{
+            width: 294px;
+            height: 191px;
+            float: left;
+        }
+        h4{
+            font: 17px/27px "微软雅黑";
+        }
+        .top_right p{
+            font: 14px/26px "微软雅黑";
+            color: #6a6a6a;
+        }
+        .tu{
+            margin-right: 9px;
+            float: left;
+        }
+        .top_right{
+            width: 155px;
+            float: left;
+        }
+        .top{
+            margin-bottom: 9px;
+        }
+        .clear::after{
+            content: ".";
+            display: block;
+            height: 0px;
+            clear: both;
+            overflow: hidden;
+            visibility: hidden;
+        }
+        .bottom{
+            width: 294px;
+            height: 72px;
+        }
+        .li1{
+            height: 36px;
+            background: url(images/4.jpg) no-repeat 0px 15px;
+            
+        }
+        a{
+            font: 14px/36px "黑体";
+            color: #6a6a6a;
+            padding-left: 8px;
+        }
+        .text2{
+            padding-left: 42px;
+        }
+        .sec_right{
+            float: right;
+            width: 270px;
+        }
+        .sec_right p{
+            font: 16px/36px "微软雅黑";
+            text-align: center;
+        }
+        .lileft{
+            width: 130px;
+        }
+        .lif{
+            float: left;
+            margin-right: 10px;
+        }
+        .lir{
+            float: right;
+        }
+        .clear::after{
+            content: ".";
+            display: block;
+            height: 0px;
+            clear: both;
+            visibility: hidden;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <section class="con">
+            <div class="sec_left clear">
+                <div class="top clear">
+                    <img src="images/1.jpg" class="tu">
+                    <div class="top_right">
+                        <h4>琅琊榜</h4>
+                        <p>主演：胡歌  /刘涛</p>
+                        <p class="text2">王凯 / 黄维德</p>
+                        <p>类型：剧情</p>
+                    </div>
+                </div>
+                <div class="bottom">
+                    <ul class="bottom">
+                        
+                        <li class="li1">
+                            <a href="#">《洛杉矶之战》：外星人那么弱智？</a>
+                        </li>
+                        <li class="li1">
+                            <a href="#">《洛杉矶之战》：外星人那么弱智？</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="sec_right clear">
+                <ul class="clear">
+                    <li class="lileft lif">
+                        <img src="images/2.jpg" >
+                        <p>琅琊榜</p>
+                    </li>
+
+                    <li class="lileft lir">
+                        <img src="images/2.jpg" >
+                        <p>琅琊榜</p>
+                    </li>
+                </ul>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
+

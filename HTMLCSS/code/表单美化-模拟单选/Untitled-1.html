@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        input{
+            display: none;
+        }
+        label{
+            display: inline-block;
+            border: 2px solid #dcdcdc;
+            width: 66px;
+            height: 28px;
+            line-height: 28px;
+            text-align: center;
+            font-size: 16px;
+            margin-right: 2px;
+            
+        }
+        input:checked + label{
+            border-color: #e15671;
+            color: #e15671;
+            background: url(images/img_03.jpg) no-repeat 50px 12px;
+        }
+    </style>
+</head>
+<body>
+    <input type="radio" name="sex" id="sex1" value="男">
+    <label for="sex1">男</label>
+    <input type="radio" name="sex" id="sex2" value="女">
+    <label for="sex2">女</label>
+    <input type="radio" name="sex" id="sex3" value="保密">
+    <label for="sex3">保密</label>
+</body>
+</html>

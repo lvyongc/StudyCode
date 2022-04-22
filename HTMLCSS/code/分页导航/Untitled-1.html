@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        a{
+            text-decoration: none;
+            color: black;
+        }
+        .box{
+            width: 513px;
+            height: 48px;
+            border: 1px solid #333;
+        }
+        .nav{
+            /* padding: 8px 0px 0px 14px; */
+            font-size: 0px;
+            
+            text-align: center;
+            padding-top: 8px;
+        }
+       
+        .nav a{
+            font: 12px/27px "宋体";
+            border: 1px solid #ffc6cc;
+            height: 26px;
+            display: inline-block;
+            vertical-align: top;
+            padding: 0px 8px 0px 8px ;
+            margin-right: 4px;
+            text-align: left;
+        }
+        .nav .back{
+            width: 65px;
+            text-indent: 25px;
+            background: url(images/123.png) no-repeat 15px 8px;
+            padding: 0px;
+        }
+        .nav .next{
+            width: 73px;
+            text-indent: 10px;
+            background: url(images/223.png) no-repeat 55px 8px;
+            padding: 0px;
+            margin-right: 0px;
+        }
+        a:hover{
+            background-color: #ffcaca;
+            font-weight: bold;
+            
+        }
+        a.back:hover{
+            background-color: #ffcaca;
+            font-weight: bold;
+            
+        }
+        a.next:hover{
+            background-color: #ffcaca;
+            font-weight: bold;
+            
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <nav class="nav">
+            <a href="#" class="back">返 回</a>
+        <a href="#" >1</a>
+        <a href="#">2</a>
+        <a href="#">3</a>
+        <a href="#">4</a>
+        <a href="#">5</a>
+        <a href="#">6</a>
+        <a href="#">7</a>
+        <a href="#">8</a>
+        <a href="#">9</a>
+        <a href="#">10</a>
+        <a href="#">...13</a>
+        <a href="#" class="next">下一页</a>
+        </nav>
+        
+    </div>
+</body>
+</html>

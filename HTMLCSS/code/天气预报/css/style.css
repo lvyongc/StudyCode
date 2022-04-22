@@ -1,0 +1,63 @@
+th,td{
+    padding: 0px;
+}
+.box{
+    width: 675px;
+    height: 187px;
+    padding: 21px 17px 13px 18px;
+    box-sizing: border-box;
+    background-color: #ebeff7;
+}
+.tab{
+    width: 640px;
+    height: 153px;
+    border-collapse: collapse;
+    border-spacing: 0px;
+}
+.tab td{
+    font-size: 12px;
+    background-color: #f4f7fc;
+}
+.tab th,td{
+    border: 1px solid #99b0da;
+    box-sizing: border-box;
+    text-align: center;
+}
+.hea th{
+    height: 30px;
+    background-color: #dbe3fa;
+    font-size: 14px;
+}
+.trspec td{
+    height: 4px;
+    border: none;
+}
+.size{
+    
+}
+.one{
+    width: 63px;
+    height: 28px;
+    background: url(../images/img_03.jpg) no-repeat center;
+}
+.two{
+    width: 63px;
+    height: 28px;
+    background: url(../images/img_06.jpg) no-repeat center;
+}
+.three{
+    width: 63px;
+    height: 28px;
+    background: url(../images/img_08.jpg) no-repeat center;
+}
+.four{
+    width: 63px;
+    height: 28px;
+    background: url(../images/img_10.jpg) no-repeat center;
+}
+.red{
+    color: red;
+}
+.blu{
+    color: blue;
+}

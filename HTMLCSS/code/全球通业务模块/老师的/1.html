@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body{
+            font:14px "微软雅黑";
+        }
+        body,
+        dl,
+        dd{
+            margin: 0;
+            
+        }
+        h3{
+            margin: 0;
+            font-weight: normal;
+        }
+        ul{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        a{
+            text-decoration: none;
+            color: #3a3a3a;
+        }
+        img{
+            vertical-align: top;
+            border: none;
+        }
+        #box{
+            width:1000px;
+            height: 689px;
+            background: url('img/bg.jpg') no-repeat;
+            margin: 0px auto;
+            padding-top: 165px;
+            box-sizing: border-box;
+         }
+         .world_box{
+             width: 760px;
+             height: 360px;
+             background: #fff;
+             margin: 0px auto; 
+             padding: 32px 50px 0px;
+             box-sizing: border-box;
+         }
+         .title{
+             border-top: 2px solid #e7788d;
+             font: 16px/47px "微软雅黑";
+             color: #e7788d;
+             text-indent: 33px;
+             background: url('img/ball.png') no-repeat left 12px;
+         }
+         .content{
+             padding-top: 4px;
+         }
+         .pro_list{
+            padding-bottom: 12px;
+            border-bottom: 1px dashed #e5e5e5;
+            height: 146px;
+            box-sizing: border-box;
+         }
+         .pro_list li{
+            float: left;
+            width: 100px;
+            margin-right: 40px;
+         }
+         .pro_list img{
+             border: 1px solid #e5e5e5;
+             width: 98px;
+             height: 98px;
+         }
+         .pro_list span{
+             display: block;
+             /* font: 14px/33px "微软雅黑"; */
+             line-height: 33px;
+             text-align: center;
+         }
+         .pro_list .last_li{
+             margin-right: 0;
+         }
+         .dd_list{
+             padding-top: 29px;
+             padding-left: 3px;
+         }
+         .jbyw{
+             height: 30px;
+             margin-bottom: 10px;
+         }
+         .jbyw dt, .jbyw dd{
+            float: left;
+         }
+         .jbyw dt{
+             width: 100px;
+             /* height: 30px; */
+             
+             line-height: 30px;
+             background: #e7788d;
+             color: #fff;
+             text-align: center;
+             margin-right: 6px;
+         }
+         .jbyw dd{
+            line-height: 28px;
+         }
+         .jbyw a{
+            display: block;
+            padding: 0px 19px 0px 18px;
+            background: url('img/line.jpg') no-repeat right 7px;
+         }
+         .jbyw a:hover{
+             color: #e7788d;
+         }
+         .jbyw .no_bg{
+            /* background: none; */
+         }
+
+    </style>
+</head>
+<body>
+    <div id="box">
+        <section class="world_box">
+            <h3 class="title">全球通业务+</h3>
+            <div class="content">
+                <ul class="pro_list">
+                    <li>
+                        <a href="#">
+                            <img src="img/img.jpg" />
+                            <span>信息管家</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img src="img/img.jpg" />
+                            <span>信息管家</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img src="img/img.jpg" />
+                            <span>信息管家</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img src="img/img.jpg" />
+                            <span>信息管家</span>
+                        </a>
+                    </li>
+                    <li class="last_li">
+                        <a href="#">
+                            <img src="img/img.jpg" />
+                            <span>信息管家</span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="dd_list">
+                    <dl class="jbyw">
+                        <dt>基本业务</dt>
+                        <dd><a href="#">国际漫游</a></dd>
+                        <dd><a href="#">国际长途</a></dd>
+                        <dd><a href="#">国内长途</a></dd>
+                        <dd><a href="#">国内漫游</a></dd>
+                        <dd><a href="#">本地通话</a></dd>
+                        <dd><a class="no_bg" href="#">更多&gt;&gt;</a></dd>
+                    </dl>
+                    <dl class="jbyw">
+                        <dt>基本业务</dt>
+                        <dd><a href="#">国际漫游</a></dd>
+                        <dd><a href="#">国际长途</a></dd>
+                        <dd><a href="#">国内长途</a></dd>
+                        <dd><a href="#">国内漫游</a></dd>
+                        <dd><a href="#">本地通话</a></dd>
+                        <dd><a class="no_bg" href="#">更多&gt;&gt;</a></dd>
+                    </dl>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

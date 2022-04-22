@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        ul{
+            margin: 0px;
+            padding: 0px;
+            list-style: none;
+        }
+        input{
+            display: none;
+        }
+        .box{
+            width: 658px;
+            height: 439px;
+            border: 5px solid #000000;
+            margin: 100px auto;
+            position: relative;
+            overflow: hidden;
+        }
+        label{
+            width: 10px;
+            height: 10px;
+            background-color: red;
+            position: absolute;
+            left: 50%;
+            bottom: 20px;
+            z-index: 1;
+        }
+        label:nth-of-type(1){
+            margin-left: -35px;
+        }
+        label:nth-of-type(2){
+            margin-left: -12px;
+        }
+        label:nth-of-type(3){
+            margin-left: 12px;
+        }
+        label:nth-of-type(4){
+            margin-left: 35px;
+        }
+        .list{
+            width: 400%;
+        }
+        .list li{
+            float: left;
+        }
+        input:nth-of-type(1):checked~.list{
+            transform: translateX(0%);
+        }
+        input:nth-of-type(2):checked~.list{
+            transform: translateX(-25%);
+        }
+        input:nth-of-type(3):checked~.list{
+            transform: translateX(-50%);
+        }
+        input:nth-of-type(4):checked~.list{
+            transform: translateX(-75%);
+        }
+        input:nth-of-type(1):checked+label{
+            background-color: royalblue;
+        }
+        input:nth-of-type(2):checked+label{
+            background-color: royalblue;
+        }
+        input:nth-of-type(3):checked+label{
+            background-color: royalblue;
+        }
+        input:nth-of-type(4):checked+label{
+            background-color: royalblue;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">   
+        <input type="radio" name="sex" id="sex1" checked>
+        <label for="sex1"></label>
+        <input type="radio" name="sex" id="sex2">
+        <label for="sex2"></label>
+        <input type="radio" name="sex" id="sex3">
+        <label for="sex3"></label>
+        <input type="radio" name="sex" id="sex4">
+        <label for="sex4"></label>
+        <ul class="list">
+            <li><img src="img/banner1.jpg" alt=""></li>
+            <li><img src="img/banner2.jpg" alt=""></li>
+            <li><img src="img/banner3.jpg" alt=""></li>
+            <li><img src="img/banner4.jpg" alt=""></li>
+        </ul>
+    </div>
+</body>
+</html>

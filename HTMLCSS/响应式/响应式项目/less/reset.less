@@ -1,0 +1,64 @@
+// 默认样式
+
+// 自定义字体
+@font-face {
+    font-family: 'fz';
+    src:url('../font/FZLTHJW.TTF');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body { 
+    margin: 0;
+    font-family: 'fz';
+}
+
+// 移动端
+// 屏幕变化文字缩放
+body * {
+    -webkit-text-size-adjust: 100%;
+}
+// 去除高亮
+a,
+input,
+button {
+-webkia-tap-highlight-color:rgba(0,0,0,0);
+}
+// 去除圆角
+input,
+button {
+    border-radius: 0;
+    -webkit-appearance: none;
+}
+
+// PC端
+a {
+    text-decoration:none ;
+    color: #000;
+}
+button{
+    border: none;
+    padding: 0;
+}
+h1,
+h2,
+h4,
+figure,
+ul,
+p{
+    margin: 0;
+}
+h1,
+h2,
+h4{
+    font-weight: normal;
+}
+img{
+    vertical-align: top;
+    border: none;
+}
+ul{
+    list-style: none;
+    padding: 0;
+}
+

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        input[type="text"],input[type="password"],textarea{
+            outline: none;
+            border: none;
+        }
+        input[type="submit"],input[type="reset"]{
+            outline: none;
+        }
+        h2,table,td,input,textarea{
+            margin: 0px;
+            padding: 0px;
+        }
+        .tab{
+            border-collapse: collapse;
+            border-spacing: 0px;
+        }
+        .box{
+            height: 100%;
+            width: 100%;
+            background: url(img/bg.jpg) no-repeat;
+            background-size: cover;
+            filter: blur(5px);
+            position: absolute;
+            left: 0px;
+            top: 0px;
+        }
+        .logon{
+            width: 520px;
+            height: 640px;
+            padding: 5px;
+            background: rgba(255, 255, 255, 0.8);
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -260px;
+            margin-top: -320px;
+            border: 1px solid white;
+            background-clip: content-box;
+            border-radius: 10px;
+        }
+        .title{
+            height: 26px;
+            font-size: 26px;
+            color: #333333;
+            margin-top: 30px;
+        }
+        .line{
+            display: block;
+            width: 184px;
+            border-bottom: 1px solid #000000;
+            float: left;
+            margin-top: 11px;
+        }
+        .tip{
+            height: 26px;
+            line-height: 26px;
+            float: left;
+            width: 152px;
+            padding: 0px 20px 0px 21px;
+            box-sizing: border-box;
+        }
+        .tab tr{
+            height: 67px;
+
+        }
+        .left{
+            width: 150px;
+            height: 67px;
+            line-height: 67px;
+            font-size: 17px;
+            color: #333333;
+            text-align: right;
+        }
+        .right{
+            padding-left: 7px;
+        }
+        .right input[type="text"],.right input[type="password"]{
+            width: 210px;
+            border-bottom: 2px solid #979c98;
+            height: 42px;
+            line-height: 42px;
+            padding-left: 20px;
+            background: transparent;
+        }
+        .right input[type="text"]:focus,.right input[type="password"]:focus{
+            border-bottom-color: #552f2c;
+            color: black;
+        }
+        .right input[type="text"]:focus::-webkit-input-placeholder,.right input[type="password"]:focus::-webkit-input-placeholder{
+            transform: scale(0.8) translateY(-15px) ; 
+            transition-duration: 0.5s;
+        }
+        .right input[type="text"]::-webkit-input-placeholder,.right input[type="password"]::-webkit-input-placeholder{
+            transform-origin: top left;
+        }
+        .right input[type="radio"]{
+            display: none;
+        }
+        .gender::before{
+            content: "";
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border: 1px solid #333333;
+            border-radius: 50%;
+            padding: 6px;
+            vertical-align: top;
+            margin-right: 6px;
+
+        }
+        .gender{
+            margin-right: 10px;
+            color: #552f2c;
+        }
+        .single:checked+.gender::before{
+            background: #333333;
+            background-clip: content-box;
+        }
+        .right input[type="checkbox"]{
+            display: none;
+        }
+        .lab_food{
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            border: 1px solid #333333;
+            border-radius: 3px;
+            margin-right: 5px;
+            margin-top: 3px;
+            vertical-align: top;
+            position: relative;
+        }
+        .right input[type="checkbox"]:checked+.lab_food::before{
+            content: "";
+            display: inline-block;
+            width: 2px;
+            height: 6px;
+            background: #333333;
+            transform:rotate(-30deg);
+            position: absolute;
+            left: 4px;
+            top: 8px;
+        }
+        .right input[type="checkbox"]:checked+.lab_food::after{
+            content: "";
+            display: inline-block;
+            width: 2px;
+            height: 12px;
+            background: #333333;
+            transform:rotate(40deg);
+            position: absolute;
+            left: 9px;
+            top: 3px;
+        }
+        .spec{
+            height: 120px;
+
+        }
+        .area{
+            width: 256px;
+            height: 102px;
+            border: 1px solid #333333;
+            background: white;
+            line-height: 102px;
+            vertical-align: top;
+        }
+        .spec .left{
+            height: 120px;
+            line-height: 120px;
+        }
+        input[type="submit"],input[type="reset"]{
+            width: 96px;
+            height: 30px;
+            background: #333333;
+            line-height: 26px;
+            text-align: center;
+            color: white;
+            font-size: 12px;
+        }
+        input[type="submit"]{
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="box"></div>
+    <section class="logon">
+        <h2 class="title">
+            <span class="line"></span>
+            <span class="tip">用户注册</span>
+            <span class="line"></span>
+        </h2>
+        <form action="#">
+            <table class="tab">
+                <tr>
+                    <td class="left">姓名：</td>
+                    <td class="right">
+                        <input type="text" placeholder="请输入4-12个字符">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="left">密码：</td>
+                    <td class="right">
+                        <input type="password" placeholder="请输入密码">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="left">验证密码：</td>
+                    <td class="right">
+                        <input type="password" placeholder="请输入再次输入密码">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="left">性别：</td>
+                    <td class="right">
+                        <input type="radio" name="gender" id="man" class="single" checked>
+                        <label for="man" class="gender">男</label>
+                        <input type="radio" name="gender" id="woman" class="single">
+                        <label for="woman" class="gender">女</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="left">爱好菜系选择：</td>
+                    <td class="right">
+                        <input type="checkbox" name="food" id="cke_01">
+                        <label for="cke_01" class="lab_food"></label>川菜
+                        <input type="checkbox" name="food" id="cke_02">
+                        <label for="cke_02" class="lab_food"></label>川菜
+                        <input type="checkbox" name="food" id="cke_03">
+                        <label for="cke_03" class="lab_food"></label>川菜
+                        <input type="checkbox" name="food" id="cke_04">
+                        <label for="cke_04" class="lab_food"></label>川菜
+                        <input type="checkbox" name="food" id="cke_05">
+                        <label for="cke_05" class="lab_food"></label>川菜
+                        <input type="checkbox" name="food" id="cke_06">
+                        <label for="cke_06" class="lab_food"></label>川菜
+                        <input type="checkbox" name="food" id="cke_07">
+                        <label for="cke_07" class="lab_food"></label>川菜
+                    </td>
+                </tr>
+                <tr class="spec">
+                    <td class="left">个人简介：</td>
+                    <td class="right">
+                        <textarea class="area" name="" id="" cols="30" rows="10"></textarea>
+                    </td>
+                </tr>
+                <tr >
+                    <td class="left"></td>
+                    <td class="right">
+                        <input type="submit" value="提交">
+                        <input type="reset"" value="重置">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </section>
+</body>
+</html>

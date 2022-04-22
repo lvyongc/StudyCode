@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .box{
+            width: 50px;
+            height: 50px;
+            background: black;
+            margin: 200px auto;
+            border-radius: 50%;
+            position: relative;
+        }
+        .box span{
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: black;
+            color: #fff;
+            line-height: 50px;
+            text-align: center;
+            font-size: 25px;
+            transition: 1s;
+            /* transform: translateY(-200px); */
+        }
+        .box:hover span:nth-of-type(1){
+            /* transform: translateY(-200px) rotate(30deg); */
+            transform: rotate(30deg) translateY(-200px) ;
+        }
+        .box:hover span:nth-of-type(2){
+            transform: rotate(60deg) translateY(-200px) ;
+        }
+        .box:hover span:nth-of-type(3){
+            transform: rotate(90deg) translateY(-200px) ;
+        }
+        .box:hover span:nth-of-type(4){
+            transform: rotate(120deg) translateY(-200px) ;
+        }
+        .box:hover span:nth-of-type(5){
+            transform: rotate(150deg) translateY(-200px) ;
+        }
+        .box:hover span:nth-of-type(6){
+            transform: rotate(180deg) translateY(-200px) ;
+        }
+        .box:hover span:nth-of-type(7){
+            transform: rotate(210deg) translateY(-200px) ;
+        }
+        .box:hover span:nth-of-type(8){
+            transform: rotate(240deg) translateY(-200px) ;
+        }
+        .box:hover span:nth-of-type(9){
+            transform: rotate(270deg) translateY(-200px) ;
+        }
+        .box:hover span:nth-of-type(10){
+            transform: rotate(300deg) translateY(-200px) ;
+        }
+        .box:hover span:nth-of-type(11){
+            transform: rotate(330deg) translateY(-200px) ;
+        }
+        .box:hover span:nth-of-type(12){
+            transform: rotate(360deg) translateY(-200px) ;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <span>1</span>
+        <span>2</span>
+        <span>3</span>
+        <span>4</span>
+        <span>5</span>
+        <span>6</span>
+        <span>7</span>
+        <span>8</span>
+        <span>9</span>
+        <span>10</span>
+        <span>11</span>
+        <span>12</span>
+    </div>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>效果2</title>
+    <style>
+        ul{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            
+        }
+        img{
+            vertical-align: top;
+            border: none;
+        }
+        figure,
+        h3{
+            margin: 0;
+        }
+        a{
+            text-decoration: none;
+            color: #fff;
+        }
+        .clearfix::after{
+            content: '';
+            display: block;
+            clear: both;
+        }
+        .wrap{
+            width: 880px;
+            margin: 100px auto 0;
+        }
+        .wrap li{
+            float: left;
+            width: 400px;
+            margin: 0 20px 40px ;
+            height: 300px;
+        }
+        .list_img{
+            position: relative;
+        }
+        .list_img img{
+            transition: 0.5s;
+        }
+        .list_img:hover img{
+            transform: translateY(-100px);
+        }
+        .txt{
+            position: absolute;
+            width: 100%;
+            height: 100px;
+            background: #2c3f52;
+            left: 0;
+            bottom: 0;
+            padding: 10px;
+            box-sizing: border-box;
+            z-index: -1;
+        }
+        .txt h3{
+            color: #fff;
+            margin-top: 20px;
+        }
+        .txt span{
+            color: #ed4e6e;
+        }
+        .txt a{
+            padding: 5px 10px;
+            background: #ed4e6e;
+            float: right;
+        }
+    </style>
+</head>
+<body>
+    <ul class="wrap clearfix">
+        <li>
+            <figure class="list_img">
+                <img src="img/1.png" alt=""> 
+                <figcaption class="txt">
+                    <h3>Camera</h3>
+                    <span>Jacob Cummings</span>
+                    <a href="#">Take a look</a>
+                </figcaption>
+            </figure>  
+        </li>
+        <li>
+            <figure class="list_img">
+                <img src="img/2.png" alt="">
+                <figcaption class="txt">
+                    <h3>Camera</h3>
+                    <span>Jacob Cummings</span>
+                    <a href="#">Take a look</a>
+                </figcaption>
+            </figure>
+        </li>
+        <li>
+            <figure class="list_img">
+                <img src="img/3.png" alt="">
+                <figcaption class="txt">
+                    <h3>Camera</h3>
+                    <span>Jacob Cummings</span>
+                    <a href="#">Take a look</a>
+                </figcaption>
+            </figure>
+        </li>
+        <li>
+            <figure class="list_img">
+                <img src="img/4.png" alt="">
+                <figcaption class="txt">
+                    <h3>Camera</h3>
+                    <span>Jacob Cummings</span>
+                    <a href="#">Take a look</a>
+                </figcaption>
+            </figure>
+        </li>
+        <li>
+            <figure class="list_img">
+                <img src="img/5.png" alt="">
+                <figcaption class="txt">
+                    <h3>Camera</h3>
+                    <span>Jacob Cummings</span>
+                    <a href="#">Take a look</a>
+                </figcaption>
+            </figure>
+        </li>
+        <li>
+            <figure class="list_img">
+                <img src="img/6.png" alt="">
+                <figcaption class="txt">
+                    <h3>Camera</h3>
+                    <span>Jacob Cummings</span>
+                    <a href="#">Take a look</a>
+                </figcaption>
+            </figure>
+        </li>
+    </ul>
+</body>
+</html>

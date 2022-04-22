@@ -1,0 +1,25 @@
+@font-base:14px;
+
+@font-base-h1:ceil(@font-base * 2.7); //37.8
+@font-base-h2:floor(@font-base * 2.3); //32.2
+
+h1{
+    font-size: @font-base-h1;
+}
+h2{
+    font-size: @font-base-h2;
+    width: percentage(0.5);
+    height: round(10.56)px;
+    line-height: sqrt(25)px;
+}
+p{
+    width: abs(-100)px;
+}
+
+//min,max  列表
+
+@list:10,8,20,80,50,38;
+div{
+    width:min(@list)px;
+    height: max(@list)px;
+}

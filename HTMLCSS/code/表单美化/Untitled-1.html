@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table{
+            border-collapse: collapse;
+            
+        }
+        td{
+            padding: 0px;
+        }
+        input{
+            padding: 0px;
+            margin: 0px;
+            outline: none;
+            vertical-align: top;
+        }
+        select{
+            padding: 0px;
+            vertical-align: top;
+        }
+        button{
+            padding: 0px;
+            outline: none;
+            vertical-align: top;
+        }
+        textarea{
+            resize: none;
+            padding: 0px;
+            margin: 0px;
+            outline: none;
+            vertical-align: top;
+        }
+        .box{
+            width: 410px;
+            height: 500px;
+            border: 1px solid pink;
+        }
+        .tbo{
+            display: block;
+            margin-top: 43px;
+        }
+        .tr1{
+            height: 40px;
+            width: 410px;
+            display: block;
+            margin-bottom: 20px;
+        }
+        .td1{
+            display: inline-block;
+            height: 40px;
+            width: 111px;
+            line-height: 40px;
+            text-align: right;
+            font-size: 14px;
+            color: #8f8f8f;
+            float: left;
+        }
+        .td2{
+            width: 236px;
+            height: 40px;
+            padding-left: 6px;
+            box-sizing: border-box;
+        }
+        .intext{
+           height: 40px;
+           width: 230px;
+           border: 1px solid #c9c9c9;
+           box-sizing: border-box;
+           padding-left: 13px;
+           color: purple;
+           font-size: 14px;
+        }
+        input:focus,textarea:focus{
+            border-color: red;
+        }
+        input:focus+span{
+            display: block;
+        }
+        .tishi{
+            display: none;
+            width: 230px;
+            height: 36px;
+            background-color: #fdf1f3;
+            font-size: 12px;
+            color: #e7788d;
+            line-height: 36px;
+            padding-left: 16px;
+            box-sizing: border-box;
+        }
+        .td3{
+            height: 80px;
+        }
+        .ttr{
+            height: 80px;
+        }
+        .area{
+            border: 1px solid #c9c9c9;
+            width: 230px;
+            height: 80px;
+            box-sizing: border-box;
+        }
+        textarea{
+            padding: 13px 0px 0px 8px;
+        }
+        textarea::-webkit-input-placeholder{
+            color: red;
+            
+        }
+        .put{
+            display: none;
+        }
+        .lab::before{
+            content: "";
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border:1px solid #d6d6d6;
+            padding: 3px;
+            vertical-align: top;
+            margin-right: 7px;
+        }
+        .put:checked+.lab::before{
+            border:1px solid #e7788d;
+            background: #e7788d;
+            background-clip: content-box;
+        }
+        .td4{
+            width: 231px;
+            height: 20px;
+            /* margin-left: 5px; */
+            /* display: inline-block; */
+        }
+        .lab{
+            margin-right: 40px;
+            font-size: 14px;
+        }
+        .trr,.td1t{
+            height: 20px;
+            line-height: 20px;
+            
+        }
+        .td1t{
+            margin-right: 5px;
+        }
+        .td2inp{
+            display: none;
+        }
+        .td22{
+            height: 32px;
+            width: 231px;
+        }
+        .labab{
+            width: 65px;
+            height: 32px;
+            display: inline-block;
+            background-color: #f9f9f9;
+            font-size: 13px;
+            line-height: 32px;
+            text-align: center;
+            margin-right: 10px;
+        }
+        .td6{
+            margin-right: 5px;
+        }
+        .tr6{
+            margin-bottom: 40px;
+        }
+        .tr6,.td6{
+            height: 32px;
+            line-height: 32px;
+        }
+        .labaa{
+            margin-right: 0px;
+        }
+        .td2inp:checked+.labab{
+            background: #e7788d;
+            color: white;
+        }
+        .qwe{
+            width: 180px;
+            height: 44px;
+            background-color: #e7788d;
+            color: white;
+            font-size: 17px;
+            line-height: 44px;
+            padding-left: 30px;
+            border: none;
+            letter-spacing: 17px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <form action="#" class="box">
+        <table>
+            <tbody class="tbo">
+                <tr class="tr1">
+                    <td class="td1">用户名：</td>
+                    <td class="td2">
+                        <input type="text" class="intext">
+                    </td>
+                </tr>
+                <tr class="tr1">
+                    <td class="td1">密码：</td>
+                    <td class="td2">
+                        <input type="password" class="intext intext2" ">
+                        <span class="tishi">密码要8-12位数字或字母组合</span>
+                    </td>
+                </tr>
+                <tr class="tr1 ttr">
+                    <td class="td1">留言：</td>
+                    <td class="td2 td3">
+                        <textarea class="area" placeholder="人生在于折腾"></textarea>
+                    </td>
+                </tr>
+                <tr class="tr1 trr">
+                    <td class="td1 td1t">性别：</td>
+                    <td class="td4">
+                        <input class="put" type="radio" name="sex" id="sex1" value="男">
+                        <label class="lab " for="sex1">男</label>
+                        <input class="put" type="radio" name="sex" id="sex2" value="男">
+                        <label class="lab" for="sex2">女</label>
+                    </td>
+                </tr>
+                <tr class="tr1 tr6">
+                    <td class="td1 td6">爱好：</td>
+                    <td class="td22">
+                        <input class="td2inp" type="checkbox" name="box" id="box1" value="打球">
+                        <label class="labab" for="box1">打球</label>
+                        <input class="td2inp" type="checkbox" name="box" id="box2" value="唱歌">
+                        <label class="labab" for="box2">唱歌</label>
+                        <input class="td2inp" type="checkbox" name="box" id="box3" value="睡觉">
+                        <label class="labab labaa" for="box3">睡觉</label>
+                    </td>
+                </tr>
+                <tr class="tr1">
+                    <td class="td1"></td>
+                    <td class="td2">
+                        <input type="button" class="qwe" value="提交">
+                        
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</body>
+</html>

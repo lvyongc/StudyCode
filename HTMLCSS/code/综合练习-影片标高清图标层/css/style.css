@@ -1,0 +1,208 @@
+a{
+    text-decoration: none;
+    
+}
+img{
+    vertical-align: top;
+}
+ul,p{
+    margin: 0px;
+    padding: 0px;
+}
+dl,dd{
+    margin: 0px;
+}
+ul,li{
+    list-style: none;
+}
+.box{
+    width: 641px;
+    height: 410px;
+    padding: 14px 16px 6px 15px;
+    box-sizing: border-box;
+}
+.sec{
+    height: 390px;
+    border: 1px solid #e5e5e5;
+    box-sizing: border-box;
+}
+.hea{
+    height: 32px;
+    background-color: #ebfcf4;
+    
+}
+.hea_left{
+    float: left;
+    line-height: 32px;
+    font-size: 13px;
+    color: #044ad0;
+    
+}
+.hea_left a{
+    display: inline-block;
+    line-height: 32px;
+    padding-left: 14px;
+    padding-right: 15px;
+    border-right:1px solid #e5e5e5 ;
+    border-bottom:1px solid #e5e5e5 ;
+    box-sizing: border-box;
+}
+.hea_right{
+    float: right;
+    line-height: 32px;
+    font-size: 11px;
+    color: #044ad0;
+    padding-right: 15px;
+    padding-left: 51px;
+    border-bottom:1px solid #e5e5e5 ;
+    box-sizing: border-box;
+    box-sizing: border-box;
+}
+.hea_right a{
+    
+    padding-left: 9px;
+    padding-right: 8px;
+    border-right:1px solid #8b9396 ;
+    box-sizing: border-box;
+}
+.hea_right .yan{
+    border-right: none;
+}
+
+.hea_left a:hover{
+    background-color: white;
+    font-weight: bold;
+    border-bottom: none;
+}
+.conul{
+    margin-top: 14px;
+    box-sizing: border-box;
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 8px;
+    box-sizing: border-box;
+}
+.conli{
+    display: inline-block;
+    width: 274px;
+    height: 133px;
+    margin-left: 14px;
+    margin-right: 28px;
+    box-sizing: border-box;
+}
+.conli .juchang{
+    display: inline-block;
+    margin-right: 21px;
+    float: left;
+}
+.panlong{
+    display: block;
+    margin-right: 8px;
+    float: left;
+}
+p{
+    display: block;
+    width: 48px;
+    height: 11px;
+    font-size: 11px;
+    float: right;
+    margin-top: 4px;
+    box-sizing: border-box;
+}
+.wuxing{
+    height: 105px;
+    width: 128px;
+    /* display: block; */
+    background: url(../img/3.jpg) no-repeat;
+    float: left;
+    margin-top: 10px;
+    margin-right: 22px;
+    box-sizing: border-box;
+}
+.text{
+    display: inline-block;
+    height: 25px;
+    width: 128px;
+    line-height: 25px;
+    font-size: 11px;
+    padding-top: 80px;
+    box-sizing: border-box;
+}
+.miaoshu{
+    display: inline-block;
+    width: 122px;
+    height: 105px;
+    float: left;
+    font-size: 11px;
+    line-height: 19px;
+    margin-top: 6px;
+    box-sizing: border-box;
+}
+.twocon{
+    margin-left: 0px;
+    margin-right: 10px;
+    float: right;
+}
+.twoul{
+    padding-top: 15px;
+    width: 596;
+    margin-left: 14px;
+}
+.clear::after{
+    content: ".";
+    display: block;
+    clear: both;
+    height: 0px;
+    visibility: hidden;
+    overflow: hidden;
+}
+.twoli{
+    width: 128px;
+    height: 124px;
+    font-size: 11px;
+    float: left;
+    margin-right: 22px;
+}
+.wu{
+    display: block;
+    font-size: 11px;
+    
+    line-height: 29px;
+    box-sizing: border-box;
+}
+.twoli .danyu{
+    padding-top: 40px;
+    box-sizing: border-box;
+    
+}
+.twoli2{
+    float: left;
+}
+.twoul .twoli4{
+    margin-right: 0px;
+}
+.conf{
+    margin-left: 14px;
+    margin-top: 10px;
+}
+.connav{
+    font-size: 11px;
+    display: inline-block;
+}
+.connav a{
+    border-right: 1px solid #e5e5e5;
+    padding-left: 7px;
+    padding-right: 6px;
+    
+}
+.connav .connav_a{
+    padding-left: 0px;
+}
+.connav .connav_b{
+    border: none;
+}
+.connav2{
+    margin-left: 31px;
+}
+.connav3{
+    margin-left: 0px;
+}

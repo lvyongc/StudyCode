@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        
+        input{
+            display: none;
+        }
+        label{
+            display: inline-block;
+            height: 15px;
+            width: 32px;
+            line-height: 15px;
+            font-size: 15px;
+            position: relative;
+        }
+        label::before{
+            content: "";
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            line-height: 14px;
+            border-radius: 50%;
+            border: 1px solid #e15671;
+            box-sizing: border-box;
+        }
+        .la{
+            width: 59px;
+        }
+        label::after{
+            content: "";
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #e15671;
+            position: absolute;
+            left: 4px;
+            top: 4px;
+            display: none;
+        }
+        input:checked+label::after{
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <input type="radio" name="sex" id="sex1" value="男">
+    <label for="sex1">男</label>
+    <input type="radio" name="sex" id="sex2" value="女">
+    <label for="sex2">女</label>
+    <input type="radio" name="sex" id="sex3" value="保密">
+    <label for="sex3" class="la">保密</label>
+</body>
+</html>

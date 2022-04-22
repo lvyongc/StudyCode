@@ -1,0 +1,54 @@
+.box{
+    width: 100px;
+    height: 100px;
+    .one{
+        color: red;
+    }
+}
+.box1{
+    .box; //混合
+}
+
+//继承
+.hea:extend(.box){
+
+}
+
+//all
+.con:extend(.box all){
+
+}
+
+.a{
+    color: red;
+}
+.b{
+    background: green;
+}
+.c{
+    &:extend(.a);
+}
+//多参数继承
+
+.d:extend(.a,.b){
+
+}
+
+//需要放在最后的
+
+// .d:extend(.a,.b):hover{
+
+// } 错误
+
+.d:hover:extend(.a,.b){}
+
+
+
+.fonts{
+    font-size: 20px;
+    color: red;
+}
+.color{
+    &:extend(.fonts);
+    color: green;
+}

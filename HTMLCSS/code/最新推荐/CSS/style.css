@@ -1,0 +1,132 @@
+h3,ul,body{
+    margin: 0px;
+    padding: 0px;
+}
+ul,li{
+    list-style: none;
+}
+a{
+    text-decoration: none;
+}
+.box{
+    width: 592px;
+}
+.title{
+    font-size: 0px;
+    background: url(../images/tt_03.jpg) no-repeat;
+    width: 104px;
+    height: 30px;
+    float: left;
+}
+.hea{
+    height: 30px;
+    padding-bottom: 17px;
+    border-bottom: 1px solid #eeeeee;
+    
+}
+.hea_nav{
+    margin-left: 30px;
+    float: left;
+}
+.hea_nav a{
+    display: block;
+    font: 13px/30px "宋体";
+    float: left;
+    margin-right: 22px;
+    color: #000000;
+}
+.hea_nav a:hover{
+    color: #60addb;
+}
+.play{
+    display: block;
+    width: 83px;
+    height: 29px;
+    box-sizing: border-box;
+    border: 1px solid #dbdbdb;
+    border-radius: 3px;
+    background: url(../images/1.jpg) no-repeat 8px 7px;
+    font: 12px/29px "宋体";
+    color: #535353;
+    padding-left: 24px;
+    float: right;
+}
+.list{
+    width: 592px;
+    margin-top: 8px;
+    box-sizing: border-box;
+}
+.item{
+    height: 32px;
+    width: 592px;
+}
+.item a{
+    height: 32px;
+    color: #333333;
+    display: block;
+}
+.song{
+    
+    height: 32px;
+    font-size: 12px;
+    line-height: 32px;
+    float: left;
+    padding-left: 10px;
+    
+}
+.tip::after{
+    content: url(../images/img_10.jpg);
+    float: right;
+    margin-left: 9px;
+    margin-top: 1px;
+}
+.item_time{
+    
+    height: 32px;
+    font: 12px/32px "宋体";
+    padding-right: 10px;
+    float: right;
+}
+.clear::after{
+    content: ".";
+    height: 0px;
+    display: block;
+    clear: both;
+    visibility: hidden;
+    overflow: hidden;
+}
+.btn{
+    width: 33px;
+    height: 32px;
+    float: right;
+    margin-right: 12px;
+    padding-top: 8px;
+    display: none;
+    box-sizing: border-box;
+}
+.btn_play{
+    
+    width: 12px;
+    height: 14px;
+    background: url(../images/1.jpg) no-repeat;
+    float: left;
+    margin-right: 8px;
+}
+.btn_down{
+    
+    width: 13px;
+    height: 14px;
+    background: url(../images/img_05.jpg) no-repeat;
+    float: left;
+}
+.item a:hover{
+    
+    background-color: #f4f8fb;
+    color: #60addb;
+}
+.item a:hover .btn{
+    display: block;
+}
+.item a:hover .tip::after{
+    display: none;
+}

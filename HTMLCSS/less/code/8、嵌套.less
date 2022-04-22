@@ -1,0 +1,31 @@
+ul{
+    list-style: none;
+}
+.item{
+    width: 1000px;
+    height: 800px;
+    border: 1px solid red;
+    span{
+        font-size: 30px;
+        color: green;
+    }
+    img{
+        width: 100px;
+    }
+    a{
+        width: 200px;
+        height: 200px;
+        display: block;
+        &:hover{
+            color: pink;
+        }
+    }
+}
+
+.clearfix{
+    &::after{
+        content:"";
+        display: block;
+        clear: both;
+    }
+}

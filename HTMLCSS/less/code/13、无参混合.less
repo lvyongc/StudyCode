@@ -1,0 +1,53 @@
+.one{
+    width: 1000px;
+    height: 100px;
+    margin: 0 auto;
+    .two{
+        width: 500px;
+        height: 50px;
+        border: 10px solid red;
+    }
+}
+
+.con{
+    .one;
+}
+
+.box{
+    .one .two;
+    // .two;  错误的
+}
+
+//有参数混合
+
+.boxCon(@w,@h,@bgCorlor){
+    width: @w;
+    height: @h;
+    background: @bgCorlor;
+}
+
+.box2{
+    .boxCon(200px,300px,blue);
+}
+
+.border(@w,@s,@c){
+    // border:@w @s @c;
+    border:@arguments;
+}
+.box3{
+    .border(10px,dashed,pink);
+    // .border();  设置了参数，但是混合的时候没有传参，会报错
+}
+
+//设置默认初始值
+.border2(@w:5px,@s:solid,@c:red){
+    border:@arguments;
+}
+
+.box4{
+    .border2();
+}
+
+.box5{
+    .border2(@c:purple);
+}

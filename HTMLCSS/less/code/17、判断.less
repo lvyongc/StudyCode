@@ -1,0 +1,78 @@
+.picStyle(@num){
+    &:nth-of-type(@{num}){
+        div{
+            background: url('../images/bg_index_top.jpg') no-repeat;
+            background-position: -(@num - 1) * 224px 0px;
+        }
+        &:hover{
+            div{
+                transform: scale(1.2);
+            }
+        }
+    }
+    &:nth-of-type(@{num}) when(@num = 5){
+        margin-right: 0px;
+    }
+}
+
+ul{
+    li{
+        .picStyle(5);
+    }
+}
+
+
+.border(@w,@s,@c) when(@w > 0){
+    border:@arguments;
+}
+
+.box1{
+    .border(-10px,solid,pink);
+}
+
+.c(@w,@h) when(@w > 0) and (@h > 0){
+    width: @w;
+    height: @h;
+}
+.box2{
+    .c(100px,200px);
+}
+
+.c2(@w,@h) when(@w > 0),(@h > 0){
+    width: @w;
+    height: @h;
+}
+.box3{
+    .c2(100px,-200px);
+}
+
+.c3(@w,@h) when not (@w = 100px){
+    width: @w;
+    height: @h;
+}
+.box4{
+    .c3(101px,200px);
+}
+
+//类型判断
+
+.color(@c) when(iscolor(@c)){
+    color: @c;
+}
+.box5{
+    .color(red);
+}
+
+//条件混合
+
+.box(@w,@h) when not (@w = 100px){
+    width: @w;
+    height: @h;
+}
+.box(@w,@h) when(default()){
+    width: 0px;
+    height: 0px;
+}
+.box6{
+    .box(100px,100px);
+}

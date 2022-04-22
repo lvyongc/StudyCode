@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        header{
+            height: 51px;
+            text-align: center;
+            /* 转为内联块后，达到水平居中 */
+        }
+        h3{
+            display: inline-block;
+            /* 为了达到自适应宽高要由内容撑开，所以转为内联块 */
+            margin: 0px;
+            font-weight: normal;
+            font: 17px/51px "微软雅黑";
+            /* 行高为了垂直居中 */
+            background: url(images/111.png) repeat-x left center;
+            /* 背景X轴重复，从左边开始，并且居中 */
+            padding: 0px 61px;
+            /* 宽度是内容就是文字撑开，扩大给文字加左右padding */
+        }
+        span{
+            background: #fff url(images/images_03.jpg) no-repeat 19px 15px;
+            padding: 0px 14px 0px 42px;
+            display: inline-block;
+            /* 图标比文字高一部分，为了让图标完全显示，要设置支持宽高，所以转为内联块 */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        
+        <h3>
+            <span>热卖22222单品</span>
+        </h3>
+    </header>
+</body>
+</html>

@@ -1,0 +1,58 @@
+.container{
+    padding: 0 15px;
+    background: pink;
+    height: 100px;
+    @media screen and (min-width:768px){
+        width:750px;
+        margin: 0 auto;
+    }
+    @media screen and (min-width:992px){
+        width:970px;
+    }
+    @media screen and (min-width:1200px){
+        width:1170px;
+    }
+}
+
+.row::after{
+    content: "";
+    display: block;
+    clear: both;
+}
+
+div[class|='col']{
+    height: 100px;
+    border: 5px solid #000;
+    box-sizing: border-box;
+}
+
+.loop(@s,@num) when (@num > 0){
+    .loop(@s,@num - 1);
+    .col-@{s}-@{num}{
+        width:100% / 12 * @num;
+        float: left;
+    }
+    .col-@{s}-offset-@{num}{
+        margin-left: 100% / 12 * @num;
+    }
+    .col-@{s}-push-@{num}{
+        position: relative;
+        left: 100% / 12 * @num;
+    }
+    .col-@{s}-pull-@{num}{
+        position: relative;
+        left:-100% / 12 * @num;
+    }
+}
+
+.loop(xs,12);
+
+@media screen and (min-width:768px){
+    .loop(sm,12);
+}
+@media screen and (min-width:992px){
+    .loop(md,12);
+}
+@media screen and (min-width:1200px){
+    .loop(lg,12);
+}

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        @keyframes move{
+            0%{
+                transform: translate(0px);
+            }
+            15%{
+                transform: translate(-400px);
+            }
+            30%{
+                transform: translate(-800px);
+            }
+            45%{
+                transform: translate(-1200px);
+            }
+            60%{
+                transform: translate(-1600px);
+            }
+            75%{
+                transform: translate(-2000px);
+            }
+            100%{
+                transform: translate(-2400px);
+            }
+        }
+        ul{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        img{
+            vertical-align: top;
+        }
+        .box{
+            width: 400px;
+            height: 300px;
+            border: 5px solid #000;
+            overflow: hidden;
+        }
+        ul{
+            display: flex;
+            /* transition: 1s; */
+            animation: move 10s infinite ;
+        }
+        li{
+            flex: 0 0 400px;
+        }
+        /* .box:hover ul{
+            transform: translate(-400px);
+        } */
+    </style>
+</head>
+<body>
+    <div class="box">
+        <ul>
+            <li><img src="img/1.png" alt=""></li>
+            <li><img src="img/2.png" alt=""></li>
+            <li><img src="img/3.png" alt=""></li>
+            <li><img src="img/4.png" alt=""></li>
+            <li><img src="img/5.png" alt=""></li>
+            <li><img src="img/6.png" alt=""></li>
+            <li><img src="img/1.png" alt=""></li>
+        </ul>
+    </div>
+</body>
+</html>

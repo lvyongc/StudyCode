@@ -1,0 +1,42 @@
+.box{
+    width: 600px - 40px * 2 - 10px * 2;
+    height: 300px  - 40 * 2 - 10 *2;
+    padding: 40px;
+    border: 10px solid pink;
+}
+
+@fs:16px;
+@c:red; 
+.box2{
+    font-size: @fs - 2;
+    color:@c / 2;
+}
+
+.box3{
+    width: 100px - 20px;
+    height: 100px + 20px;
+}
+.box4{
+    width: 100px * 20px;
+    height: 100px / 20px;
+}
+
+.box5{
+    width: 100px - 20em;
+    height: 100px + 20em;
+}
+.box6{
+    width: 100px * 20em;
+    height: 100px / 20em;
+}
+
+.box7{
+    width: 100px * 2em / 3pt;
+}
+.box8{
+    width: 2px * 3pt;
+}
+.box9{
+    width: 100pt * 2px;
+    font:10px - 5px "微软雅黑";
+}

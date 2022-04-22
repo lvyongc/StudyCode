@@ -1,0 +1,57 @@
+.box(){
+    width: 100px;
+}
+.box(){
+    height: 100px;
+}
+
+.box2{
+    .box();
+}
+
+//相同的自定义函数不会被替换
+
+.border(l){
+    border-left: 5px solid red;
+}
+.border(r){
+    border-right:10px solid pink;
+}
+.border(t){
+    border-top: 8px solid blue;
+}
+.border(b){
+    border-right:3px solid purple;
+}
+.border(@_){
+    border: 1px solid #000;
+}
+
+.box{
+    .border(r);
+    .border(t);
+    .border(a);
+}
+
+//三角形
+div{
+    width: 0px;
+    height: 0px;
+    border: 100px solid;
+}
+.leftBor(l){
+    border-color: transparent transparent transparent red;
+}
+.leftBor(r){
+    border-color: transparent  pink transparent transparent;
+}
+.leftBor(t){
+    border-color: purple transparent transparent transparent;
+}
+.leftBor(b){
+    border-color: transparent transparent  blue transparent ;
+}
+
+.box1{
+    .leftBor(b);
+}

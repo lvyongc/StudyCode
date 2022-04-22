@@ -1,0 +1,10 @@
+@charset "utf-8";
+@import (reference) "21、合并";
+.box1(){
+    width: 100px;
+    height: 100px;
+    color: red;
+}
+.box2{
+    .box1()!important;
+}

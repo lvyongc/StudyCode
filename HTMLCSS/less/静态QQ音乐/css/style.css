@@ -1,0 +1,627 @@
+body,
+h1,
+input,
+button,
+h2,
+h4,
+ul,
+p {
+  margin: 0;
+  padding: 0;
+}
+a {
+  text-decoration: none;
+  color: #040000;
+}
+input,
+button {
+  border: none;
+  outline: none;
+  background: none;
+  cursor: pointer;
+}
+ul,
+li {
+  list-style: none;
+}
+h1,
+h2,
+h4 {
+  font-weight: normal;
+}
+.hea {
+  height: 142px;
+}
+.hea .logo {
+  width: 198px;
+  height: 90px;
+  float: left;
+}
+.hea .logo a {
+  display: block;
+}
+.hea .logo img {
+  width: 161px;
+  margin-top: 21px;
+}
+.heaCon,
+.songCon,
+.rankCon,
+.footCon {
+  width: 1200px;
+  margin: 0 auto;
+  position: relative;
+}
+.heaCon:after,
+.songCon:after,
+.rankCon:after,
+.footCon:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+.navlist {
+  width: 498px;
+  height: 90px;
+  float: left;
+}
+.navlist a {
+  float: left;
+  padding: 0px 20px;
+  line-height: 90px;
+  position: relative;
+}
+.navlist a:hover {
+  color: #30c188;
+}
+.navlist a:nth-of-type(1) {
+  background: #31c27d;
+  color: #fff;
+}
+.navlist a:nth-of-type(3)::after {
+  content: url(../images/mark_1.png);
+  position: absolute;
+  top: -20px;
+  right: 0px;
+}
+.subnav {
+  width: 1200px;
+  height: 51px;
+  border-top: 1px solid #f2f2f2;
+  font-size: 13px;
+  position: absolute;
+  left: 0px;
+  top: 90px;
+  padding-left: 213px;
+  box-sizing: border-box;
+}
+.subnav a {
+  float: left;
+  margin: 0px 23px;
+  line-height: 51px;
+}
+.subnav a:hover {
+  color: #30c188;
+}
+.subnav a:nth-of-type(1) {
+  color: #30c188;
+}
+.search {
+  width: 208px;
+  height: 38px;
+  border: 1px solid #c9c9c9;
+  border-radius: 2px;
+  padding-left: 10px;
+  float: left;
+  margin-top: 26px;
+}
+.search input {
+  width: 180px;
+  height: 38px;
+  line-height: 38px;
+  color: #767877;
+  float: left;
+}
+.search .seaBtn {
+  width: 28px;
+  height: 38px;
+  float: left;
+}
+.search .seaBtn span {
+  width: 16px;
+  height: 16px;
+  background: url(../images/icon_sprite.png) no-repeat;
+  display: block;
+}
+.search .seaBtn:hover span {
+  background-position: 0px -20px;
+}
+.login {
+  width: 284px;
+  height: 90px;
+  float: left;
+}
+.login a {
+  float: left;
+}
+.login .loginBtn {
+  font-size: 15px;
+  padding: 0px 23px;
+  line-height: 90px;
+}
+.login .loginBtn:hover {
+  color: #30c188;
+}
+.login .btnGreen {
+  width: 111px;
+  height: 38px;
+  line-height: 38px;
+  color: #fff;
+  background: #31c27d;
+  text-align: center;
+  border-radius: 2px;
+  font-size: 12px;
+  margin: 24px 10px 0px 0px;
+}
+.login .btnPay {
+  width: 83px;
+  height: 36px;
+  line-height: 36px;
+  border: 1px solid #c8c8c8;
+  text-align: center;
+  font-size: 12px;
+  margin-top: 24px;
+  border-radius: 2px;
+}
+.login .btnPay:hover {
+  background: #ededed;
+}
+.newSong {
+  background: url(../images/bg_detail.jpg) repeat-x;
+  padding-top: 18px;
+}
+.newSong .songBt {
+  height: 98px;
+  line-height: 98px;
+  font-size: 32px;
+  text-align: center;
+}
+.newSong .songNav {
+  text-align: center;
+  position: relative;
+}
+.newSong .songNav a {
+  font-size: 16px;
+  height: 16px;
+  line-height: 16px;
+  display: inline-block;
+  vertical-align: top;
+  margin: 0px 28px;
+  padding-bottom: 32px;
+}
+.newSong .songNav a:hover {
+  color: #30c188;
+}
+.newSong .songNav a:nth-of-type(7) {
+  position: absolute;
+  right: 28px;
+  margin: 0;
+}
+.songList {
+  padding-bottom: 25px;
+}
+.songList:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+.songItem {
+  width: 224px;
+  height: 302px;
+  float: left;
+  margin-right: 20px;
+}
+.songItem:nth-of-type(5),
+.songItem:nth-of-type(10) {
+  margin-right: 0px;
+}
+.songItem .pic {
+  width: 224px;
+  height: 224px;
+  position: relative;
+  overflow: hidden;
+}
+.songItem .pic:hover img {
+  transform: scale(1.05);
+}
+.songItem .pic:hover .mask {
+  background: rgba(0, 0, 0, 0.2);
+}
+.songItem .pic:hover .play {
+  opacity: 1;
+}
+.songItem .pic a {
+  display: block;
+}
+.songItem .pic img {
+  width: 224px;
+  transition: transform 1s;
+}
+.songItem .pic span {
+  display: block;
+}
+.songItem .pic .mask {
+  width: 224px;
+  height: 224px;
+  background: rgba(0, 0, 0, 0);
+  position: absolute;
+  left: 0;
+  top: 0;
+  transition: background 1s;
+}
+.songItem .pic .play {
+  width: 70px;
+  height: 70px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -35px;
+  margin-left: -35px;
+  background: url(../images/cover_play.png) no-repeat;
+  opacity: 0;
+  transition: opacity 1s;
+}
+.songItem h4 {
+  font-size: 14px;
+  padding-top: 6px;
+  text-align: center;
+}
+.songItem h4 a {
+  display: block;
+  height: 36px;
+  line-height: 36px;
+}
+.songItem h4 a:hover {
+  color: #30c188;
+}
+.songItem p {
+  font-size: 12px;
+  padding-bottom: 24px;
+  text-align: center;
+}
+.songItem p a {
+  display: block;
+  height: 12px;
+  line-height: 12px;
+}
+.songItem p a:hover {
+  color: #30c188;
+}
+.rank {
+  background: url(../images/bg_detail.jpg) repeat-x;
+  padding-top: 16px;
+}
+.rank .rankBt {
+  font-size: 32px;
+  height: 98px;
+  line-height: 98px;
+  text-align: center;
+}
+.rankList:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+.rankList .rankItem {
+  width: 224px;
+  height: 500px;
+  float: left;
+  margin-right: 20px;
+  overflow: hidden;
+}
+.rankList .rankItem:hover .itemBg {
+  transform: scale(1.1);
+}
+.rankList .rankItem:hover .line {
+  display: none;
+}
+.rankList .rankItem:hover .play {
+  opacity: 1;
+  transform: scale(1);
+}
+.rankList .rankItem:nth-of-type( 1) .itemBg {
+  background-position: 0px 0px;
+}
+.rankList .rankItem:nth-of-type( 2) .itemBg {
+  background-position: -224px 0px;
+}
+.rankList .rankItem:nth-of-type( 3) .itemBg {
+  background-position: -448px 0px;
+}
+.rankList .rankItem:nth-of-type( 4) .itemBg {
+  background-position: -672px 0px;
+}
+.rankList .rankItem:nth-of-type( 5) .itemBg {
+  background-position: -896px 0px;
+}
+.rankList .rankItem:nth-of-type( 5) {
+  margin-right: 0px;
+}
+.rankList .itemBg {
+  height: 449px;
+  background: url(../images/bg_index_top.jpg) no-repeat;
+  padding: 51px 30px 0px;
+  transition: transform 1s;
+}
+.rankList .itemBt a {
+  display: block;
+  color: #fff;
+  text-align: center;
+}
+.rankList .itemBt .topList {
+  font-size: 19px;
+  height: 19px;
+  line-height: 19px;
+}
+.rankList .itemBt .rage {
+  font-size: 26px;
+  height: 44px;
+  line-height: 44px;
+}
+.liPlay {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto;
+  position: relative;
+}
+.liPlay span {
+  display: block;
+}
+.liPlay .line {
+  width: 36px;
+  height: 2px;
+  background-color: #fff;
+  position: absolute;
+  left: 17px;
+  top: 34px;
+}
+.liPlay .play {
+  height: 70px;
+  background: url(../images/cover_play.png) no-repeat;
+  opacity: 0;
+  transform: scale(0);
+  transition: transform 1s;
+}
+.itemList {
+  font-size: 12px;
+  color: #fff;
+}
+.itemList li {
+  position: relative;
+  padding-left: 10px;
+  margin-bottom: 22px;
+}
+.itemList a {
+  color: #fff;
+}
+.itemList .number {
+  position: absolute;
+  left: 0;
+  top: 6px;
+}
+.itemList p {
+  height: 26px;
+  line-height: 26px;
+}
+/*footer*/
+.foot {
+  background: #333;
+  margin-top: 49px;
+}
+.footCon {
+  padding: 17px 0px 0px 3px;
+  /*开放平台*/
+  /*TME*/
+  /*footBot*/
+}
+.footCon .footTop:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+.footCon .down {
+  width: 430px;
+  float: left;
+}
+.footCon .footBt {
+  font-size: 14px;
+  color: #999f91;
+  height: 14px;
+  line-height: 14px;
+  padding: 66px 0px 56px 6px;
+  font-weight: normal;
+}
+.footCon .footList:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+.footCon .footItem {
+  float: left;
+  margin: 0px 30px;
+}
+.footCon .footItem a {
+  display: block;
+}
+.footCon .footItem a:hover .itemText {
+  color: #30c188;
+}
+.footCon .footItem .itemPic {
+  display: block;
+  height: 40px;
+  background: url(../images/footer.png) no-repeat;
+  margin: 0 auto;
+}
+.footCon .footItem .itemText {
+  display: block;
+  font-size: 11px;
+  height: 49px;
+  line-height: 49px;
+  color: #999f91;
+  text-align: center;
+}
+.footCon .footItem:nth-of-type(1) {
+  padding-top: 5px;
+}
+.footCon .footItem:nth-of-type(1) .itemPic {
+  background-position: -3px -6px;
+  width: 34px;
+}
+.footCon .footItem:nth-of-type(1) a:hover .itemPic {
+  background-position: -3px -55px;
+}
+.footCon .footItem:nth-of-type(2) {
+  padding-top: 5px;
+}
+.footCon .footItem:nth-of-type(2) .itemPic {
+  background-position: -92px -6px;
+  width: 46px;
+}
+.footCon .footItem:nth-of-type(2) a:hover .itemPic {
+  background-position: -92px -55px;
+}
+.footCon .footItem:nth-of-type(3) {
+  padding-top: 2px;
+}
+.footCon .footItem:nth-of-type(3) .itemPic {
+  background-position: -190px -3px;
+  width: 37px;
+  height: 43px;
+}
+.footCon .footItem:nth-of-type(3) a:hover .itemPic {
+  background-position: -190px -52px;
+}
+.footCon .footItem:nth-of-type(4) {
+  padding-top: 4px;
+}
+.footCon .footItem:nth-of-type(4) .itemPic {
+  background-position: -279px -5px;
+  width: 34px;
+  height: 41px;
+}
+.footCon .footItem:nth-of-type(4) a:hover .itemPic {
+  background-position: -279px -54px;
+}
+.footCon .product {
+  width: 414px;
+  margin-left: 51px;
+}
+.footCon .product .footBt {
+  padding-left: 9px;
+}
+.footCon .product .footItem:nth-of-type(1) {
+  padding-top: 3px;
+}
+.footCon .product .footItem:nth-of-type(1) .itemPic {
+  background-position: -370px -4px;
+  width: 41px;
+  height: 42px;
+}
+.footCon .product .footItem:nth-of-type(1) a:hover .itemPic {
+  background-position: -370px -53px;
+}
+.footCon .product .footItem:nth-of-type(2) {
+  padding-top: 4px;
+}
+.footCon .product .footItem:nth-of-type(2) .itemPic {
+  background-position: -464px -5px;
+  width: 34px;
+  height: 41px;
+}
+.footCon .product .footItem:nth-of-type(2) a:hover .itemPic {
+  background-position: -464px -54px;
+}
+.footCon .product .footItem:nth-of-type(3) {
+  padding-top: 3px;
+}
+.footCon .product .footItem:nth-of-type(3) .itemPic {
+  background-position: -563px -4px;
+  width: 40px;
+  height: 42px;
+}
+.footCon .product .footItem:nth-of-type(3) a:hover .itemPic {
+  background-position: -563px -53px;
+}
+.footCon .footLink {
+  width: 302px;
+  float: left;
+}
+.footCon .footLink .footBt {
+  padding-left: 9px;
+}
+.footCon .footLink a {
+  display: block;
+  height: 32px;
+  line-height: 32px;
+  font-size: 12px;
+  color: #999f91;
+  float: left;
+  width: 100px;
+}
+.footCon .footLink a:hover {
+  color: #30c188;
+}
+.footCon .footOpen {
+  width: 430px;
+  float: left;
+}
+.footCon .footOpen .openList:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+.footCon .footOpen .openItem {
+  float: left;
+}
+.footCon .footOpen a {
+  display: block;
+  color: #999f91;
+  font-size: 12px;
+  height: 15px;
+  line-height: 15px;
+}
+.footCon .footOpen a:nth-of-type(1) {
+  margin: 0px 30px 0px 7px;
+}
+.footCon .footOpen a:hover {
+  color: #30c188;
+}
+.footCon .tme {
+  width: 414px;
+  margin-left: 51px;
+}
+.footCon .footBot {
+  padding-top: 22px;
+  border-top: 1px solid #353535;
+  margin-top: 56px;
+  padding-bottom: 19px;
+}
+.footCon .footBot p {
+  height: 30px;
+  line-height: 30px;
+  font-size: 11px;
+  color: #999f91;
+  text-align: center;
+}
+.footCon .footBot a {
+  display: inline-block;
+  font-size: 11px;
+  height: 13px;
+  line-height: 13px;
+  border-right: 1px solid #889488;
+  color: #999f91;
+  padding: 0px 6px;
+}
+.footCon .footBot a:hover {
+  color: #30c188;
+}

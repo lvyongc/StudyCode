@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        input,td,select{
+            padding: 0px;
+        }
+        select{
+            outline: none;
+            -webkit-appearance: none;
+        }
+        input{
+            outline: none;
+            vertical-align: top;
+        }
+        .box{
+            width: 859px;
+            height: 1000px;
+            background: url(img/img.png) no-repeat;
+            padding: 39px 113px 50px 156px;
+            box-sizing: border-box;
+            font-size: 14px;
+            color: white;
+        }
+        .con{
+            height: 911px;
+            background: url(img/img2.png) no-repeat;
+            padding-top: 44px;
+            box-sizing: border-box;
+        }
+        .tab{
+            border-collapse: collapse;
+            border-spacing: 0px;
+        }
+        .tab td{
+            height: 40px;
+        }
+        .tdleft{
+            width: 110px;
+            text-align: right;
+            line-height: 40px;
+        }
+        .tdcon{
+            width: 325px;
+            padding: 0px 18px 0px 17px;
+            box-sizing: border-box;
+        }
+        .inputbox{
+            width: 290px;
+            height: 40px;
+            border: 1px solid #bfbfbf;
+            background: none;
+            padding-left: 13px;
+            color: #6e6e6e;
+            line-height: 38px;
+            box-sizing: border-box;
+        }
+        input:focus,select:focus,textarea:focus{
+            border-color: #e7788d;
+        }
+        .tdright{
+            width: 155px;
+            line-height: 40px;
+        }
+        .tab tr{
+            display: block;
+            margin-bottom: 21px;
+        }
+        .drop{
+            height: 40px;
+            line-height: 40px;
+            border: 1px solid #bfbfbf;
+            background: none;
+            padding-left: 9px;
+            box-sizing: border-box;
+            color: white;
+        }
+        .city{
+            width: 140px;
+            float: left;
+            background-position:  117px center;
+        }
+        .region{
+            width: 130px;
+            float: right;
+            background-position:  107px center;
+        }
+        .optbg{
+            background-color: #bfbfbf;
+        }
+        .single{
+            display: none;
+        }
+        .power{
+            border: none;
+            background: none;
+            height: 40px;
+            line-height: 40px;
+            color: white;
+            width: 155px;
+            background-position: 78px center;
+        }
+        .droppic{
+            background-image: url(img/img3.png);
+            background-repeat: no-repeat;
+        }
+        .tdmiddle{
+            width: 325px;
+            padding: 0px 18px 0px 17px;
+            box-sizing: content-box;
+            line-height: 40px;
+        }
+        .lab::before{
+            content: "";
+            width: 18px;
+            height: 18px;
+            display: inline-block;
+            border: 1px solid #bcbcbc;
+            border-radius: 50%;
+            padding: 3px;
+            margin-top: 8px;
+            margin-right: 9px;
+            vertical-align: top;
+        }
+        .single:checked + .lab::before{
+            border-color: #e7788d;
+            background: #e7788d;
+            background-clip: content-box;
+        }
+        .lab{
+            margin-right: 40px;
+        }
+        .year{
+            width: 90px;
+            float: left;
+            background-position: 67px center;
+        }
+        .month{
+            margin: 0px 20px;
+        }
+        .month,.day{
+            width: 80px;
+            float: left;
+            background-position: 57px center;
+        }
+        .sec{
+            background-position: 37px center;
+        }
+        .mail{
+            width: 180px;
+            height: 40px;
+            line-height: 40px;
+            float: left;
+        }
+        .edit{
+            width: 50px;
+            height: 25px;
+            line-height: 25px;
+            background: #e7788d;
+            color: white;
+            text-align: center;
+            border: none;
+            float: left;
+            margin-left: 14px;
+            margin-top: 6px;
+        }
+        .area{
+            width: 290px;
+            height: 80px;
+            border: 1px solid #bfbfbf;
+            background: none;
+            padding: 13px 0px 0px 9px ;
+            box-sizing: content-box;
+            color: white;
+            font-family: "微软雅黑";
+        }
+        textarea{
+            outline: none;
+        }
+        textarea::-webkit-input-placeholder{
+            color: white;
+        }
+        .tbo{
+            padding-bottom: 2px;
+            border-bottom: 1px solid #302836;
+        }
+        .tab .info{
+            height: 62px;
+            line-height: 62px;
+            padding-left: 34px;
+            margin-bottom: 2px;
+        }
+        .save{
+            width: 130px;
+            height: 44px;
+            line-height: 44px;
+            background: #e7788d;
+            color: white;
+            text-align: center;
+            float: left;
+            border: none;
+            margin-right: 30px;
+        }
+        .cancle{
+            width: 130px;
+            height: 44px;
+            line-height: 40px;
+            background: none;
+            color: #e7788d;
+            text-align: center;
+            float: left;
+            border: 2px solid #e7788d;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <form action="#" class="con">
+            <table class="tab">
+                <tbody class="tbo">
+                    <tr>
+                        <td class="tdleft">*昵称：</td>
+                        <td class="tdcon">
+                            <input type="text" class="inputbox">
+                        </td>
+                        <td class="tdright">
+                            4-20个字符
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tdleft">真实姓名：</td>
+                        <td class="tdcon">
+                            <input type="text" class="inputbox">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tdleft">所在地：</td>
+                        <td class="tdcon">
+                            <select name="" id="" class="city droppic drop">
+                                <option class="optbg" value="">北京</option>
+                                <option class="optbg" value="">北京</option>
+                                <option class="optbg" value="">北京</option>
+                            </select>
+                            <select name="" id="" class="region droppic drop">
+                                <option class="optbg" value="">北京</option>
+                                <option class="optbg" value="">北京</option>
+                                <option class="optbg" value="">北京</option>
+                            </select>
+                        </td>
+                        <td class="tdright">
+                            <select class="power droppic" name="" id="">
+                                <option class="optbg" value="">北京背景啊</option>
+                                <option class="optbg" value="">北京背景啊</option>
+                                <option class="optbg" value="">北京背景啊</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tdleft">*性别</td>
+                        <td class="tdmiddle">
+                            <input type="radio" class="single" name="gender"  id="man">
+                            <label for="man" class="lab">男</label>
+                            <input type="radio" class="single" name="gender"  id="woman" checked>
+                            <label for="woman" class="lab">女</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tdleft">生日</td>
+                        <td class="tdcon">
+                            <select name="" id="" class="year droppic drop">
+                                <option class="optbg" value="">2211</option>
+                                <option class="optbg" value="">3213</option>
+                                <option class="optbg" value="">4321</option>
+                            </select>
+                            <select name="" id="" class="month droppic drop">
+                                <option class="optbg" value="">1</option>
+                                <option class="optbg" value="">2</option>
+                                <option class="optbg" value="">3</option>
+                            </select>
+                            <select name="" id="" class="day droppic drop">
+                                <option class="optbg" value="">1</option>
+                                <option class="optbg" value="">2</option>
+                                <option class="optbg" value="">3</option>
+                            </select>
+                        </td>
+                        <td class="tdright">
+                            <select class="power droppic sec" name="" id="">
+                                <option class="optbg" value="">公开</option>
+                                <option class="optbg" value="">保密</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tdleft">微博地址：</td>
+                        <td class="tdcon">
+                                <input type="text" class="inputbox">
+                        </td>
+                        <td class="tdright">
+                            <select class="power droppic" name="" id="">
+                                <option class="optbg" value="">北京背景啊</option>
+                                <option class="optbg" value="">北京背景啊</option>
+                                <option class="optbg" value="">北京背景啊</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tdleft">常用邮箱</td>
+                        <td class="tdcon">
+                            <span class="mail">12312321321321@eqw.com</span>
+                            <input type="button" class="edit" value="修改">
+                        </td>
+                        <td class="tdright">
+                            我关注的人可见
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tdleft">QQ：</td>
+                        <td class="tdcon">
+                            <input type="text" class="inputbox">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tdleft">一句话介绍：</td>
+                        <td class="tdcon">
+                           <textarea class="area" placeholder="人生在于折腾"></textarea>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr class="info">
+                        <td>以下信息</td>
+                    </tr>
+                    <tr>
+                        <td class="tdleft">证件类型</td>
+                        <td class="tdcon">
+                            <select name="" id="" class="city droppic drop">
+                                <option class="optbg" value="">北京</option>
+                                <option class="optbg" value="">北京</option>
+                                <option class="optbg" value="">北京</option>
+                            </select>
+                            
+                        </td>
+                        
+                    </tr>
+                    <tr>
+                        <td class="tdleft">证件号码：</td>
+                        <td class="tdcon">
+                            <input type="text" class="inputbox">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tdleft"></td>
+                        <td class="tdcon">
+                            <input type="button" class="save" value="保存">
+                            <input type="button" class="cancle" value="取现">
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </form>
+    </div>
+</body>
+</html>

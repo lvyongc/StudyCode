@@ -1,0 +1,35 @@
+.box(@w,@h){
+    width:@w;
+    height:@h;
+}
+.box1{
+    .box(100px,100px);
+}
+
+.one(@num) when (@num > 0){
+    .one(@num - 1);
+    width:@num * 10px;
+}
+.box2{
+    .one(4);
+}
+
+//案列循环
+.picStyle(@num) when (@num > 0){
+    .picStyle(@num - 1);
+    &:nth-of-type(@{num}){
+        div{
+            background: url('../images/bg_index_top.jpg') no-repeat;
+            background-position: -(@num - 1) * 224px 0px;
+        }
+        &:hover{
+            div{
+                transform: scale(1.2);
+            }
+        }
+    }
+}
+
+div{
+    .picStyle(5);
+}

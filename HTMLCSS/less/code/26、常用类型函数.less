@@ -1,0 +1,15 @@
+.box(@w,@h) when (isnumber(@w)) and (isnumber(@h)){
+    width:@w;
+    height: @h;
+}
+
+.box2{
+    .box(10px,200px);
+}
+
+.border(@w,@s,@c) when (iscolor(@c)){
+    border:@arguments;
+}
+.box3{
+    .border(5px,solid,purple);
+}

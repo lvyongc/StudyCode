@@ -1,0 +1,63 @@
+ul {
+  margin: 0px;
+  padding: 0px;
+  list-style: none;
+}
+p,
+body {
+  margin: 0px;
+}
+.list {
+  overflow: hidden;
+}
+.list li {
+  float: left;
+  width: 100px;
+}
+.list li:nth-of-type( 1) .img {
+  background-position: 0px 0px;
+}
+.list li:nth-of-type( 1):hover .img {
+  background-position: -100px 0px;
+}
+.list li:nth-of-type( 2) .img {
+  background-position: 0px -100px;
+}
+.list li:nth-of-type( 2):hover .img {
+  background-position: -100px -100px;
+}
+.list li:nth-of-type( 3) .img {
+  background-position: 0px -200px;
+}
+.list li:nth-of-type( 3):hover .img {
+  background-position: -100px -200px;
+}
+.list li:nth-of-type( 4) .img {
+  background-position: 0px -300px;
+}
+.list li:nth-of-type( 4):hover .img {
+  background-position: -100px -300px;
+}
+.list li:nth-of-type( 5) .img {
+  background-position: 0px -400px;
+}
+.list li:nth-of-type( 5):hover .img {
+  background-position: -100px -400px;
+}
+.list li:nth-of-type( 6) .img {
+  background-position: 0px -500px;
+}
+.list li:nth-of-type( 6):hover .img {
+  background-position: -100px -500px;
+}
+.list li:nth-of-type( 7) .img {
+  background-position: 0px -600px;
+}
+.list li:nth-of-type( 7):hover .img {
+  background-position: -100px -600px;
+}
+.img {
+  display: block;
+  height: 85px;
+  background: url(../img/1.png) no-repeat;
+}

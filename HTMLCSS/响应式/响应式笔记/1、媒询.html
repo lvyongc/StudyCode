@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        div{
+            width: 100px;
+            height: 100px;
+            background: pink;
+        }
+        /* @media screen and (min-width:500px) and (max-width:1000px){
+            div{
+                background: red;
+            }
+        } */
+
+        /* @media screen and (min-width:1000px) , (max-width:500px){
+            div{
+                background:purple;
+            }
+        } */
+
+        /* @media only screen and (orientation: landscape){
+            div{
+                background: brown;
+            }
+        } */
+
+        @media not screen and (min-width:600px){
+            div{
+                background: chartreuse;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div></div>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        div{
+            width: 1000px;
+            height: 500px;
+            background: pink;
+            display: flex;
+        }
+        span{
+            width: 200px;
+            height: 200px;
+            background: orange;
+            border: 5px solid #000;
+        }
+        span:nth-of-type(even){
+            align-self: flex-end;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <span>span1</span>
+        <span>span2</span>
+        <span>span3</span>
+        <span>span4</span>
+    </div>
+</body>
+</html>

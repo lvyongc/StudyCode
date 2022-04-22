@@ -1,0 +1,119 @@
+ul{
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+}
+p,body{
+    margin: 0px;
+}
+// 封装
+.bg(@num) when (@num > 0){
+    // 递归。先执行再调用
+    .bg(@num - 1);
+    &:nth-of-type(@{num}){
+        .img{
+            background-position: 0px (@num - 1) * (-100px);
+        }
+        &:hover{
+            .img{
+                background-position: -100px (@num - 1) * (-100px);
+            }
+        }
+    }
+}
+.list{
+    overflow: hidden;
+    li{
+        float: left;
+        width: 100px;
+        // 传参
+        .bg(7);
+
+
+        // .bg(1);
+        // .bg(2);
+        // .bg(3);
+        // .bg(4);
+        // .bg(5);
+        // .bg(6);
+        // .bg(7);
+
+
+        // &:nth-of-type(1){
+        //     .img{
+        //         background-position: 0px 0px;
+        //     }
+        //     &:hover{
+        //         .img{
+        //             background-position: -100px 0px;
+        //         }
+        //     }
+        // }
+        // &:nth-of-type(2){
+        //     .img{
+        //         background-position: 0px -100px;
+        //     }
+        //     &:hover{
+        //         .img{
+        //             background-position: -100px -100px;
+        //         }
+        //     }
+        // }
+        // &:nth-of-type(3){
+        //     .img{
+        //         background-position: 0px -200px;
+        //     }
+        //     &:hover{
+        //         .img{
+        //             background-position: -100px -200px;
+        //         }
+        //     }
+        // }
+        // &:nth-of-type(4){
+        //     .img{
+        //         background-position: 0px -300px;
+        //     }
+        //     &:hover{
+        //         .img{
+        //             background-position: -100px -300px;
+        //         }
+        //     }
+        // }
+        // &:nth-of-type(5){
+        //     .img{
+        //         background-position: 0px -400px;
+        //     }
+        //     &:hover{
+        //         .img{
+        //             background-position: -100px -400px;
+        //         }
+        //     }
+        // }
+        // &:nth-of-type(6){
+        //     .img{
+        //         background-position: 0px -500px;
+        //     }
+        //     &:hover{
+        //         .img{
+        //             background-position: -100px -500px;
+        //         }
+        //     }
+        // }
+        // &:nth-of-type(7){
+        //     .img{
+        //         background-position: 0px -600px;
+        //     }
+        //     &:hover{
+        //         .img{
+        //             background-position: -100px -600px;
+        //         }
+        //     }
+        // }
+    }
+}
+.img{
+    
+    display: block;
+    height: 85px;
+    background: url(../img/1.png) no-repeat;
+}

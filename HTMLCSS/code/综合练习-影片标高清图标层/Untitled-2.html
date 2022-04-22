@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        ul,p,h4,dl,dd{
+            margin: 0px;
+            padding: 0px;
+        }
+        img{
+            vertical-align: top;
+            border: 0px;
+        }
+        ul,li{
+            list-style: none;
+        }
+        a{
+            text-decoration: none;
+        }
+        .box{
+            width: 610px;
+            height: 397px;
+            border: 1px solid #e5e5e5;
+            box-sizing: border-box;
+        }
+        .hea{
+            height: 30px;
+            border-bottom: 1px solid #e2e6e7;
+            background-color: #eaf9fe;
+        }
+        .heaLeft{
+            float: left;
+        }
+        .leftItem{
+            display: block;
+            height: 30px;
+            line-height: 30px;
+            font-size: 13px;
+            padding: 0px 15px 0px 14px;
+            border-right: 1px solid #e5e5e7;
+            color: #0051ce;
+            float: left;
+        }
+        .leftItem:hover{
+            background-color: white;
+            font-weight: bold;
+            height: 31px;
+        }
+        .heaRight{
+            padding-top: 9px;
+            float: right;
+            padding-right: 7px;
+        }
+        .rightItem{
+            font-size: 11px;
+            padding: 0px 9px 0px 8px;
+            border-right: 1px solid #8c8d91;
+            height: 11px;
+            line-height: 11px;
+            display: block;
+            color: #0051ce;
+            float: left;
+
+        }
+        .noBor{
+            border-right: none;
+        }
+        .gold{
+            height: 37px;
+            padding-left: 14px;
+        }
+        .goldLeft{
+            width: 280px;
+            height: 37px;
+            float: left;
+        }
+        .theatre{
+            height: 37px;
+            width: 79px;
+            background: url(img/1.jpg) no-repeat 0px 9px;
+            float: left;
+            font-size: 0px;
+        }
+        .support{
+            height: 37px;
+            width: 180px;
+            background: url(img/2.jpg) no-repeat 0px 9px;
+            float: right;
+            font-size: 0px;
+            
+        }
+        .support span{
+            display: block;
+            font-size: 11px;
+            line-height: 11px;
+            color: #0051ce;
+            height: 11px;
+            padding-top: 16px;
+            padding-left: 125px;
+            box-sizing: border-box;
+        }
+        .goldRight{
+            width: 294px;
+            height: 37px;
+            float: right;
+            padding-left: 36px;
+            box-sizing: border-box;
+        }
+        .goldRight a{
+            display: block;
+            height: 37px;
+            line-height: 37px;
+            color: #0051ce;
+            font-size: 11px;
+            background: url(img/8.png) no-repeat 0px 16px;
+            padding-left: 13px;
+            float: left;
+            
+        }
+        .Mar{
+            margin-right: 21px;
+        }
+        .tvitem{
+            width: 294px;
+            float: left;
+        }
+        .tvintro{
+            height: 113px;
+            border-bottom: 1px solid #e5e5e5;
+            padding-left: 14px;
+        }
+        .itemLeft{
+            width: 128px;
+            float: left;
+        }
+        .picAll{
+            height: 80px;
+            position: relative;
+        }
+        .pic{
+            height: 80px;
+            width: 128px;
+        }
+        .opa{
+            width: 128px;
+            height: 20px;
+            background: rgba(0, 0, 0, .6);
+            position: absolute;
+            left: 0px;
+            bottom: 1px;
+        }
+        .notice{
+            font-size: 12px;
+            color: white;
+            height: 12px;
+            line-height: 12px;
+            position: absolute;
+            left: 7px;
+            top: 3px;
+        }
+        .hd::after{
+            content: url(img/7.jpg);
+            width: 16px;
+            height: 12px;
+            margin-top: 3px;
+            margin-left: 107px;
+        }
+        .words{
+            height: 25px;
+            line-height: 25px;
+            font-size: 11px;
+            color: #0051ce;
+            padding-left: 6px;
+        }
+        .introList{
+            width: 144px;
+            float: right;
+        }
+        .introItem a{
+            display: block;
+            height: 19px;
+            line-height: 19px;
+            font-size: 11px;
+            color: #0051ce;
+        }
+        .itemMar{
+            margin-right: 6px;
+        }
+        .teleList{
+            margin-top: 15px;
+            padding-left: 14px;
+            box-sizing: border-box;
+        }
+        .teleItme{
+            width: 128px;
+            float: left;
+            margin-right: 22px;
+        }
+        .telePic{
+            width: 128px;
+            height: 80px;
+            padding: 0px 4px 4px 0px;
+            box-sizing: border-box;
+            background: url(img/9.png) no-repeat right bottom;
+            position: relative;
+        }
+        .picInfo{
+            width: 124px;
+            height: 76px;
+        }
+        .teleOpa{
+            height: 20px;
+            width: 124px;
+            position: absolute;
+            left: 0px;
+            bottom: 4px;
+            background: rgba(0, 0, 0, .6);
+        }
+        .teleNotice{
+            font-size: 11px;
+            height: 11px;
+            line-height: 11px;
+            color: white;
+            position: absolute;
+            top: 4px;
+            left: 2px;
+        }
+        .teleHd::after{
+            content: url(img/7.jpg);
+            width: 16px;
+            height: 12px;
+            margin-top: 4px;
+            margin-left: 104px;
+        }
+        .teleTitle{
+            height: 29px;
+            line-height: 29px;
+            font-size: 11px;
+            color: #0051ce;
+            font-weight: normal;
+        }
+        .telePar{
+            font-size: 11px;
+            height: 11px;
+            line-height: 11px;
+            color: #8e8e8e;
+        }
+        .teleSpec{
+            margin-right: 0px;
+        }
+        .clear::after{
+            content: ".";
+            display: block;
+            clear: both;
+            height: 0px;
+            visibility: hidden;
+            overflow: hidden;
+        }
+        .region{
+            height: 11px;
+            line-height: 11px;
+            font-size: 11px;
+            float: left;
+            margin-bottom: 11px;
+        }
+        .region dt{
+            color: #929292;
+            float: left;
+        }
+        .region dd{
+            /* color: #929292; */
+            float: left;
+        }
+        .region a{
+            display: block;
+            color: #0051ce;
+            padding: 0px 6px 0px 7px;
+            border-right: 1px solid #929292;
+        }
+        .first a{
+            padding-left: 0px;
+        }
+        .last a{
+            border-right: none;
+        }
+        .link{
+            padding-left: 14px;
+            margin-top: 19px;
+        }
+        .show{
+            margin-left: 25px;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <header class="hea">
+            <nav class="heaLeft">
+                <a href="#" class="leftItem">最新电视剧</a>
+                <a href="#" class="leftItem">大陆剧</a>
+                <a href="#" class="leftItem">韩剧</a>
+                <a href="#" class="leftItem">港台剧</a>
+            </nav>
+
+            <nav class="heaRight">
+                <a href="#" class="rightItem">最新电视剧</a>
+                <a href="#" class="rightItem">大陆剧</a>
+                <a href="#" class="rightItem">韩剧</a>
+                <a href="#" class="rightItem noBor">港台剧</a>
+            </nav>
+        </header>
+
+        <div class="gold">
+            <div class="goldLeft">
+                <p class="theatre">黄金剧场</p>
+                <p class="support">盘龙云海药业
+                    <span>首席赞助</span>
+                </p>
+            </div>
+            <div class="goldRight">
+                <a href="#" class="Mar">解密《五星红旗》</a>
+                <a href="#">《宫》引网友口水战</a>
+            </div>
+        </div>
+
+        <ul class="tvintro">
+            <li class="tvitem itemMar">
+                <div class="itemLeft">
+                    <div class="picAll ">
+                        <img src="img/6.jpg" class="pic">
+                        <div class="opa hd">
+                            <p class="notice">40集全</p>
+                        </div>
+                    </div>
+                    <p class="words">《五星红旗》大结局</p>
+                </div>
+                <ul class="introList">
+                    <li class="introItem"> 
+                        <a href="#">杨义务下局：侠隐记</a>
+                        <a href="#">杨义务下局：侠隐记</a>
+                        <a href="#">杨义务下局：侠隐记</a>
+                        <a href="#">杨义务下局：侠隐记</a>
+                        <a href="#">杨义务下局：侠隐记</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="tvitem">
+                <div class="itemLeft">
+                    <div class="picAll ">
+                        <img src="img/6.jpg" class="pic">
+                        <div class="opa hd">
+                            <p class="notice">40集全</p>
+                        </div>
+                    </div>
+                    <p class="words">《五星红旗》大结局</p>
+                </div>
+                <ul class="introList">
+                    <li class="introItem"> 
+                        <a href="#">杨义务下局：侠隐记</a>
+                        <a href="#">杨义务下局：侠隐记</a>
+                        <a href="#">杨义务下局：侠隐记</a>
+                        <a href="#">杨义务下局：侠隐记</a>
+                        <a href="#">杨义务下局：侠隐记</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+        <ul class="teleList clear"> 
+            <li class="teleItme">
+                <div class="telePic">
+                    <img src="img/5.jpg" class="picInfo">
+                    <div class="teleOpa teleHd">
+                        <p class="teleNotice">更新至6</p>
+                    </div>
+                </div>
+                <div class="teleWords">
+                    <h4 class="teleTitle">江苏位置：中国元整军</h4>
+                    <p class="telePar">黄志忠张一峰枪林弹雨</p>
+                </div>
+            </li>
+
+            <li class="teleItme ">
+                <div class="telePic">
+                    <img src="img/5.jpg" class="picInfo">
+                    <div class="teleOpa teleHd">
+                        <p class="teleNotice">更新至6</p>
+                    </div>
+                </div>
+                <div class="teleWords">
+                    <h4 class="teleTitle">江苏位置：中国元整军</h4>
+                    <p class="telePar">黄志忠张一峰枪林弹雨</p>
+                </div>
+            </li>
+
+            <li class="teleItme">
+                <div class="telePic">
+                    <img src="img/5.jpg" class="picInfo">
+                    <div class="teleOpa teleHd">
+                        <p class="teleNotice">更新至6</p>
+                    </div>
+                </div>
+                <div class="teleWords">
+                    <h4 class="teleTitle">江苏位置：中国元整军</h4>
+                    <p class="telePar">黄志忠张一峰枪林弹雨</p>
+                </div>
+            </li>
+
+            <li class="teleItme teleSpec">
+                <div class="telePic">
+                    <img src="img/5.jpg" class="picInfo">
+                    <div class="teleOpa teleHd">
+                        <p class="teleNotice">更新至6</p>
+                    </div>
+                </div>
+                <div class="teleWords">
+                    <h4 class="teleTitle">江苏位置：中国元整军</h4>
+                    <p class="telePar">黄志忠张一峰枪林弹雨</p>
+                </div>
+            </li>
+        </ul>
+        <div class="link clear">
+            <dl class="region">
+                <dt>地区:</dt>
+                <dd class="first">
+                    <a href="#">大陆</a>
+                </dd>
+                <dd>
+                    <a href="#">大陆</a>
+                </dd>
+                <dd>
+                    <a href="#">大陆</a>
+                </dd>
+                <dd>
+                    <a href="#">大陆</a>
+                </dd>
+                <dd class="last">
+                    <a href="#">大陆</a>
+                </dd>
+            </dl>
+
+            <dl class="region show">
+                <dt>地区:</dt>
+                <dd class="first">
+                    <a href="#">大陆</a>
+                </dd>
+                <dd>
+                    <a href="#">大陆</a>
+                </dd>
+                <dd>
+                    <a href="#">大陆</a>
+                </dd>
+                <dd>
+                    <a href="#">大陆</a>
+                </dd>
+                <dd class="last">
+                    <a href="#">大陆</a>
+                </dd>
+                <dd>
+                    <a href="#">大陆</a>
+                </dd>
+                <dd>
+                    <a href="#">大陆</a>
+                </dd>
+                <dd class="last">
+                    <a href="#">大陆</a>
+                </dd>
+            </dl>
+
+            <dl class="region">
+                <dt>地区:</dt>
+                <dd class="first">
+                    <a href="#">大陆</a>
+                </dd>
+                <dd>
+                    <a href="#">大陆</a>
+                </dd>
+                <dd>
+                    <a href="#">大陆</a>
+                </dd>
+                <dd>
+                    <a href="#">大陆</a>
+                </dd>
+                <dd class="last">
+                    <a href="#">大陆</a>
+                </dd>
+            </dl>
+        </div>
+    </div>
+</body>
+</html>

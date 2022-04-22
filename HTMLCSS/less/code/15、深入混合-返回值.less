@@ -1,0 +1,20 @@
+.box(){
+    @w:100px;
+    @h:200px;
+}
+
+.box2{
+    .box();
+    width: @w;
+    height: @h;
+}
+
+.average(@a,@b){
+    @average: (@a + @b) / 2;
+}
+
+.box3{
+    .average(10px,50px);
+    padding:@average;
+    width: @average;
+}

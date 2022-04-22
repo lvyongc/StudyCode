@@ -1,0 +1,12 @@
+@list:'1','2','3','4','5','6','7','8';
+p{
+    border-width:length(@list) + px;
+}
+
+
+//extract
+@list2:10px,30px,50px,80px,100px;
+
+div{
+    width: extract(@list2,3);
+}
