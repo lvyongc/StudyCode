@@ -1,0 +1,134 @@
+// 组件
+// 变量放到最上面
+
+// B-2
+$re: 75;
+
+
+// A-1
+// html{
+//     // 1vw 是页面宽度的百分之一 ，10vw 是十分之一
+//     // vw 兼容差
+//     font-size: 10vw;
+// }
+// A-2
+// @function rem ($num){
+//     // 75是设计稿尺寸的百分之十，js拿到rem，再计算200等于几rem
+//     @return ($num/75) * 1rem;
+// }
+
+
+// 清除默认样式
+body,h2,p{
+    margin: 0;
+}
+ul{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+a{
+    text-decoration:none;
+    color:inherit;
+}
+em,i{
+    font-style: normal;
+}
+@mixin clear{
+    &:after{
+        content: "";
+        display: block;
+        clear:both;
+    }
+}
+// 声明一个类
+@mixin font($size,$height,$color:inherit){
+    // 当做了除号
+    // font:$size/$height "微软雅黑";
+    // 正确的
+    font:$size #{"/"} $height "微软雅黑";
+    color: $color;
+}
+@mixin btn($width,$height,$size){
+            width: $width;
+            height: $height;
+            border-radius: $height/2;
+            background: linear-gradient(to right bottom,#fb88ba,#f72e6b);
+            margin: 0 auto;
+            font-size: $size;
+            line-height: $height;
+            color: #fff;
+            text-align: center;
+}
+
+.topLine{
+    height:90rem/$re;
+    background:#323436;
+    .btn{
+        width:90rem/$re;
+        height:90rem/$re;
+        float:left;
+        color:#fff;
+        font-size: 40rem/$re;
+        line-height: 90rem/$re;
+        text-align: center;
+    }
+    .logo{
+        width:570rem/$re;
+        height:100%;
+        float:left;
+        text-align: center;
+        line-height: 90rem/$re;
+        img{
+            width: 185rem/$re;
+            height: 46rem/$re;
+        }
+    }
+}
+
+
+.footmenu{
+    height: 208rem/$re;
+    background: #323436;
+
+    &_link{
+        height: 34rem/$re;
+        padding: 30rem/$re 0 13rem/$re;
+        @include font(24rem/$re,34rem/$re,#fff);
+
+        .iconfont{
+            margin-left: 64rem/$re;
+            font-size: 36rem/$re;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        span{
+            display: inline-block;
+            vertical-align: middle;
+        }
+    }
+
+    &_submenu{
+        padding-left: 64rem/$re;
+        .item{
+            float: left;
+            width: 135rem/$re;
+            border-right: 1rem/$re solid #6a6c6d;
+            margin-right: 38rem/$re;
+            @include font(24rem/$re,26rem/$re,#6a6c6d);
+            margin-top: 21rem/$re;
+            // 4 8 12 等
+            &:nth-child(4n),&:last-child{
+                border-right: none;
+                margin-right: 0;
+            }
+        }
+    }
+}
+
+.copyright{
+    height: 74rem/$re;
+    background: #2d2f30;
+    @include font(22rem/$re,69rem/$re,#868b8d);
+    text-align: center;
+}

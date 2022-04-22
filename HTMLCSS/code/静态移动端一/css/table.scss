@@ -1,0 +1,186 @@
+@import "global";
+body{
+    background: #2d2f30;
+}
+.concent{
+    height: 962rem/$re;
+    background: url(../images/ck.png) no-repeat 0 0/ 100%;
+
+    &_title{
+        height: 77rem/$re;
+        padding: 50rem/$re  61rem/$re 0;
+        text-align: center;
+
+        img{
+            width: 286rem/$re;
+            height: 76rem/$re;
+        }
+    }
+
+    &_table{
+        padding: 0 20rem/$re;
+        .title{
+            height: 50rem/$re;
+            background: rgba(206, 115, 175, .5);
+            @include font(24rem/$re,50rem/$re,#fff);
+            text-align: center;
+
+            .item{
+                float: left;
+                &:nth-child(1){
+                    width: 139rem/$re;
+                }
+                &:nth-child(2){
+                    width: 194rem/$re;
+                }
+                &:nth-child(3){
+                    width: 377rem/$re;
+                }
+            }
+        }
+
+        .list{
+            &_item{
+                // height: 116rem/$re;
+                border: 2rem/$re solid #ce73af;
+                border-bottom: 0;
+                font-size: 0;
+                &:nth-child(1){
+                    background: #faf1f7;
+                }
+                &:nth-child(2){
+                    background: #fcf8f2;
+                }
+                &:nth-child(3){
+                    background: #f3f8ef;
+                }
+                &:nth-child(4){
+                    background: #f3f8ef;
+                }
+                &:nth-child(5){
+                    height: 58rem/$re;
+                    background: #f0f1fb;
+                }
+                &:nth-child(6){
+                    height: 56rem/$re;
+                    border-bottom: 2rem/$re solid #ce73af;
+                    background: #fcf0f0;
+                }
+
+                &_left{
+                    width: 135rem/$re;
+                    display: inline-block;
+                    vertical-align: middle;
+                    text-align: center;
+
+                    img{
+                        width: 74rem/$re;
+                        height: 28rem/$re;
+                    }
+                }
+
+                &_right{
+                    width: 571rem/$re;
+                    background: #fff;
+                    display: inline-block;
+                    vertical-align: middle;
+                    .line:not(:last-child){
+                        font-size: 0;
+                        border-bottom: 2rem/$re solid #ce73af;
+                    }
+                    .time{
+                        display: inline-block;
+                        width: 192rem/$re;
+                        text-align: center;
+                        border-left: 2rem/$re solid #ce73af;
+                        @include font(26rem/$re,58rem/$re,#3a3a3a);
+                    }
+                    .time2{
+                        display: inline-block;
+                        width: 100%;
+                        text-align: center;
+                        border-left: 2rem/$re solid #ce73af;
+                        @include font(26rem/$re,58rem/$re,#3a3a3a);
+                    }
+
+                    .main{
+                        border-left: 2rem/$re solid #ce73af;
+                        width: 318rem/$re;
+                        height: 100%;
+                        display: inline-block;
+                        vertical-align: top;
+                        padding-left: 57rem/$re;
+                        // 超出隐藏
+                        overflow: hidden;
+                        // 不换行
+                        white-space: nowrap;
+                        // 超出显示省略号
+                        text-overflow: ellipsis;
+                        @include font(26rem/$re,58rem/$re,#3a3a3a);
+                    }
+                }
+            }
+        }
+    }
+    &_link{
+        height: 50rem/$re;
+        padding-top: 33rem/$re;
+        @include font(26rem/$re,50rem/$re,#fff);
+        text-align: center;
+        a{
+            display: inline-block;
+            height: 100%;
+            width: 290rem/$re;
+            background-color: #fff;
+            // 圆角，高度的一半或者大于一半
+            border-radius: 25rem/$re;
+            @include font(30rem/$re,50rem/$re,#2f88cd);
+        }
+    }
+}
+
+.footmenu{
+    height: 208rem/$re;
+    background: #323436;
+
+    &_link{
+        height: 34rem/$re;
+        padding: 30rem/$re 0 13rem/$re;
+        @include font(24rem/$re,34rem/$re,#fff);
+
+        .iconfont{
+            margin-left: 64rem/$re;
+            font-size: 36rem/$re;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        span{
+            display: inline-block;
+            vertical-align: middle;
+        }
+    }
+
+    &_submenu{
+        padding-left: 64rem/$re;
+        .item{
+            float: left;
+            width: 135rem/$re;
+            border-right: 1rem/$re solid #6a6c6d;
+            margin-right: 38rem/$re;
+            @include font(24rem/$re,26rem/$re,#6a6c6d);
+            margin-top: 21rem/$re;
+            // 4 8 12 等
+            &:nth-child(4n),&:last-child{
+                border-right: none;
+                margin-right: 0;
+            }
+        }
+    }
+}
+
+.copyright{
+    height: 74rem/$re;
+    background: #2d2f30;
+    @include font(22rem/$re,69rem/$re,#868b8d);
+    text-align: center;
+}

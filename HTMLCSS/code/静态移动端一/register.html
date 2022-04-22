@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <!-- 设置视口，修改宽等于设备的宽，初始缩放比例1，禁止用户缩放 -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+        <title>Document</title>
+        <link rel="stylesheet" href="css/login.css">
+        <link rel="stylesheet" href="css/iconfont.css">
+        <script>
+            // 找到跟元素
+            var html = document.documentElement;
+            // 获取宽度
+            var width = window.innerWidth;
+            // 设置根元素的宽度
+            html.style.fontSize = width/10 + "px";
+        </script>
+    </head>
+<body>
+    <div class="loginbox">
+        <div class="loginbox_title">
+            <img src="images/login.png" alt="">
+        </div>
+        <div class="loginbox_main">
+            <div class="title_reg">注册账号</div>
+            <div class="input_reg">
+                <input type="text" name="" id="" placeholder="用户名">
+            </div>
+            <div class="input_reg">
+                <input type="text" name="" id="" placeholder="设置密码">
+            </div>
+            <div class="input_reg">
+                <input type="password" name="" id="" placeholder="确定密码">
+            </div>
+            <div class="input_reg">
+                <input type="password" name="" id="" placeholder="学习宣言">
+            </div>
+            <div class="btn reg">马上注册</div>
+            <p class="text"><a href="#" >已有帐号？<em>立即登录</em></a></p>
+        </div>
+    </div>
+</body>
+</html>

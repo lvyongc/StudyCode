@@ -1,0 +1,304 @@
+// 引入组件
+@import "global";
+body{
+    background-color: #f4fbfe;
+}
+// 声明一个类
+@mixin font($size,$height,$color){
+    // 当做了除号
+    // font:$size/$height "微软雅黑";
+    // 正确的
+    font:$size #{"/"} $height "微软雅黑";
+    color: $color;
+}
+@mixin btn($width,$height,$size){
+            width: $width;
+            height: $height;
+            border-radius: $height/2;
+            background: linear-gradient(to right bottom,#fb88ba,#f72e6b);
+            margin: 0 auto;
+            font-size: $size;
+            line-height: $height;
+            color: #fff;
+            text-align: center;
+}
+
+.banner{
+    height: 460rem/$re;
+    img{
+        width: 750rem/$re;
+        height: 460rem/$re;
+    }
+}
+
+.course{
+    @include clear;
+    padding: 20rem/$re 0rem/$re 0rem/$re 20rem/$re;
+    &_item{
+        float: left;
+        width: 345rem/$re;
+        height: 638rem/$re;
+        margin:0 20rem/$re 20rem/$re 0;
+        box-shadow: 0 0 10rem/$re 0 rgba(255, 236, 241, .75);
+
+        &:nth-child(1){
+            // 最后2个，一个是图片定位x轴y轴，0 0 在左上角。一个是图片大小，宽高，给1个值宽，高是等比缩放
+            background:#fff url(../images/banner_03.png) no-repeat 0 0 / 100%;
+            color: #f18cc4;
+        }&:nth-child(2){
+            background:#fff url(../images/banner_05.png) no-repeat 0 0 / 100%;
+            color: #4d9be2;
+
+        }&:nth-child(3){
+            background:#fff url(../images/banner_09.png) no-repeat 0 0 / 100%;
+            color: #f97f32;
+
+        }&:nth-child(4){
+            background:#fff url(../images/banner_10.png) no-repeat 0 0 / 100%;
+            color: #6ece51;
+
+        }
+        // 利用伪元素和middle实现垂直对齐
+        // vertical-align:middle:使元素的中部与父元素的基线加上父元素x-height的一半对齐
+        // 父级的基线是可以改变的
+        // middle仅适用于内联、内联块和表格单元格元素。
+        .title{
+            height: 154rem/$re;
+            padding: 20rem/$re 60rem/$re 0;
+            // 通过font-size把父元素x-height的高度设置为0
+            font-size: 0;
+            text-align: center;
+
+            &:before{
+                content: "";
+                // 要用middle先转内联块
+                display: inline-block;
+                width: 0;
+                // 伪元素的高度和父级高度一致
+                height: 100%;
+                // 伪元素通过middle可以把父级的基线改变到伪元素的高度的中心，现在父级的基线就在高度的中点
+                vertical-align: middle;
+            }
+            em{
+                
+                display: inline-block;
+                margin: 0rem/$re 10rem/$re 14rem/$re;  
+                width: 170rem/$re;
+                height: 40rem/$re;
+                border-radius: 60rem/$re;
+                border: 2rem/$re solid rgba(255, 255, 255, .2);
+                box-shadow: 0 0 5rem/$re 0 rgba(209, 151, 221,.75);
+                // 引用
+                @include font(24rem/$re,40rem/$re,#fff);
+                // font: 24rem/$re "Adobe 黑体 Std ";
+                // line-height: 40rem/$re;
+                // color: #fff;
+            }
+            span{
+                font: 32rem/$re "微软雅黑";
+                // 要用middle先转内联块
+                display: inline-block;
+                // 父级的基线改变好了，再middle就可以垂直居中了
+                vertical-align: middle;
+                line-height: 48rem/$re;
+                color:#fff;
+            }
+            .span1{
+                line-height: 42rem/$re;
+            }
+            p{
+                font-size: 24rem/$re;
+            }
+        }
+
+        .price{
+            width: 160rem/$re;
+            height: 160rem/$re;
+            background: #fdf4fa;
+            border-radius: 50%;
+            margin:0 auto;
+            text-align: center;
+            font-size: 40rem/$re;
+            line-height: 158rem/$re;
+            // 继承父级item的color
+            color:inherit;
+            font-family: "Adobe 黑体 Std";
+            
+        }
+        
+
+        .des{
+            padding: 49rem/$re 27rem/$re 10rem/$re;
+            height: 157rem/$re;
+            font-size: 0;
+
+            &:before{
+                content: "";
+                width: 0;
+                height: 100%;
+                display: inline-block;
+                vertical-align: middle;
+            }
+            span{
+                display: inline-block;
+                vertical-align: middle;
+                font-size: 24rem/$re ;
+                line-height: 36rem/$re;
+                color:#333;
+            }
+        }
+
+        .des2{
+            padding: 49rem/$re 27rem/$re 10rem/$re;
+            height: 157rem/$re;
+            font-size: 0;
+
+            &:before{
+                content: "";
+                width: 0;
+                height: 100%;
+                display: inline-block;
+                vertical-align: middle;
+            }
+
+            em{
+                display: block;
+                text-align: center;
+                @include font(36rem/$re,66rem/$re,#333);
+            }
+
+            span{
+                display: inline-block;
+                vertical-align: middle;
+                font-size: 24rem/$re ;
+                line-height: 36rem/$re;
+                color:#333;
+            }
+        }
+
+        .btn2{
+            @include btn(200rem/$re,60rem/$re,30rem/$re)
+        }
+
+        .btn{
+            @include btn(200rem/$re,60rem/$re,30rem/$re)
+        }
+    }
+}
+
+.register{
+    height: 410rem/$re;
+    padding: 0 20rem/$re;
+    text-align: center;
+    &_title{
+        @include font(40rem/$re,88rem/$re,#000)
+    }
+    &_des{
+        @include font(24rem/$re,40rem/$re,#666)
+    }
+    &_price{
+        @include font(36rem/$re,88rem/$re,#e15671)
+    }
+    &_btn{
+        @include btn(300rem/$re,70rem/$re,34rem/$re)
+    }
+}
+.Characteristics{
+    height: 631rem/$re;
+    padding-top: 23rem/$re;
+    background: #aad879;
+    &_title{
+        @include font(40rem/$re,71rem/$re,#fff);
+        text-align: center;
+    }
+    &_item{
+        height: 180rem/$re;
+        font-size: 0;
+        padding: 0 20rem/$re;
+
+        &:nth-of-type(1){
+            .icon{
+                background-position: 0 0;
+            }
+        }
+        &:nth-of-type(2){
+            .icon{
+                background-position: 0 -140rem/$re;
+            }
+        }
+        &:nth-of-type(3){
+            .icon{
+                background-position: 0 -280rem/$re;
+            }
+        }
+
+        &:before{
+            content: "";
+            width: 0;
+            height: 100%;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .icon{
+            width: 140rem/$re;
+            height: 140rem/$re;
+            border-radius: 50%;
+            box-shadow: 2rem/$re 2rem/$re 5rem/$re 0 rgba(166, 214, 120, .5);
+            background:#fff url(../images/icon.png) no-repeat ;
+            background-size: 140rem/$re 420rem/$re;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .text{
+            @include font(26rem/$re,48rem/$re,#fff);
+            display: inline-block;
+            vertical-align: middle;
+            width: 550rem/$re;
+            padding-left: 20rem/$re;
+            // text-align: left;
+        }
+    }
+}
+
+.show{
+    padding: 14rem/$re 20rem/$re 0;
+    &_title{
+        @include font(40rem/$re,103rem/$re,#000);
+        text-align: center;
+    }
+    &_list{
+        @include clear;
+        &_item{
+            float: left;
+            width: 50%;
+            height: 355rem/$re;
+            position: relative;
+            img{
+                display: inline-block;
+                width: 100%;
+                height: 100%;
+            }
+            .function{
+                height: 55rem/$re;
+                padding-top: 37rem/$re;
+                // background: linear-gradient(transparent,#000);
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                .title{
+                    float: left;
+                    @include font(26rem/$re,55rem/$re,#fff);
+                    padding-left:17rem/$re;
+                }
+                .btn{
+                    float: right;
+                    @include font(20rem/$re,55rem/$re,#fff);
+                    a{
+                        padding-right: 10rem/$re;
+                    }
+                }
+            }
+        }
+    }
+}

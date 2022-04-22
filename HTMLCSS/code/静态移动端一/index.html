@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- 设置视口，修改宽等于设备的宽，初始缩放比例1，禁止用户缩放 -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0,user-scalable=no"
+    />
+    <title>Document</title>
+
+    <script>
+      // B-1
+      // 找到跟元素
+      var html = document.documentElement;
+      // 获取宽度
+      var width = window.innerWidth;
+      // 设置根元素的宽度
+      html.style.fontSize = width / 10 + "px";
+    </script>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/iconfont.css" />
+  </head>
+  <body>
+    <div class="topLine">
+      <div class="btn">
+        <i class="iconfont icon-1"></i>
+      </div>
+      <div class="logo">
+        <img src="images/miao_06.png" />
+      </div>
+    </div>
+    <div class="banner">
+      <img src="images/miao_14.png" alt="" />
+    </div>
+    <div class="course">
+      <div class="course_item">
+        <h2 class="title">
+          <span class="span1"
+            ><em>Popular</em>VIP自学阵营
+            <p>A联盟-HTML&CSS</p></span
+          >
+        </h2>
+        <div class="price">FREE</div>
+        <div class="des">
+          <span
+            >以免费公开课的形式，解决你在学习中遇到的问题，加入A阵营，解决HTML&CSS的问题。</span
+          >
+        </div>
+        <div class="btn">报名</div>
+      </div>
+      <div class="course_item">
+        <h2 class="title">
+          <span>WEB前端开发零基础课程</span>
+        </h2>
+        <div class="price"><span>&yen;&thinsp;4800</span></div>
+        <div class="des2">
+          <span
+            ><em>2个月</em>PC端静态页面，移动商静态页面制作、响应式开发...</span
+          >
+        </div>
+        <div class="btn2">报名</div>
+      </div>
+      <div class="course_item">
+        <h2 class="title">
+          <span>WEB前端开发零基础课程</span>
+        </h2>
+        <div class="price">&yen;&thinsp;9200</div>
+        <div class="des2">
+          <span
+            ><em>4个月</em>作用域、闭包、原型链、核心算法、EC6、移动端...</span
+          >
+        </div>
+        <div class="btn">报名</div>
+      </div>
+      <div class="course_item">
+        <h2 class="title">
+          <span class="span1"
+            ><em>Popular</em>VIP自学阵营
+            <p>B联盟-HTML&CSS</p></span
+          >
+        </h2>
+        <div class="price">FREE</div>
+        <div class="des">
+          <span
+            >以免费公开课的形式，解决你在学习中遇到的问题，加入A阵营，解决HTML&CSS的问题。</span
+          >
+        </div>
+        <div class="btn">报名</div>
+      </div>
+    </div>
+    <div class="register">
+      <div class="register_title">注册成为 妙味VIP会员</div>
+      <div class="register_des">
+        即刻观看妙味历年来超值的实体课程内容。感受正统的前端开<br />发课程体系、体验超值的海量实战案例,<br />凝聚妙味全体讲师知识精华，尽在妙味VIP！
+      </div>
+      <div class="register_price">仅需￥199元</div>
+      <div class="register_btn">立即报名</div>
+    </div>
+    <div class="Characteristics">
+      <p class="Characteristics_title">妙味特色</p>
+      <div class="Characteristics_item">
+        <i class="icon"></i>
+        <span class="text"
+          >成为VIP会员后，即刻观看 “妙味VIP视频库” 中任何视频</span
+        >
+      </div>
+      <div class="Characteristics_item">
+        <i class="icon"></i>
+        <span class="text"
+          >妙味官方会不定期安排公开课，VIP会员可以零距离与讲师接触、探讨各种技术问题</span
+        >
+      </div>
+      <div class="Characteristics_item">
+        <i class="icon"></i>
+        <span class="text"
+          >“作品展示、工作推荐、举办个人技术活动、招聘”等…妙味官网会大力支持，并会在官方平台上大力宣传、全力协助VIP会员达成心愿！
+        </span>
+      </div>
+    </div>
+
+    <div class="show">
+      <div class="show_title">学员作品</div>
+      <ul class="show_list">
+        <li class="show_list_item">
+          <img src="images/miao_03.png" alt="" />
+          <div class="function">
+            <div class="title">时空唱片机</div>
+            <div class="btn">
+              <label>
+                <a href="#">
+                  <i class="iconfont icon-3"></i>
+                  <span>25</span>
+                </a>
+                <a href="#">
+                  <i class="iconfont icon-2"></i>
+
+                  <span>986</span>
+                </a>
+              </label>
+            </div>
+          </div>
+        </li>
+        <li class="show_list_item">
+          <img src="images/mv_04.png" alt="" />
+          <div class="function">
+            <div class="title">时空唱片机</div>
+            <div class="btn">
+              <label>
+                <a href="#">
+                  <i class="iconfont icon-3"></i>
+                  <span>25</span>
+                </a>
+                <a href="#">
+                  <i class="iconfont icon-2"></i>
+
+                  <span>986</span>
+                </a>
+              </label>
+            </div>
+          </div>
+        </li>
+        <li class="show_list_item">
+          <img src="images/mv_06.png" alt="" />
+          <div class="function">
+            <div class="title">时空唱片机</div>
+            <div class="btn">
+              <label>
+                <a href="#">
+                  <i class="iconfont icon-3"></i>
+                  <span>25</span>
+                </a>
+                <a href="#">
+                  <i class="iconfont icon-2"></i>
+
+                  <span>986</span>
+                </a>
+              </label>
+            </div>
+          </div>
+        </li>
+        <li class="show_list_item">
+          <img src="images/mv_07.png" alt="" />
+          <div class="function">
+            <div class="title">时空唱片机</div>
+            <div class="btn">
+              <label>
+                <a href="#">
+                  <i class="iconfont icon-3"></i>
+                  <span>25</span>
+                </a>
+                <a href="#">
+                  <i class="iconfont icon-2"></i>
+
+                  <span>986</span>
+                </a>
+              </label>
+            </div>
+          </div>
+        </li>
+        <li class="show_list_item">
+          <img src="images/mv_08.png" alt="" />
+          <div class="function">
+            <div class="title">时空唱片机</div>
+            <div class="btn">
+              <label>
+                <a href="#">
+                  <i class="iconfont icon-3"></i>
+                  <span>25</span>
+                </a>
+                <a href="#">
+                  <i class="iconfont icon-2"></i>
+
+                  <span>986</span>
+                </a>
+              </label>
+            </div>
+          </div>
+        </li>
+        <li class="show_list_item">
+          <img src="images/mv_09.png" alt="" />
+          <div class="function">
+            <div class="title">时空唱片机</div>
+            <div class="btn">
+              <label>
+                <a href="#">
+                  <i class="iconfont icon-3"></i>
+                  <span>25</span>
+                </a>
+                <a href="#">
+                  <i class="iconfont icon-2"></i>
+
+                  <span>986</span>
+                </a>
+              </label>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

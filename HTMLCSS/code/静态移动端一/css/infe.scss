@@ -1,0 +1,386 @@
+@import "global";
+body{
+    background: #f4fbfe;
+}
+.banner{
+    height: 546rem/$re;
+    background: red url(../images/讲师_02.png) no-repeat 0 0/100%;
+
+
+    &_title{
+        height: 76rem/$re;
+        padding: 45rem/$re 0 50rem/$re;
+        text-align: center;
+        img{
+            width: 190rem/$re;
+            height: 77rem/$re;
+        }
+    }
+
+    &_scrollbox{
+        height: 278rem/$re;
+        width: 750rem/$re;
+        overflow: hidden;
+    }
+
+    &_item{
+        width: 750rem/$re;
+        float: left;
+        height: 278rem/$re;
+        &_box{
+            width: 250rem/$re;
+            float: left;
+            text-align: center;
+            // box没有设置高度，高度是内容的高度撑开的
+            // box高度不等于内容的高度，box的line-height不是0
+            // line-height撑开高度
+            // 子级为inline-block会受到行高的影响
+            // 行高是0，子级就不会受到影响
+            // line-height改为0，box的高度就一定是内容的高度
+            line-height: 0;
+
+            .header{
+                width: 170rem/$re;
+                height: 170rem/$re;
+                border: 4rem/$re solid #fff;
+                border-radius: 50%;
+            }
+
+            .name{
+                width: 116rem/$re;
+                height: 36rem/$re;
+                border: 2rem/$re solid #fff;
+                border-radius: 20rem/$re;
+                @include font(26rem/$re,36rem/$re,#fff);
+                margin-top: 20rem/$re;
+                display: inline-block;
+            }
+        }
+    }
+
+    &_dotbox{
+        height: 10rem/$re;
+        text-align: center;
+        line-height: 0;
+        .dot{
+            display: inline-block;
+            &_item{
+                width: 30rem/$re;
+                height: 10rem/$re;
+                background: rgba(255, 255, 255, .5);
+                float: left;
+                margin-right: 20rem/$re;
+
+                &.active{
+                    background: #fff;
+                }
+
+                &:last-child{
+                    margin-right: 0;
+
+                }
+            }
+        }
+    }
+}
+
+.join{
+    height: 819rem/$re;
+    padding: 0 20rem/$re;
+
+    &_title{
+        @include font(40rem/$re,101rem/$re,#000);
+        text-align: center;
+    }
+
+    &_item{
+        width: 353rem/$re;
+        height: 348rem/$re;
+        border: 1rem/$re solid #e0e9ed;
+        float: left;
+        margin: 0 -1rem/$re -1rem/$re 0; 
+        position: relative;
+        text-align: center;
+        color: #666;
+
+        
+
+        &.new{
+            color: #fff;
+            &:nth-of-type(1){
+                // 背景图片前覆盖后
+                background:url(../images/老师师.png) no-repeat 0 0 / (353rem/$re 348rem/$re),linear-gradient(#fa93c1,#705aa4);
+            }
+            &:nth-of-type(2){
+                background:url(../images/问答.png) no-repeat 0 0 /(353rem/$re 348rem/$re),linear-gradient(#fa93c1,#705aa4);
+            }
+            &:nth-of-type(3){
+                background:#fff url(../images/客服.png) no-repeat 0 0 /(353rem/$re 348rem/$re);
+            }
+            &:nth-of-type(4){
+                background:#fff url(../images/行政管理.png) no-repeat 0 0 /(353rem/$re 348rem/$re);
+            }
+            
+            .title{
+                color: #fff;
+            }
+            
+            &:before{
+                content: "new";
+                width: 138rem/$re;
+                height: 38rem/$re;
+                position: absolute;
+                border: 2rem/$re solid #fff;
+                border-radius: 20rem/$re;
+                @include font(24rem/$re,38rem/$re,#fff);
+                top:30rem/$re;
+                left:50%;
+                transform: translateX(-50%);
+            }
+        }
+        
+
+        .title{
+            padding-top: 87rem/$re;
+            @include font(40rem/$re,84rem/$re,#e15671);
+        }
+
+        .jobdes{
+            @include font(26rem/$re,54rem/$re);
+        }
+
+        // 字体图标
+        // &:after{
+        //     font-family: "iconfont" !important;
+        //         color: #99ebe6;
+        //         font-size: 176rem/$re;
+        //         position: absolute;
+        // }
+
+        &:nth-of-type(1){
+            // 字体图标
+            // &:after{
+            //     content: "\e616";
+            //     left: 0;
+            //     bottom:0;
+            // }
+
+            // 图片
+            background:#fff url(../images/老师师.png) no-repeat 0 0 / (353rem/$re 348rem/$re);
+        }
+        &:nth-of-type(2){
+            // &:after{
+            //     content: "\e615";
+            //     right: 0;
+            //     top:0;
+            // }
+
+            background:#fff url(../images/问答.png) no-repeat 0 0 /(353rem/$re 348rem/$re);
+        }
+        &:nth-of-type(3){
+            // &:after{
+            //     content: "\e614";
+            //     left: 50%;
+            //     transform: translateX(-50%);
+            //     bottom:0;
+            // }
+            background:#fff url(../images/客服.png) no-repeat 0 0 /(353rem/$re 348rem/$re);
+        }
+        &:nth-of-type(4){
+            // &:after{
+            //     content: "\e613";
+            //     left: 0;
+            //     top:0;
+            // }
+            background:#fff url(../images/行政管理.png) no-repeat 0 0 /(353rem/$re 348rem/$re);
+        }
+        
+    }
+}
+
+.des{
+    width: 710rem/$re;
+    height: 260rem/$re;
+    margin: 0 20rem/$re 20rem/$re;
+    box-shadow: 0 0 10rem/$re 0 rgba(77, 168, 226, .75);
+    background: linear-gradient(to left bottom,#4dc4e2,#4d94e2);
+    font-size: 0;
+
+    // 高度为100%的参照物，用来垂直居中对齐
+    &:before{
+        content: "";
+        width: 0;
+        height: 100%;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .header{
+        width: 162rem/$re;
+        height: 162rem/$re;
+        border: 4rem/$re solid #fff;
+        border-radius: 50%;
+        box-shadow: 2rem/$re 2rem/$re 5rem/$re 0 rgba(77, 148, 226, .5);
+        margin:0 40rem/$re;
+        display: inline-block;
+        vertical-align: middle;
+        overflow: hidden;
+
+        img{
+            width: 162rem/$re;
+            height: 162rem/$re;
+        }
+    }
+
+    .text{
+        width: 420rem/$re;
+        @include font(26rem/$re,40rem/$re,#fff);
+        display: inline-block;
+        vertical-align: middle;
+    }
+}
+
+// focus伪类:伪类在元素获得焦点时向元素添加特殊的样式
+.showwin:focus ~.mask{
+    top:0;
+}
+.showwin:focus ~.concent{
+    filter:blur(4rem/$re);
+}
+
+// 模糊滤镜
+.concent{
+    filter:blur(0rem/$re);
+    transition: 0.5s;
+}
+
+.mask{
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .6);
+
+    position: fixed;
+    top:100%;
+    left:0;
+    transition: 0.5s;
+    // 或者不用body原生的滚动条，给他加个最外面，用最外层的滚动条，这样两个元素可以互不干扰
+
+    &_header{
+        width: 170rem/$re;
+        height: 170rem/$re;
+        border: 5rem/$re solid #fff;
+        border-radius: 50%;
+        position: absolute;
+        top:-110rem/$re;
+        left: 50%;
+        transform: translateX(-50%);
+        overflow: hidden;
+
+        img{
+            width: 170rem/$re;
+            height: 170rem/$re;
+        }
+    }
+
+    &_main{
+        width: 647rem/$re;
+        height: 827rem/$re;
+        background:url(../images/弹层_03.png) no-repeat 0 0 / 100%;
+        position: absolute;
+        top:50%;
+        left:50%;
+        transform: translate(-50%,-50%);
+        padding: 10rem/$re;
+    }
+
+    &_close{
+        height: 75rem/$re;
+        text-align: right;
+        // 高度归零
+        line-height: 0;
+
+        .btn{
+            width: 75rem/$re;
+            height: 75rem/$re;
+            display: inline-block;
+            vertical-align: top;
+            // 父级右对齐了，这里要在右边左对齐
+            text-align: left;
+
+            i{
+                width: 40rem/$re;
+                height: 40rem/$re;
+                background: rgba(0, 0, 0, .2);
+                border-radius: 50%;
+                display: inline-block;
+                vertical-align: top;
+                // margin 居中
+                margin: 14rem/$re 0 0 15rem/$re;
+                text-align: center;
+            }
+        }
+    }
+
+    &_title{
+        height: 90rem/$re;
+        background: url(../images/dot.png) bottom/(12rem/$re) (4rem/$re) repeat-x;
+        margin: 0 40rem/$re;
+        @include font(36rem/$re,71rem/$re,#fff0cc);
+        text-align: center;
+    }
+
+    &_content{
+        padding: 0 40rem/$re;
+        height: 546rem/$re;
+        position: relative;
+
+        &:before{
+            content: "";
+            width: 90%;
+            height: 40rem/$re;
+            background: linear-gradient(#e76b83,transparent);
+            position: absolute;
+            top:-1rem/$re;
+            z-index: 1;
+        }
+
+        &:after{
+            content: "";
+            width: 90%;
+            height: 40rem/$re;
+            background: linear-gradient(transparent,#e76b83);
+            position: absolute;
+            bottom:-1rem/$re;
+            z-index: 1;
+        }
+
+        .scrollbox{
+            height: 100%;
+            // y轴超出滚动
+            overflow: scroll;
+            @include font(26rem/$re,42rem/$re,#fff);
+            padding-left: 28rem/$re;
+            padding-top: 34rem/$re;
+            box-sizing: border-box;
+
+            p{
+                position: relative;
+                padding-bottom: 42rem/$re;
+
+                // 左侧点
+                &:before{
+                    content: "";
+                    width: 14rem/$re;
+                    height: 14rem/$re;
+                    background: #f1a6b5;
+                    display: inline-block;
+                    position: absolute;
+                    left:-28rem/$re;
+                    top:14rem/$re;
+                    border-radius: 50%;
+                }
+            }
+            
+        }
+    }
+}

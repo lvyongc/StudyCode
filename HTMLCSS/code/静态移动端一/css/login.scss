@@ -1,0 +1,171 @@
+@import "global";
+
+// 不设置高度是0，元素不能居中，设置高度才能垂直居中
+body,html{
+    height: 100%;
+}
+body{
+    background: url(../images/log01.png) no-repeat 0 0/100%,url(../images/log02.png) no-repeat left bottom/100%,linear-gradient(to right bottom,#80c94a,#078ab9) fixed;
+    font-size: 0;
+    &:before{
+        content: "";
+        width: 0;
+        height: 100%;
+        display: inline-block;
+        vertical-align: middle;
+    }
+}
+
+.loginbox{
+    width: 100%;
+    display: inline-block;
+    vertical-align: middle;
+    height: 1092rem/$re;
+
+    &_title{
+        height: 240rem/$re;
+        text-align: center;
+        img{
+            width: 228rem/$re;
+            height: 81rem/$re;
+            vertical-align: top;
+        }
+    }
+
+    &_main{
+        width: 650rem/$re;
+        height: 799rem/$re;
+        background: #fff;
+        margin: 0 auto;
+        
+        text-align: center;
+
+        .title_img{
+            padding-top: 53rem/$re;
+            width: 130rem/$re;
+            height: 130rem/$re;
+            margin: 0 auto;
+        }
+
+        .title{
+            padding:25rem/$re 0 19rem/$re;
+            @include font(30rem/$re,48rem/$re,#000);
+            text-align: center;
+        }
+        .title_reg{
+            padding:38rem/$re 0 12rem/$re;
+            @include font(30rem/$re,48rem/$re,#000);
+            text-align: center;
+        }
+
+        .input_box{
+            height: 64rem/$re;
+            margin: 55rem/$re 71rem/$re 0;
+            border-bottom: 2rem/$re solid #c1c8cb;
+            color: #333;
+            &.error{
+                color: #e15671;
+                border-color: #e15671;
+            }
+
+            &:before{
+                content: "";
+                width: 0;
+                height: 100%;
+                display: inline-block;
+                vertical-align: middle;
+            }
+            .iconfont{
+                width: 37rem/$re;
+                padding-right: 22rem/$re;
+                font-size: 37rem/$re;
+                display: inline-block;
+                vertical-align: middle;
+                color: inherit;
+            }
+
+            .inp{
+                width: 440rem/$re;
+                padding: 0;
+                border: none;
+                background: transparent;
+                @include font(26rem/$re,55rem/$re,);
+                color: inherit;
+                display: inline-block;
+                vertical-align: middle;
+                outline: none;
+            }
+        }
+        .input_reg{
+            height: 80rem/$re;
+            border-bottom: 2rem/$re solid #c1c8cb;
+            margin: 0 71rem/$re;
+            &:before{
+                content: "";
+                width: 0;
+                height: 100%;
+                display: inline-block;
+                vertical-align: middle;
+            }
+            input{
+                width: 100%;
+                height: 50rem/$re;
+                display: inline-block;
+                vertical-align: middle;
+                padding: 0;
+                border: none;
+                background: transparent;
+                outline: none;
+                @include font(26rem/$re,55rem/$re);
+                text-align: left;
+            }
+        }
+        .chiose{
+            height: 31rem/$re;
+            padding: 33rem/$re 71rem/$re 60rem/$re;
+
+            &_left{
+                float: left;
+                input{
+                    display: none;
+                }
+                input:checked ~i{
+                    background: #e15671;
+                }
+                i{
+                    width: 27rem/$re;
+                    height: 27rem/$re;
+                    border: 2rem/$re solid #c1c8cb;
+                    display: inline-block;
+                    vertical-align: middle;
+                    margin-right: 27rem/$re;
+                }
+                span{
+                    @include font(26rem/$re,31rem/$re,#666);
+                    display: inline-block;
+                    vertical-align: middle;
+                }
+            }
+
+            &_right{
+                float: right;
+                text-align: right;
+                @include font(26rem/$re,31rem/$re,#e15671)
+            }
+        }
+
+        .btn{
+            @include btn(314rem/$re,70rem/$re,30rem/$re,);
+            &.reg{
+                margin-top: 47rem/$re;
+            }
+        }
+
+        .text{
+            @include font(30rem/$re,105rem/$re,#666);
+            em{
+                color: #e15671;
+            }
+        }
+    }
+}

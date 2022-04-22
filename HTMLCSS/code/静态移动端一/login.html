@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <!-- 设置视口，修改宽等于设备的宽，初始缩放比例1，禁止用户缩放 -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+        <title>Document</title>
+        <link rel="stylesheet" href="css/login.css">
+        <link rel="stylesheet" href="css/iconfont.css">
+        <script>
+            // 找到跟元素
+            var html = document.documentElement;
+            // 获取宽度
+            var width = window.innerWidth;
+            // 设置根元素的宽度
+            html.style.fontSize = width/10 + "px";
+        </script>
+    </head>
+<body>
+    <div class="loginbox">
+        <div class="loginbox_title">
+            <img src="images/login.png" alt="">
+        </div>
+        <div class="loginbox_main">
+            <img class="title_img" src="images/dl1.png" alt="">
+            <div class="title">如有账号，请直接登录</div>
+            <div class="input_box">
+                <img class="iconfont" src="images/dl2.png" alt="">
+                <input type="text" class="inp" placeholder="用户名">
+            </div>
+            <div class="input_box error">
+                <img class="iconfont" src="images/dl3.png" alt="">
+                <input type="password"" class="inp" placeholder="******">
+            </div>
+            <div class="chiose">
+                <label class="chiose_left">
+                    <input type="checkbox">
+                    <i></i>
+                    <span>记住密码</span>
+                </label>
+                <a href="#" class="chiose_right">忘记密码</a>
+            </div>
+            <div class="btn">登录</div>
+            <p class="text"><a href="#" >没有帐号？<em>立即注册</em></a></p>
+        </div>
+    </div>
+</body>
+</html>
