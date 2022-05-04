@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>添加文件夹</title>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        ul {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            position: absolute;
+            left: 10%;
+            top: 350px;
+            width: 800px;
+        }
+
+        .wrap {
+            width: 1000px;
+            height: 100vh;
+            margin: 0 auto;
+            background: url(./imgs/bg.png) no-repeat;
+            background-size: 100% 100%;
+            position: relative;
+        }
+
+        #create {
+            position: absolute;
+            left: 50%;
+            top: 300px;
+            margin-left: -53px;
+            width: 116px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            text-decoration: none;
+            color: #fff;
+            border: 1px solid #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 5px #fff;
+        }
+
+        #folder {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+
+        li {
+            width: 116px;
+            height: 116px;
+            background: url(./imgs/file-icon.png) no-repeat center center;
+            text-align: center;
+            color: #fff;
+            cursor: pointer;
+            box-sizing: border-box;
+            margin: 0 20px 20px 0;
+        }
+
+        .border {
+            background-color: rgba(0, 0, 0, .2);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 5px;
+        }
+
+        .border .checkbox {
+            width: 12px;
+            height: 12px;
+            border: 1px solid #fff;
+            margin: 4px;
+            visibility: visible;
+        }
+
+        .checkbox {
+            width: 12px;
+            height: 12px;
+            border: 1px solid #fff;
+            margin: 4px;
+            visibility: hidden;
+        }
+
+        .name {
+            padding-top: 70px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <a href="javascript:;" id="create">新建文件夹</a>
+        <ul id="folder">
+            <!-- <li>
+                <div class="checkbox"></div>
+                <div class="name">新建文件夹</div>
+            </li> -->
+        </ul>
+    </div>
+    <script>
+        var create = document.querySelector('#create');
+        var folder = document.querySelector('#folder');
+        create.onclick=function(){
+            var li = document.createElement('li');
+            li.innerHTML='<div class="checkbox"></div><div class="name">新建文件夹</div>';
+            folder.appendChild(li);
+            var checkbox=document.querySelector('.checkbox');
+            li.onclick=function(){
+                if(this.classList.contains('border')){
+                    li.classList.remove('border');
+                checkbox.innerHTML=''
+                }else{
+                li.classList.add('border');
+                checkbox.innerHTML='✔';
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

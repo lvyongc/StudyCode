@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>韩雪冬网站效果 - 妙味课堂 - www.miaov.com</title>
+<link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+<div id="automatic">
+	<div class="prev_div"></div>
+    <a class="prev" href="###">
+        <span class="ico1"></span>
+        <span class="ico"></span>
+        <span class="txt"></span>
+    </a>
+	
+	<div class="next_div"></div>
+    <a class="next" href="###">
+        <span class="ico1"></span>
+        <span class="ico"></span>
+        <span class="txt"></span>
+    </a>
+
+	<div class="line"></div>
+
+    <ul id="pics">
+        <li class="pos_0"><a href="http://www.miaov.com"><img src="images/8.jpg" width="100" alt="妙味课堂 www.miaov.com" longdesc="http://www.miaov.com" /></a></li>
+        <li class="pos_1"><a href="http://www.miaov.com"><img src="images/1.jpg" width="270" alt="妙味课堂 www.miaov.com" longdesc="http://www.miaov.com" /></a></li>
+        <li class="pos_2"><a href="http://www.miaov.com"><img src="images/2.jpg" width="510" alt="妙味课堂 www.miaov.com" longdesc="http://www.miaov.com" /></a></li>
+        <li class="pos_3"><a href="http://www.miaov.com"><img src="images/3.jpg" width="680" alt="妙味课堂 www.miaov.com" longdesc="http://www.miaov.com" /></a></li>
+        <li class="pos_4"><a href="http://www.miaov.com"><img src="images/4.jpg" width="510" alt="妙味课堂 www.miaov.com" longdesc="http://www.miaov.com" /></a></li>
+        <li class="pos_5"><a href="http://www.miaov.com"><img src="images/5.jpg" width="270" alt="妙味课堂 www.miaov.com" longdesc="http://www.miaov.com" /></a></li>
+        <li class="pos_6"><a href="http://www.miaov.com"><img src="images/6.jpg" width="270" alt="妙味课堂 www.miaov.com" longdesc="http://www.miaov.com" /></a></li>
+        <li class="pos_6"><a href="http://www.miaov.com"><img src="images/7.jpg" width="270" alt="妙味课堂 www.miaov.com" longdesc="http://www.miaov.com" /></a></li>
+    </ul>
+
+</div>
+<p id="footer"><a href="http://www.miaov.com">妙味课堂 - www.miaov.com</a></p>
+<script src="mTween.js"></script>
+<script>
+// 布局修正
+(function(){
+    var pics = document.querySelectorAll("#pics li");
+    console.log(pics);
+    pics.forEach(function(item){
+        var img = item.querySelector("img");
+        var w = img.width;
+        css(item,"width",w);
+        img.style.width = "100%";
+    });
+})(); 
+(function(){
+    var pics = document.querySelectorAll("#pics li");
+    var nextBtn = document.querySelector(".next_div");
+    var next = document.querySelector(".next");
+    var data = [
+        // {
+        //     width: 0,
+        //     left:0,
+        //     zIndex:0,
+        //     opacity : 0,
+        //     top:0
+        // }
+    ];
+    pics.forEach(function(item){
+        data.push({
+            width: css(item,"width"),
+            left: css(item,"left"),
+            zIndex: css(item,"zIndex"),
+            opacity : css(item,"opacity"),
+            top: css(item,"top")
+        });
+    });
+    /*
+        shift() 从头部删除,返回值 删除的这一位
+        unshift() 从头部添加，返回值 添加之后数据的新length
+        pop() 从尾部删除,返回值 删除的这一位
+        push() 从尾部添加, 返回值 添加之后数据的新length
+        这四个方法 都会修改原有数据
+    */
+    nextBtn.onmouseover = function(){
+        var ico1 = next.querySelector(".ico1");
+        var ico2 = next.querySelector(".ico");
+        var text = next.querySelector(".txt");
+        mTween.stop(text);
+        mTween.stop(ico1);
+        mTween({
+            el: ico1,
+            attr: {
+                opacity: 1
+            }
+        });
+        mTween({
+            el: text,
+            attr: {
+                opacity: 1
+            },
+            cb: function(){
+                mTween({
+                    el: text,
+                    attr: {
+                        right: 45 
+                    }
+                });
+            }
+        });
+    };
+    nextBtn.onmouseout = function(){
+        var ico1 = next.querySelector(".ico1");
+        var ico2 = next.querySelector(".ico");
+        var text = next.querySelector(".txt");
+        mTween.stop(text);
+        mTween.stop(ico1);
+        mTween({
+            el: text,
+            attr: {
+                right: 65 
+            },
+            cb: function(){
+                mTween({
+                    el: ico1,
+                    attr: {
+                        opacity: 0
+                    }
+                });
+                mTween({
+                    el: text,
+                    attr: {
+                        opacity: 0
+                    }
+                });
+            }
+        });
+    };
+    nextBtn.onclick = function(){
+        //data.push(data.shift());
+        data.unshift(data.pop());
+        pics.forEach(function(item,index){
+            // css(item,"width",data[index].width);
+            // css(item,"left",data[index].left);
+            // css(item,"zIndex",data[index].zIndex);
+            // css(item,"opacity",data[index].opacity);
+            // css(item,"top",data[index].top);
+            mTween({
+                el: item,
+                attr: {
+                    width: data[index].width,
+                    left:  data[index].left,
+                    zIndex: data[index].zIndex, /*zIndex 不接受小数 */
+                    opacity: data[index].opacity,
+                    top: data[index].top
+                }
+            })
+        });
+    };
+})();
+</script>
+</body>
+</html>

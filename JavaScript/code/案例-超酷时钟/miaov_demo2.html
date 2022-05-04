@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//h2D XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/h2D/xhtml1-transitional.h2d">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>超酷数码钟表 - 妙味课堂 - www.miaov.com</title>
+<link href="miaov_style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+<div id="clock" class="date">
+    <h2><img src="images/title.png" /></h2>
+    <div class="year">
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img src="images/year.png" alt="year" longdesc="http://www.miaov.com" />
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img src="images/month.png" alt="month" longdesc="http://www.miaov.com" />
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img src="images/seven.png" alt="seven" longdesc="http://www.miaov.com" />
+    </div>
+    <div class="time">
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img src="images/sign.png" alt="sign" longdesc="http://www.miaov.com" />
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img src="images/sign.png" alt="sign" longdesc="http://www.miaov.com" />
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img class="pos2" src="images/week.png" alt="week" longdesc="http://www.miaov.com" />
+        <img class="num2" src="images/two.png" alt="1" longdesc="http://www.miaov.com" />
+    </div>
+    <div class="url" title="妙味课堂-超酷时钟"><a href="http://www.miaov.com/"><img src="images/miaov.png" alt="妙味课堂" longdesc="http://www.miaov.com" /></a></div>
+</div>
+    <script>
+        // 1. 可以获取到当下的时间
+        // 2. num元素都是需要更改的数字
+        // 3. 数字顺序 年月日时分秒
+        // 4. 20190506221230 - 写成一个字符串
+        // 5. 循环它 依次给img标签加src
+
+        var arr=['seven','one','two','three','four','five','six'];
+
+        function clock(){
+            var date=new Date();
+            var year=date.getFullYear();
+            var mon=date.getMonth()+1;
+            var day=date.getDate();
+            var hour=date.getHours();
+            var min=date.getMinutes();
+            var sec=date.getSeconds();
+            var week=date.getDay();
+            var timeStr=''+year+add0(mon)+add0(day)+add0(hour)+add0(min)+add0(sec);
+
+            //console.log(week)
+
+            // 'one'
+            // arr[week]
+
+            //20190506222330
+            // console.log(timeStr)
+            // console.log(timeStr[3]);
+            var num=document.querySelectorAll('.num');
+            var num2=document.querySelector('.num2');
+
+            num2.src='images/'+arr[week]+'.png';
+
+            for(var i=0;i<num.length;i++){
+                num[i].src='images/'+timeStr[i]+'.png';
+            }
+        }
+
+        clock()
+        setInterval(clock,1000);
+
+        
+
+        // 补0
+        // 在值小于10的情况
+        // 09 08 ...
+        function add0(n){
+            if(n<10){
+                return '0'+n;
+            }else{
+                return ''+n;
+            }
+        }
+
+
+
+    </script>
+</body>
+</html>

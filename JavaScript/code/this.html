@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #box{
+            width: 100px;
+            height: 100px;
+            background: red;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        function a(){
+            console.log(this)
+        }
+        function c(){
+            console.log(this)
+            return a
+        }
+        function d(){
+            console.log(this)
+        }
+        Function.prototype.b = function (fn){
+            if(fn){
+                this.call(fn)
+            }else{
+                this.call(c())
+            }
+        }
+        a.b()   //this.call(c()) -->  this.call(a) --> a
+        d.b(c) // this.call(fn)  --> this.call(c) --> c
+
+        console.log([]==[])
+        
+    </script> -->
+</body>
+</html>

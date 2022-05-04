@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Document</title>
+<style>
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+} 
+img {
+    vertical-align: top;
+}
+#wrap {
+    margin: 40px auto;
+    position: relative;
+    width: 600px;
+    height: 400px;
+    border: 2px solid #000;
+    overflow: hidden;
+}    
+#pics {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: flex;
+    height: 400px;
+    z-index: 1;
+}
+#pics li{
+    width: 600px;
+    height: 400px;
+    overflow: hidden;
+}
+#pics img {
+    width: 600px;
+    height: 400px;
+}
+.btn {
+    position: absolute;
+    top: 170px;
+    z-index: 2;
+    width: 60px;
+    font: 40px/60px "宋体";
+    text-align: center;
+    background: rgba(255, 255, 255, .6);
+    text-decoration: none;
+    color: #000;
+}
+.btn:hover {
+    background: #fff;
+}
+.prev {
+    left: 0;
+}
+.next {
+    right: 0;
+}
+#navs {
+    position: absolute;
+    left: 0;
+    bottom: 10px;
+    z-index: 3;
+    width: 100%;
+    text-align: center;
+}
+#navs a {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background: #fff;
+}
+#navs .active {
+    background: #f60;
+}
+</style>
+</head>
+<body>
+<div id="wrap">
+    <ul id="pics">
+        <li>
+            <img src="img2/img (1).jpg" />
+        </li>
+        <li>
+            <img src="img2/img (2).jpg" />
+        </li>
+        <li>
+            <img src="img2/img (3).jpg" />
+        </li>
+        <li>
+            <img src="img2/img (4).jpg" />
+        </li>
+        <li>
+            <img src="img2/img (5).jpg" />
+        </li>
+        <li>
+            <img src="img2/img (1).jpg" />
+        </li>
+    </ul>
+    <a href="javascript:;" class="btn prev"><</a>
+    <a href="javascript:;" class="btn next">></a>
+    <nav id="navs">
+        <a class="active"></a>
+        <a></a>
+        <a></a>
+        <a></a>
+        <a></a>
+    </nav>
+</div>
+<!-- 引入动画框架 -->
+<script src="mTween.js"></script>
+<script>
+    /*
+        0 0
+        1 -600
+        2 -1200
+        3 -1800
+        n -n*imgWidth
+    
+    */
+    (function(){
+        // 获取所有点
+        var navs = document.querySelectorAll('#navs a');
+        // 获取ul，改变ul的位置显示不同的图片
+        var pics = document.querySelector('#pics');
+        // 获取li，就是图片
+        var pic = pics.querySelector('li');
+        // 获取图片的宽度
+        var picW = css(pic,'width');
+        // 记录当前走到第几张图片
+        var now = 0;
+        // 上一张
+        var prev = document.querySelector('.prev');
+        // 下一张
+        var next = document.querySelector('.next');
+        // transform 相关的样式，在动画前，一定记得先设置初始值
+        css(pics,'translateX',0);
+
+        // 循环所有点
+        navs.forEach(function(item,index){
+            // 点 点击事件
+            item.onclick = function(){
+                // 把 now 变成 当前点击的元素下标，点击的第几个元素的下标就是 now ，就清除添加这个 now 的样式
+                now = index;
+                tab();
+            };   
+        });
+        // 上一张
+        prev.onclick = function(){
+        if(now == 0 ){ //如果是在第0个进行操作,在往前移动前边就空了
+            now = navs.length; //把位置拉倒 第二个第0张，执行向前操作，达到无缝链接
+            // 把位置瞬间改到第0个的位置
+            css(pics,"translateX",-now*picW);
+        }
+        // 回到第0个后再往前走
+        now--;
+        // 点的操作
+        tab();
+    };
+        // 下一张
+        next.onclick = function(){
+            now++;
+            tab();
+        };
+        // 封装的函数
+        function tab(){
+            // 点 的操作
+        navs.forEach(function(item,index){
+            // 删除所有点的选中样式
+            item.classList.remove("active");
+        });
+        // 给当前的 点 加上选中样式
+        navs[now%navs.length].classList.add("active");
+        // 调用 mTween
+        mTween({
+            // 运动的元素
+            el: pics,
+            attr:{
+                // 改变的样式：移动的距离
+                translateX: -now*picW
+            },
+            // 运动完成后执行的代码
+            // 运动完成之后就是切换完一张图片之后，永远不让它停留在第二个第0张，如果停留了，下一张会一下跳多张才到下一张
+            cb(){
+                if(now >= navs.length){ // 如果现在是 第二个 第0张，后面就空了
+                now = 0;  // 这时回到第一个第0张，然后，继续往下走
+                css(pics,'translateX',0)  // 把位置改变到第0张的位置上
+            }
+            }
+        });
+    }
+    })();
+</script>
+    
+</body>
+</html>

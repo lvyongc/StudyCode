@@ -1,0 +1,159 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>无标题文档</title>
+	<style id="css">
+		.box {
+			width: 800px;
+			margin: 100px auto 50px;
+			perspective: 1000px;
+		}
+
+		#picList {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+			height: 360px;
+			/* 定位之后默认后边层级高于前边的 */
+			transform-style: preserve-3d;
+		}
+		#picList li {
+			float: left;
+			position: relative;
+			width: 25px;
+			height: 360px;
+			transform-style: preserve-3d;
+			transition: .5s;
+		}
+		#picList span {
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 25px;
+			height: 360px;
+		}
+		#picList em {
+			position: absolute;
+			left: 50%;
+			top: 0;
+			margin: 0 0 0 -180px;
+			width: 360px;
+			height: 360px;
+			background: #ccc;
+		}
+		#picList em:nth-of-type(1) {
+			transform: rotateY(-90deg) translateZ(12.5px);
+		}
+		#picList em:nth-of-type(2) {
+			transform: rotateY(90deg) translateZ(12.5px);
+		}
+		#picList span:nth-of-type(1){
+			background: url("img/1.jpg");
+			transform: rotateX(0deg) translateZ(180px);
+		}
+		#picList span:nth-of-type(2){
+			background: url("img/2.jpg");
+			transform: rotateX(90deg) translateZ(180px);
+		}
+		#picList span:nth-of-type(3){
+			background: url("img/3.jpg");
+			transform: rotateX(180deg) translateZ(180px);
+		}
+		#picList span:nth-of-type(4){
+			background: url("img/4.jpg");
+			transform: rotateX(270deg) translateZ(180px);
+		}
+		#btns {
+			padding: 50px;
+			height: 30px;
+		}
+		#btns li {
+			height: 30px;
+			width: 30px;
+			background: #000;
+			color: #fff;
+			font-size: 16px;
+			text-align: center;
+			line-height: 30px;
+			margin: 0 10px;
+			float: left;
+			border-radius: 50%;
+			list-style: none;
+		}
+		#btns .active {
+			background: #f60;
+		}
+	</style>
+</head>
+
+<body>
+<div class="box">
+	<ul id="picList">
+		<!-- <li>
+			<span></span>
+			<span></span>
+			<span></span>
+			<span></span>
+			<em></em>
+			<em></em>
+		</li> -->
+	</ul>
+	<ol id="btns">
+		<li class="active">1</li>
+		<li>2</li>
+		<li>3</li>
+		<li>4</li>
+	</ol>
+</div>
+<script src="mTween.js"></script>
+<script>
+// 布局生成
+(function(){
+	var picList = document.querySelector("#picList");
+	var style = document.querySelector("#css");
+	var liW = 25; 
+	var len = css(picList,"width")/liW;
+	var inner = '';
+	var picLists = null;
+	var cssInner = '';
+	for(var i = 0; i < len; i++){
+		inner += '<li><span></span><span></span><span></span><span></span><em></em><em></em></li>';
+		cssInner += '#picList li:nth-child('+(i+1)+') span {background-position: '+(-i*liW)+'px 0;}';
+	}
+	picList.innerHTML = inner;
+	picLists = picList.querySelectorAll("li");
+	style.innerHTML += cssInner;
+	picLists.forEach(function(item){
+		css(item,"translateZ",-180);
+	});
+})();
+// 交互
+(function(){
+	var btns = document.querySelectorAll("#btns li");
+	picLists = document.querySelectorAll("#picList li");
+	picLists.forEach(function(item){
+		css(item,"rotateX",0);
+	});
+	btns.forEach(function(item,index){
+		item.onclick = function(){
+			btns.forEach(function(item){
+				item.classList.remove("active");
+			});
+			item.classList.add("active");
+			var timer = 0;
+			var nub = 0;
+			console.log(1);
+			timer = setInterval(function(){
+				if(nub >= picLists.length-1){
+					clearInterval(timer);
+				}
+				mTween.stop(picLists[nub]);
+				css(picLists[nub++],"rotateX",-index*90);
+			},30);
+		}
+	});
+})();
+</script>
+</body>
+</html>

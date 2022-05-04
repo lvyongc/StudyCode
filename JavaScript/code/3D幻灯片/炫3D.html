@@ -1,0 +1,212 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>无标题文档</title>
+	<style id="css">
+		.box {
+			width: 800px;
+			margin: 100px auto 50px;
+			/* 父级加景深 */
+			perspective: 1000px;
+		}
+
+		/* ul */
+		#picList {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+			height: 360px;
+			/* 定位之后默认后边层级高于前边的,后面盖住了前面 */
+			/* 2D参考层级，3D参考位置 */
+			/* 加上3D就可以了 ，正面盖住*/
+			transform-style: preserve-3d;
+		}
+
+		/* li */
+		#picList li{
+			float: left;
+			position: relative;
+			width: 25px;
+			height: 360px;
+			transform-style: preserve-3d;
+			/* css的动画 */
+			transition: .5s;
+		}
+
+		/* 4个面 */
+		#picList span{
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 25px;
+			height: 360px;
+		}
+		#picList span:nth-of-type(1){
+			background: url("img/1.jpg");
+			transform: rotateX(0deg) translateZ(180px);
+		}
+		#picList span:nth-of-type(2){
+			background: url("img/2.jpg");
+			transform: rotateX(90deg) translateZ(180px);
+		}
+		#picList span:nth-of-type(3){
+			background: url("img/3.jpg");
+			transform: rotateX(180deg) translateZ(180px);
+		}
+		#picList span:nth-of-type(4){
+			background: url("img/4.jpg");
+			transform: rotateX(270deg) translateZ(180px);
+		}
+
+		/* 左右2个面 */
+		#picList em{
+			position: absolute;
+			left: 50%;
+			top: 0;
+			margin: 0 0 0 -180px;
+			width: 360px;
+			height: 360px;
+			background: #333;
+		}
+		#picList em:nth-of-type(1){
+			transform: rotateY(-90deg) translateZ(12.5px);
+		}
+		#picList em:nth-of-type(2){
+			transform: rotateY(90deg) translateZ(12.5px);
+		}
+		
+
+		#btns {
+			padding: 50px;
+			height: 30px;
+		}
+		#btns li {
+			height: 30px;
+			width: 30px;
+			background: #000;
+			color: #fff;
+			font-size: 16px;
+			text-align: center;
+			line-height: 30px;
+			margin: 0 10px;
+			float: left;
+			border-radius: 50%;
+			list-style: none;
+		}
+		#btns .active {
+			background: #f60;
+		}
+	</style>
+</head>
+
+<body>
+<div class="box">
+	<ul id="picList">
+		<!-- <li>
+			<span></span>
+			<span></span>
+			<span></span>
+			<span></span>
+			<em></em>
+			<em></em>
+		</li> -->
+	</ul>
+	<ol id="btns">
+		<li class="active">1</li>
+		<li>2</li>
+		<li>3</li>
+		<li>4</li>
+	</ol>
+</div>
+<script src="mTween.js"></script>
+<script>
+	// 布局生成
+	(function(){
+		// 获取到样式表,上面的style是加了id为css的
+		var style = document.querySelector("#css");
+		// css的内容
+		var cssInner = "";
+		// ul
+		var picList = document.querySelector("#picList");
+		// 宽度
+		var liW = 25;
+		// 要生成多少个小立方体，总宽度/一个的宽度
+		var len = css(picList,"width")/liW;
+		// 内容
+		var inner = "";
+		// li 小立方体
+		var picLists = null;
+		// 循环生成全部内容
+		for(var i = 0; i < len; i++){
+			inner += `<li><span></span><span></span><span></span><span></span><em></em><em></em></li>`;
+			// css是从1开始计数，js是从0开始计数
+			// 小立方体显示的图片，移动整个图片来显示每个小立方体应该显示的部分图片
+			cssInner += "#picList li:nth-child("+(i+1)+") span{background-position: "+(-i*liW)+"px 0;}";
+		}
+		// ul的内容 等于 生成的内容
+		picList.innerHTML = inner;
+
+		// 清除每个小立方体之间的间隔线
+		// 获取li
+		picLists = picList.querySelectorAll("li");
+		// css的内容 等于 生成的所有小立方体图片，显示整个图片
+		style.innerHTML += cssInner;
+		// 循环改变每一个的位置
+		picLists.forEach(function(item){
+			css(item,"translateZ",-180);
+		})
+	})();
+
+	// 交互
+	(function(){
+		// 按钮
+		var btns = document.querySelectorAll("#btns li");
+		// 获取li，小立方体
+		picLists = document.querySelectorAll("#picList li");
+		// 小立方体旋转的初始值为0
+		picLists.forEach(function(item){
+			css(item,"rotateX",0)
+		})
+		// 所有按钮
+		btns.forEach(function(item,index){
+			// 点击事件
+			item.onclick = function(){
+				// 清除所有
+				btns.forEach(function(item){
+					item.classList.remove("active");
+				});
+				// 当前的加上
+				item.classList.add("active");
+				// 声明一个timer
+				var timer = 0;
+				// 初始是第0个
+				var nub = 0;
+				// 定时器
+				timer = setInterval(function(){
+						// 如果是最后一个动画停止
+						if(nub >= picLists.length - 1){
+							clearInterval(timer);
+						}
+						// 每次开始动画前，停止动画
+						mTween.stop(picLists[nub]);
+
+						// // 动画，有点卡
+						// mTween({
+						// 	// 第几个元素
+						// 	el:picLists[nub++],
+						// 	// 执行的动画
+						// 	attr:{
+						// 		rotateX: -index*90
+						// 	}
+						// });
+
+						// CSS，不卡
+						css(picLists[nub++],"rotateX", -index*90);
+				},10);
+			}
+		});
+	})()
+</script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+    <div id="box">
+        <div id="content">
+            目前主要针对的是javascript培训，同时还提供了css教程、javascript视频、js特效等，最新推出了外地学员们喜欢的javascript网络课程服务，同时还为处于javascript入门阶段的朋友录制了大量javascript视频，其中涉及了大量javascript基础知识，希望妙味课堂推出的javascript网络培训课程能带给大家更多惊喜。目前主要针对的是javascript培训，同时还提供了css教程、javascript视频、js特效等，最新推出了外地学员们喜欢的javascript网络课程服务，同时还为处于javascript入门阶段的朋友录制了大量javascript视频，其中涉及了大量javascript基础知识，希望妙味课堂推出的javascript网络培训课程能带给大家更多惊喜。目前主要针对的是javascript培训，
+        </div>
+        <div id="open">
+            <a href="javascript:;">展开</a>
+            <ul style="display: none;">
+                <li><a href="javascript:;">查找</a></li>
+                <li><a href="javascript:;">替换</a></li>
+            </ul>
+        </div>
+        <div id="fun" style="display: none;">
+            <div class="btns">
+                <a href="javascript:;" class="active">查找</a>
+                <a href="javascript:;">替换</a>
+            </div>
+
+            <div id="search" style="display: block;">
+                <input type="text" />
+                <input type="button" value="" />
+            </div>
+            <div id="replace">
+                <input type="text" />
+                <input type="text" />
+                <input type="button" value="" />
+            </div>
+        </div>
+
+    </div>
+    <script>
+        var open = document.querySelector('#open');
+        var openA = open.querySelector('a');
+        var openUl = open.querySelector('ul');
+        var openUlAs = openUl.querySelectorAll('a');
+        var fun = document.querySelector('#fun');
+        var funAs = fun.querySelectorAll('a');
+        var search = document.querySelector('#search');
+        var searchInps = search.querySelectorAll('input')
+        var replace = document.querySelector('#replace');
+        var replaceInps = replace.querySelectorAll('input');
+        var content = document.querySelector('#content');
+        var inner = content.innerHTML;
+        
+
+        openA.onclick = function(){
+            if(this.onOff){
+                openUl.style.display = 'none';
+            }else{
+                openUl.style.display = 'block';
+            }
+            this.onOff = !this.onOff;
+        }
+        function show1(){
+            fun.style.display = 'block';
+            search.style.display = 'block';
+            replace.style.display = 'none';
+        }
+        function show2(){
+            fun.style.display = 'block';
+            replace.style.display = 'block';
+            search.style.display = 'none';
+        }
+        openUlAs[0].onclick = function(){
+            show1();
+            openA.onclick();
+        }
+        openUlAs[1].onclick = function(){
+            show2();
+            openA.onclick();
+        }
+        funAs[0].onclick = show1;
+        funAs[1].onclick = show2;
+
+        searchInps[1].onclick = function(){
+            var val = searchInps[0].value;
+            
+            if(val == ''){
+                alert('请输入');
+                return;
+            }
+            if(inner.indexOf(val) == -1){
+                alert('没有找到');
+                return;
+            }
+            content.innerHTML = inner.split(val).join('<span>'+val+'</span>')
+        }
+        replaceInps[2].onclick = function(){
+            var val1 = replaceInps[0].value;
+            var val2 = replaceInps[1].value;
+            if(val1 == ''){
+                alert('请输入');
+                return;
+            }
+            if(val2 == ''){
+                if(confirm('删除吗')){
+                    content.innerHTML = inner.split(val1).join();
+                }
+            }
+            content.innerHTML = inner.split(val1).join(val2);
+            replaceInps[0].value = replaceInps[1].value = '';
+        }
+    </script>
+</body>
+
+</html>

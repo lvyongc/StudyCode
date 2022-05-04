@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #box {
+            position: absolute;
+            left: 0;
+            top: 100px;
+            width: 100px;
+            height: 100px;
+            background: red;
+        }
+    </style>
+</head>
+<body>
+<button id="run">跑</button>
+<button id="stop">停</button>    
+<div id="box"></div>
+<script>
+/*
+    Tween 动画算法
+*/    
+var Tween = {
+	linear: function (t, b, c, d){  //匀速
+		return c*t/d + b;
+	},
+	easeIn: function(t, b, c, d){  //加速曲线
+		return c*(t/=d)*t + b;
+	},
+	easeOut: function(t, b, c, d){  //减速曲线
+		return -c *(t/=d)*(t-2) + b;
+	},
+	easeBoth: function(t, b, c, d){  //加速减速曲线
+		if ((t/=d/2) < 1) {
+			return c/2*t*t + b;
+		}
+		return -c/2 * ((--t)*(t-2) - 1) + b;
+	},
+	easeInStrong: function(t, b, c, d){  //加加速曲线
+		return c*(t/=d)*t*t*t + b;
+	},
+	easeOutStrong: function(t, b, c, d){  //减减速曲线
+		return -c * ((t=t/d-1)*t*t*t - 1) + b;
+	},
+	easeBothStrong: function(t, b, c, d){  //加加速减减速曲线
+		if ((t/=d/2) < 1) {
+			return c/2*t*t*t*t + b;
+		}
+		return -c/2 * ((t-=2)*t*t*t - 2) + b;
+	},
+	elasticIn: function(t, b, c, d, a, p){  //正弦衰减曲线（弹动渐入）
+		if (t === 0) { 
+			return b; 
+		}
+		if ( (t /= d) == 1 ) {
+			return b+c; 
+		}
+		if (!p) {
+			p=d*0.3; 
+		}
+		if (!a || a < Math.abs(c)) {
+			a = c; 
+			var s = p/4;
+		} else {
+			var s = p/(2*Math.PI) * Math.asin (c/a);
+		}
+		return -(a*Math.pow(2,10*(t-=1)) * Math.sin( (t*d-s)*(2*Math.PI)/p )) + b;
+	},
+	elasticOut: function(t, b, c, d, a, p){    //*正弦增强曲线（弹动渐出）
+		if (t === 0) {
+			return b;
+		}
+		if ( (t /= d) == 1 ) {
+			return b+c;
+		}
+		if (!p) {
+			p=d*0.3;
+		}
+		if (!a || a < Math.abs(c)) {
+			a = c;
+			var s = p / 4;
+		} else {
+			var s = p/(2*Math.PI) * Math.asin (c/a);
+		}
+		return a*Math.pow(2,-10*t) * Math.sin( (t*d-s)*(2*Math.PI)/p ) + c + b;
+	},    
+	elasticBoth: function(t, b, c, d, a, p){ 
+		if (t === 0) {
+			return b;
+		}
+		if ( (t /= d/2) == 2 ) {
+			return b+c;
+		}
+		if (!p) {
+			p = d*(0.3*1.5);
+		}
+		if ( !a || a < Math.abs(c) ) {
+			a = c; 
+			var s = p/4;
+		}
+		else {
+			var s = p/(2*Math.PI) * Math.asin (c/a);
+		}
+		if (t < 1) {
+			return - 0.5*(a*Math.pow(2,10*(t-=1)) * 
+					Math.sin( (t*d-s)*(2*Math.PI)/p )) + b;
+		}
+		return a*Math.pow(2,-10*(t-=1)) * 
+				Math.sin( (t*d-s)*(2*Math.PI)/p )*0.5 + c + b;
+	},
+	backIn: function(t, b, c, d, s){     //回退加速（回退渐入）
+		if (typeof s == 'undefined') {
+		   s = 1.70158;
+		}
+		return c*(t/=d)*t*((s+1)*t - s) + b;
+	},
+	backOut: function(t, b, c, d, s){
+		if (typeof s == 'undefined') {
+			s = 1.70158;  //回缩的距离
+		}
+		return c*((t=t/d-1)*t*((s+1)*t + s) + 1) + b;
+	}, 
+	backBoth: function(t, b, c, d, s){
+		if (typeof s == 'undefined') {
+			s = 1.70158; 
+		}
+		if ((t /= d/2 ) < 1) {
+			return c/2*(t*t*(((s*=(1.525))+1)*t - s)) + b;
+		}
+		return c/2*((t-=2)*t*(((s*=(1.525))+1)*t + s) + 2) + b;
+	},
+	bounceIn: function(t, b, c, d){    //弹球减振（弹球渐出）
+		return c - Tween['bounceOut'](d-t, 0, c, d) + b;
+	},       
+	bounceOut: function(t, b, c, d){//*
+		if ((t/=d) < (1/2.75)) {
+			return c*(7.5625*t*t) + b;
+		} else if (t < (2/2.75)) {
+			return c*(7.5625*(t-=(1.5/2.75))*t + 0.75) + b;
+		} else if (t < (2.5/2.75)) {
+			return c*(7.5625*(t-=(2.25/2.75))*t + 0.9375) + b;
+		}
+		return c*(7.5625*(t-=(2.625/2.75))*t + 0.984375) + b;
+	},      
+	bounceBoth: function(t, b, c, d){
+		if (t < d/2) {
+			return Tween['bounceIn'](t*2, 0, c, d) * 0.5 + b;
+		}
+		return Tween['bounceOut'](t*2-d, 0, c, d) * 0.5 + c*0.5 + b;
+	}
+};
+/*
+   Tween:
+    - t: current time（当前时间 - 当前运动次数）
+    - b: beginning value（初始值）
+    - c: change in value（变化量）
+    - d: duration（持续时间 - 运动总次数） 
+*/
+(function(){
+    var run = document.querySelector("#run");
+    var stop = document.querySelector("#stop");
+    var box = document.querySelector("#box");
+    var x = 0;
+    var speed = 5;
+    var timer = 0;
+    var t = 0; //动画执行到第几次 (动画已经消耗的时间)
+    var b = 100; // 动画开始前的初始值
+    var c = 500; // 动画初始值 和 目标点之间的差值
+    var d = 60; // 动画执行总次数, 动画执行时间
+    run.onclick = function(){
+        cancelAnimationFrame(timer);
+        timer = requestAnimationFrame(move);
+        function move(){
+            t++;
+            var val = Tween["elasticOut"](t,b,c,d);// val 动画执行到第 t 次时，动画应该走到哪个位置
+            // console.log(val,t);
+            //box.style.transform = 'translateX('+val+'px)';
+            box.style.width = val + 'px';
+            console.log(t);
+            if(t < d){
+                timer = requestAnimationFrame(move);
+            }
+        }
+    };
+    stop.onclick = function(){
+        cancelAnimationFrame(timer);
+    };
+
+})();    
+</script>    
+</body>
+</html>

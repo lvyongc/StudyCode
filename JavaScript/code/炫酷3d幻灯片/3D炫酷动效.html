@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>3D炫酷幻灯效果</title>
+    <script src="./js/mTween.js"></script>
+    <style id="style">
+        *{ 
+            padding: 0; 
+            margin: 0;
+        } 
+        html {
+            height: 100%;
+            overflow: hidden;
+        }
+        body{  
+            background: url(img/bg.jpg) no-repeat center center;
+            background-size: cover;
+            height: 100%;
+        }
+        .view {
+            width: 1000px; 
+            margin: 150px auto; 
+            height: 600px; 
+            perspective: 800px;
+        }
+        .bigbox{ 
+            height: 600px;
+            position:relative; 
+            transform-style: preserve-3d;
+        }
+        .box{
+            transform-style: preserve-3d; 
+            width: 200px; 
+            height: 200px; 
+            text-align: center;  
+            transform-origin: center  center -100px;
+            position:absolute;
+        }
+        .box span{ 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: #ddd;
+        }
+        .box span:nth-of-type(1) { 
+            transform: translateZ(-100px) rotateY(0deg) translateZ(100px);
+        }
+        .box span:nth-of-type(2) { 
+            transform: translateZ(-100px) rotateY(90deg) translateZ(100px);
+        }
+        .box span:nth-of-type(3) { 
+            transform: translateZ(-100px) rotateY(180deg) translateZ(100px);
+        }
+        .box span:nth-of-type(4){ 
+            transform: translateZ(-100px) rotateY(270deg) translateZ(100px);
+        }
+        .box span:nth-of-type(5){ 
+            transform: translateZ(-100px) rotateX(-90deg) translateZ(100px);
+        }
+        .box span:nth-of-type(6){ 
+            transform: translateZ(-100px) rotateX(90deg) translateZ(100px);
+        }
+        .box.showimg span {
+            border: none;
+            background-size: 1000px 600px !important;
+        }
+        .box.showimg span:nth-of-type(1) {
+            background: url("img/1.jpg");
+        }
+        .box.showimg span:nth-of-type(2) {
+            background: url("img/2.jpg");
+        }
+        .box.showimg span:nth-of-type(3) {
+            background: url("img/3.jpg");
+        }
+        .box.showimg span:nth-of-type(4) {
+            background: url("img/4.jpg");
+        }
+        .box[data-z="0"] span:nth-of-type(1) {
+            background: url(img/bg1.png);
+        }
+        
+        .box[data-z="1"] span:nth-of-type(1) {
+            background: url(img/bg2.png);
+        }
+       
+        .box span{
+            opacity: 0;
+            transition: .5s;
+        } 
+        .box.show span {
+            opacity: 1;
+        }
+
+        .btns{ outline: none; cursor: pointer; width: 100px; height: 100px; background:url(img/btn.png); border: none; position: absolute; background-size: 100%; bottom:-140px; opacity: 0; transition: 1s;}
+        .rightBtn{ right: 300px;}
+        .leftBtn{ left: 300px; transform:scale(-1);}
+    </style>
+    
+</head>
+<body>
+<div class="view">
+    <div class="bigbox">
+
+    </div>
+    <input type="button" name="" class="btns leftBtn" value="">
+    <input type="button" name="" class="btns rightBtn" value="">
+</div>
+<script>
+// 布局生成    
+(function(){
+    let bigbox = document.querySelector(".bigbox");
+    let boxW = 200;
+    let boxH = 200;
+    let rows = bigbox.clientHeight / boxH;
+    let ceils = bigbox.clientWidth / boxW;
+    let fragment = document.createDocumentFragment();
+    for(let z = 0; z < 3; z++){
+        for(let y = 0; y < rows; y++){
+            for(let x = 0; x < ceils; x++){
+                let div = document.createElement("div");
+                div.dataset.x = x;
+                div.dataset.y = y;
+                div.dataset.z = z;
+                div.className = "box";
+                div.innerHTML = ` 
+                    <span style="background-position: -${x*boxW}px -${y*boxH}px;"></span>
+                    <span style="background-position: -${x*boxW}px -${y*boxH}px;"></span>
+                    <span style="background-position: -${x*boxW}px -${y*boxH}px;"></span>
+                    <span style="background-position: -${x*boxW}px -${y*boxH}px;"></span>
+                    <span style="background-position: -${x*boxW}px -${y*boxH}px;"></span>
+                    <span style="background-position: -${x*boxW}px -${y*boxH}px;"></span>
+                `;
+                div.style.cssText = `
+                    left: ${x*boxW}px;
+                    top: ${y*boxH}px 
+                `;
+                css(div,"translateX",(x - Math.floor(ceils/2))*100*(z+1));
+                css(div,"translateY",(y - Math.floor(rows/2))*100*(z+1));
+                css(div,"translateZ",(z+1)*300);
+                css(div,"rotateY",0);
+                z == 2?div.classList.add("showimg"):"";
+                fragment.appendChild(div);
+            }1
+        }
+    }    
+    bigbox.appendChild(fragment);
+})();
+// 入场动画
+(function(){
+    let bigbox = document.querySelector(".bigbox");
+    let boxs = bigbox.querySelectorAll('.box');
+    let btns = document.querySelectorAll(".btns");
+    let times = 3600;
+    boxs.forEach(item=>{
+        let z = item.dataset.z;
+        let dely = (z*700)+500*Math.random();
+        setTimeout(()=>{
+            item.classList.add("show");
+            mTween({
+                el: item,
+                attrs: {
+                    translateX: 0,
+                    translateY: 0,
+                    translateZ: -(2-z)*100
+                },
+                duration: times - dely,
+                fx: "easeOutStrong"
+            });
+        },dely);
+    });
+    setTimeout(()=>{
+        boxs.forEach(item=>{
+            if(item.dataset.z < 2){
+                item.remove();
+            }
+        });
+        window.isTab = true;
+        btns.forEach(item=>{
+            item.style.opacity=1;
+        });
+    },2600);
+})();
+// 切屏动画
+(function(){
+    let bigbox = document.querySelector(".bigbox");
+    let boxs = bigbox.querySelectorAll('.box');
+    let btns = document.querySelectorAll(".btns");
+    let tabs = [];
+    let tabNub = 0;
+    btns[0].onclick = function(){
+        if(!window.isTab){
+            return;
+        }
+        window.isTab = false;
+        tabs[tabNub%tabs.length](90);
+        tabNub++;
+    };
+    btns[1].onclick = function(){
+        if(!window.isTab){
+            return;
+        }
+        window.isTab = false;
+        tabs[tabNub%tabs.length](-90);
+        tabNub++;
+    };
+    tabs[0] = (deg)=>{
+        let times = 1000;        
+        boxs.forEach(item=>{
+            let dely = Math.random() * 300;
+            setTimeout(()=>{
+                mTween({
+                    el: item,
+                    attrs:{
+                        rotateY: css(item,"rotateY") + deg
+                    },
+                    duration: (times - dely),
+                    fx: "easeOutStrong"
+                })
+            },dely);
+        });
+        setTimeout(()=>{
+            window.isTab = true;
+        },times);
+    };
+    tabs[1] = (deg)=>{  
+        let boxW = 200;
+        let ceils = bigbox.clientWidth / boxW;
+        let maxDely = 0;
+        boxs.forEach(item=>{
+            let x = item.dataset.x;
+            let y = item.dataset.y;
+            let dely = y*80 + x*80;
+            maxDely = Math.max(maxDely,dely);
+            setTimeout(()=>{
+                mTween({
+                    el: item,
+                    attrs:{
+                        translateZ: 150
+                    },
+                    duration: 1000,
+                    fx: "backIn",
+                    cb(){
+                        mTween({
+                            el: item,
+                            attrs:{
+                                rotateY: css(item,"rotateY") + deg
+                            },
+                            duration: 1200,
+                            fx: "backOut",
+                            cb(){
+                                mTween({
+                                    el: item,
+                                    attrs:{
+                                        translateZ: 0
+                                    },
+                                    duration: 800,
+                                    fx: "backOut"
+                                })
+                            }
+                        })
+                    }
+                })
+            },dely);
+        });
+        setTimeout(()=>{
+            window.isTab = true;
+        },maxDely + 3000);
+    }
+    tabs[2] = (deg)=>{
+        let times = 1200;
+        boxs.forEach(item=>{
+            let x = item.dataset.x;
+            let y = item.dataset.y;
+            let dir = 1;
+            let dely = Math.random() * 500;
+            if(y%2){
+                dir = x%2?1:-1;
+            } else {
+                dir = x%2?-1:1;
+            }
+            setTimeout(()=>{
+                mTween({
+                    el: item,
+                    attrs:{
+                        translateZ: dir * 50
+                    },
+                    duration: 800,
+                    fx: "backIn",
+                    cb(){
+                        mTween({
+                            el: item,
+                            attrs:{
+                                rotateY: css(item,"rotateY") + deg
+                            },
+                            duration: 800,
+                            fx: "backOut",
+                            cb(){
+                                mTween({
+                                    el: item,
+                                    attrs:{
+                                        translateZ: 0
+                                    },
+                                    duration: times - dely,
+                                    fx: "backOut"
+                                });
+                            }
+                        });
+                    }
+                });
+            },dely);
+        });
+        setTimeout(()=>{
+            window.isTab = true;
+        },3000);
+    }
+})();
+</script>
+</body>
+</html>

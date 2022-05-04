@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        *{
+            padding: 0;
+            margin:0;
+        }
+        .warp{
+            width: 800px;
+            height: 500px;
+            border: 1px solid red;
+            margin: 100px auto;
+            perspective: 500px;
+        }
+
+        .box{
+            width: 200px;
+            height: 200px;
+            border: 1px solid blue;
+            margin: 150px auto;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: 3s;
+        }
+
+        .box i{
+            width: 100%;
+            height: 100%;
+            background: pink;
+            position: absolute;
+            top:0;
+            left: 0;
+            font-size: 50px;
+            text-align: center;
+            line-height: 200px;
+            opacity: 0.5;
+            border: 1px solid #333;
+        }
+
+        /* 
+            transform 先写的 后执行 
+         */
+        .box i:nth-child(1){
+            transform: translateX(100px) rotateY(90deg);
+        }
+
+        .box i:nth-child(2){
+            transform:translateZ(-100px);
+        }
+
+        .box i:nth-child(3){
+            transform:translateX(-100px) rotateY(-90deg);
+        }
+
+        .box i:nth-child(4){
+            transform:translateY(-100px) rotateX(90deg);
+        }
+
+        .box i:nth-child(5){
+            transform:translateY(100px) rotateX(-90deg);
+        }
+
+        .box i:nth-child(6){
+            transform:translateZ(100px);
+        }
+
+        .box:hover{
+            transform:rotateX(-130deg) rotateY(360deg);
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="warp">
+        
+        <div class="box">
+            <i>1</i>
+            <i>2</i>
+            <i>3</i>
+            <i>4</i>
+            <i>5</i>
+            <i>6</i>
+        </div>
+
+    </div>
+</body>
+</html>

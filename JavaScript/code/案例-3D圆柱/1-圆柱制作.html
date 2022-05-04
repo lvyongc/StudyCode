@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #wrap {
+            position: relative;
+            margin: 0 auto;
+            width: 500px;
+            height: 600px;
+            perspective: 500px;
+        }
+        /* 旋转动画 */
+        @keyframes rotate {
+            0%  {
+                transform: translateZ(-1000px) rotateY(0deg);
+            }
+            100% {
+                transform: translateZ(-1000px) rotateY(360deg);
+            }
+        }
+        /* 每一个小图 */
+        #box3D {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin: -585px 0 0 -64.5px;
+            width: 129px;
+            height: 1170px;
+            transform-style: preserve-3d;
+            animation: rotate 10s linear infinite;
+        }
+        #box3D span {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 129px;
+            height: 1170px;
+        }
+    </style>
+</head>
+<body>
+<div id="wrap">
+    <div id="box3D">
+    </div>
+</div>    
+<script>
+/* 
+    正N边型外角和 = 360
+    正N边型外角 = 360/n;
+*/
+(function(){
+    // 整个图
+    var box3D = document.querySelector("#box3D");
+    // 几个小图
+    var len = 20;
+    // 面宽
+    var w = 129;
+    // 内容
+    var inner = "";
+    // 外角 
+    var outDeg = 360/len;
+    // 内角的一半
+    var innerDeg = (180 - outDeg)/2;
+    // 要移动的距离，边心距
+    var R = Math.tan(innerDeg*Math.PI/180) * (w/2);
+    //console.log(R);
+    // 循环拿到每一个小图，设置小图该显示的图片，移动的距离，第几个面就旋转几个外角
+    for(var i = 0; i < len; i++){
+        inner += '<span style="background:url(bg/'+(i+1)+'.png);transform:rotateY('+outDeg*i+'deg) translateZ('+R+'px)"></span>';
+    }
+    box3D.innerHTML = inner;
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title></title>
+    <style>
+        /*.container{*/
+            /*width: 1170px;*/
+            /*height: 500px;*/
+            /*background: #000;*/
+            /*margin:0 auto;*/
+        /*}*/
+        /*@media all and (max-width: 1199px) {*/
+            /*.container{*/
+                /*width: 970px;*/
+                /*background: red;*/
+            /*}*/
+        /*}*/
+        /*@media all and (max-width: 991px) {*/
+            /*.container{*/
+                /*width: 750px;*/
+                /*background: pink;*/
+            /*}*/
+        /*}*/
+        /*@media all and (max-width: 768px) {*/
+            /*.container{*/
+                /*width: 100%;*/
+                /*background: orange;*/
+            /*}*/
+        /*}*/
+        .container{
+            height: 500px;
+            background: #000;
+            margin:0 auto;
+        }
+        .container-fluid{
+            display: block;
+            width: 100%;
+        }
+        @media all and (min-width: 768px) {
+            .container{
+                width: 750px;
+                background: red;
+            }
+        }
+        @media all and (min-width: 992px) {
+            .container{
+                width: 970px;
+                background: orange;
+            }
+        }
+        @media all and (min-width: 1200px) {
+            .container{
+                width: 1170px;
+                background: blue;
+            }
+        }
+    </style>
+</head>
+<body>
+<!--
+    1.固定宽度
+    2.流体布局 - 100%
+
+    响应式网站推荐：从小屏幕往大屏幕写
+-->
+<div class="container"></div>
+<div class="container-fluid"></div>
+</body>
+</html>

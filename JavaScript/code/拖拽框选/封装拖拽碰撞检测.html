@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .box{
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 200px;
+            height: 200px;
+            background: red;
+        }
+
+        .box2{
+            position: absolute;
+            left: 300px;
+            top: 200px;
+            width: 200px;
+            height: 200px;
+            background: blue;
+        }
+    </style>
+</head>
+<body>
+    <div class="box"></div>
+    <div class="box2"></div>
+
+    <script>
+
+        function css(obj,attr,val){
+            if(arguments.length == 2){
+                // 获取
+                return parseFloat(getComputedStyle(obj)[attr]);
+            }else{
+                // 设置
+                obj.style[attr] = val + 'px';
+            }
+        }
+        
+        var box = document.querySelector('.box');
+        var box2 = document.querySelector('.box2');
+
+
+        drag(box)
+        drag(box2)
+        
+        function drag(obj){
+            obj.addEventListener('mousedown',function(e){
+
+                // 原始的颜色
+                var oldCor = getComputedStyle(obj)['background'];
+
+                // 鼠标按下的位置
+                var start = {
+                    x:e.clientX,
+                    y:e.clientY
+                }
+
+                // 原始位置
+                var oldPos = {
+                    x:css(obj,'left'),
+                    y:css(obj,'top')
+                }
+
+                // console.log(oldPos)
+                // 拖拽过程中保证不丢失事件源，加给document
+                document.addEventListener('mousemove',move)
+
+                function move(e){
+                    // 清除默认行为，避免快速拖拽出现问题
+                    e.preventDefault()
+                    // 移动了多少位置
+                    var dis = {
+                        x:e.clientX - start.x,
+                        y:e.clientY - start.y
+                    }
+
+                    // console.log(dis)
+
+                    // 设置新的位置
+                    css(obj,'left',dis.x+oldPos.x)
+                    css(obj,'top',dis.y+oldPos.y)
+                    
+                    // 
+                    if(contactFn(box,box2)){
+                        obj.style.background = "yellow";
+                    }else{
+                        obj.style.background = oldCor;
+
+                    }
+                }
+
+                
+                // 抬起清除
+                document.addEventListener('mouseup',function(){
+                    document.removeEventListener('mousemove',move)
+                },{
+                    // 一次按下只执行一次抬起
+                    once:true
+                })
+            })
+        }
+
+
+        // 碰撞检测 - 功能型函数
+        function contactFn(o1,o2){
+            // 获取2个元素的4条边的坐标
+            // 元素基于可视区的坐标
+            var o1Pos = o1.getBoundingClientRect();
+            var o2Pos = o2.getBoundingClientRect();
+
+            // 每个边比较
+            if(
+                // 没有碰上
+                o1Pos.right < o2Pos.left ||
+                o1Pos.left > o2Pos.right ||
+                o1Pos.bottom < o2Pos.top ||
+                o1Pos.top > o2Pos.bottom 
+            ){
+                return false
+            }
+            return true
+        };
+        
+
+        contactFn(box,box2);
+
+    </script>
+</body>
+</html>

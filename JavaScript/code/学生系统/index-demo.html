@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+    <div class="wrap">
+        <div id="form">
+            <p>姓名<input id="username" type="text" value="miaov" /></p>
+            <p>年龄<input id="age" type="text" value="18" /></p>
+            <p>性别
+                <select id="gender">
+                    <option>男</option>
+                    <option>女</option>
+                    <option>你猜</option>
+                </select>
+            </p>
+            <p><input type="button" value="添加" id="addBtn" /></p>
+        </div>
+        <table id="table">
+            <thead>
+                <tr>
+                    <th>
+                        <label>
+                            <input type="checkbox" id="checkAll" />
+                            全选
+                        </label>
+                    </th>
+                    <th>
+                        id
+                    </th>
+                    <th>姓名</th>
+                    <th>年龄</th>
+                    <th>性别</th>
+                    <th>操作</th>
+                    <th><a href="javascript:;" id="removeChecked">删除</a></th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- <tr>
+                    <th>1</th>
+                </tr>
+                <tr>
+                        <th>1</th>
+                    </tr> -->
+            </tbody>
+            <!-- <tbody>
+                    <tr>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                    </tr>
+                </tbody> -->
+        </table>
+    </div>
+
+<script>
+ {
+     let addBtn=document.querySelector('#addBtn');
+     let username=document.querySelector('#username');
+     let age=document.querySelector('#age');
+     let gender=document.querySelector('#gender');
+     let tBody=document.querySelector('#table tbody');
+     let checkAll=document.querySelector('#checkAll');
+     let removeChecked=document.querySelector('#removeChecked');
+     let id=0;
+
+     //  全选
+     checkAll.onclick=function(){
+        let checkBoxs=tBody.querySelectorAll('input[type=checkbox]');
+        checkBoxs.forEach(item=>{
+            item.checked=checkAll.checked;
+        })
+     }
+
+    //  批量删除
+    removeChecked.onclick=function(){
+        let checkedInps=tBody.querySelectorAll('input:checked');
+        // console.log(checkedInps)
+        checkedInps.forEach(item=>{
+            item.parentNode.parentNode.remove();
+        })
+        isCheckAll();
+    }
+
+     function isCheckAll(){
+        
+        let checkBoxs=tBody.querySelectorAll('input[type=checkbox]');
+        checkAll.checked = [...checkBoxs].every(item=>item.checked)&&checkBoxs.length>0;
+     }
+     
+
+     function addTr(){
+        
+        let tr=document.createElement('tr');
+        let th1=document.createElement('th');
+        let checkInp=document.createElement('input');
+        checkInp.type='checkbox';
+        checkInp.onclick=function(){
+            isCheckAll();
+        }
+        th1.appendChild(checkInp);
+        tr.appendChild(th1);
+        
+        let th2=document.createElement('th');
+        th2.innerHTML=id++;
+        tr.appendChild(th2);
+
+        let th3=document.createElement('th');
+        th3.innerHTML=username.value;
+        tr.appendChild(th3);
+
+        let th4=document.createElement('th');
+        th4.innerHTML=age.value;
+        tr.appendChild(th4);
+
+        let th5=document.createElement('th');
+        th5.innerHTML=gender.value;
+        tr.appendChild(th5);
+
+        let th6=document.createElement('th');
+        let down=document.createElement('a');
+        down.href='javascript:;';
+        down.innerHTML='↓';
+        down.onclick=function(){
+            // 获取到点击当前行
+            let nowTr = down.parentNode.parentNode;
+            let nextTr = nowTr.nextElementSibling;
+            //console.log(nextTr);
+            if(nextTr){
+                tBody.insertBefore(nextTr,nowTr);
+            }else{
+                tBody.insertBefore(nowTr,tBody.children[0])
+            }
+        }
+
+        th6.appendChild(down);
+        let up=document.createElement('a');
+        up.href='javascript:;';
+        up.innerHTML='↑';
+        up.onclick=function(){
+           let nowTr = up.parentNode.parentNode;
+           let preTr = nowTr.previousElementSibling;
+            //console.log(preTr)
+            tBody.insertBefore(nowTr,preTr);
+        }
+        th6.appendChild(up);
+        tr.appendChild(th6);
+
+        let th7=document.createElement('th');
+        let remove=document.createElement('a');
+        remove.href='javascript:;';
+        remove.innerHTML='删除';
+        remove.onclick=function(){
+            let nowTr=remove.parentNode.parentNode;
+            nowTr.remove();
+            isCheckAll();
+        }
+        th7.appendChild(remove);
+        tr.appendChild(th7);
+
+        tBody.appendChild(tr);
+        isCheckAll();
+     }
+    
+     addBtn.onclick=addTr;
+ }
+</script>
+</body>
+
+</html>

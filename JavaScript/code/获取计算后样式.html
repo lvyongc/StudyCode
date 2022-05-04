@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div{
+            width: 100px;
+            height: 100px;
+            background-color: aqua;
+        }
+    </style>
+</head>
+<body>
+    <div id="box"></div>
+    <script>
+        var div = document.getElementById('box');
+        box.onclick = function(){
+            // if(box.currentStyle){
+            //     console.log(box.currentStyle['width'])
+            // }else{
+            //     console.log(getComputedStyle(box)['width'])
+            // }
+            console.log(getStyle(this,'width'))
+            var w = parseInt(getStyle(this,'width'));
+            this.style.width = w + 100 +'px';
+        }
+
+        function getStyle(el,attr){
+            return box.currentStyle?el.currentStyle[attr]:getComputedStyle(el)[attr];
+        }
+
+        
+    </script>
+</body>
+</html>

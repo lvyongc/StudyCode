@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>水滴按钮</title>
+    <style>
+
+        @keyframes animate {
+            0% {
+                transform: scale(1, 1);
+            }
+
+            20% {
+                transform: scale(1.2, .8);
+            }
+
+            40% {
+                transform: scale(.8, 1.2);
+            }
+
+            60% {
+                transform: scale(1.1, .9);
+            }
+
+            80% {
+                transform: scale(.9, 1.1);
+            }
+
+            100% {
+                transform: scale(1, 1);
+            }
+        }
+
+        .btn {
+            position: absolute;
+            left: 414px;
+            top: 100px;
+            width: 42px;
+            height: 42px;
+            /* 圆角 */
+            border-radius: 50%; 
+            font: 12px/42px "微软雅黑";
+            text-align: center;
+            cursor: pointer;
+            z-index: 2;
+            background: #9aabb7;
+            color: #fff;
+        }
+
+        .btn-animate {
+            /* 调用动画帧 */
+            /* 
+                时间
+                动画帧名称
+             */
+            animation: 1s animate;
+        }
+
+
+    </style>
+</head>
+
+<body>
+    
+    <a class="btn">More</a>
+
+    <script>
+        (function(){
+            var btn = document.querySelector('.btn');
+            // 移入时添加class开始动画
+            btn.onmouseover = function(){
+                this.classList.add('btn-animate');
+            };
+            // 动画结束时删除class
+            btn.addEventListener('animationend',function(){
+                this.classList.remove('btn-animate');
+            })
+        })();
+
+
+
+       /*var btn=document.querySelector('.btn');
+
+        // 事件绑定下this是window
+       btn.addEventListener('mouseover',function(){
+           this.classList.add('animation-start');
+            // this.className='aaaa';
+       })
+
+        //animationstart 动画开始之前触发
+        //animationiteration 动画重新播放时触发   
+        //animationend 动画完成之后触发
+        btn.addEventListener("animationend",function(){
+            this.classList.remove('animation-start');
+        })*/
+
+    </script>
+</body>
+
+</html>

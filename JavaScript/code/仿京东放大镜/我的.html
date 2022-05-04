@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <div id="box">
+      <div id="left">
+        <img src="images/img.png" id="imgs1" />
+        <div id="mask"></div>
+      </div>
+      <div id="right">
+        <div id="border">
+          <img src="images/img.png" id="img2" />
+        </div>
+      </div>
+    </div>
+  </body>
+
+
+    <script>
+    function getStyle(el,attr){
+      return parseFloat(getComputedStyle(el)[attr]);
+    }
+     window.onload=()=>{
+        let mask = document.querySelector("#mask");
+        // 左图
+        let img1 = document.querySelector("#imgs1");
+        // 右图整图
+        let img2 = document.querySelector("#img2");
+        // 右图显示的圈
+        let border = document.querySelector("#border");
+        // 左边图
+        let left = document.querySelector("#left");
+        // 右边图
+        let right = document.querySelector("#right");
+        // 获取左图距离可视区的距离
+        var leftPos = left.getBoundingClientRect();
+        // 右图显示
+        // right.style.display = "none";
+
+        // 函数获取某个元素的样式值
+        function getStyle(obj,attr){
+          // 换成整数
+          return parseInt(window.getComputedStyle(obj)[attr]);
+        }
+
+        
+        // 换算比例，左图和右图的比例 等于 左图圈和右图圈的比例
+        // 左图宽和右图宽的比例，得到比例
+        var scaleX = getStyle(img2,'width')/getStyle(img1,'width');
+        var scaleY = getStyle(img2,'height')/getStyle(img1,'height');
+        // 已知右图圈的大小，和比例，求左图圈的大小
+        var maskW =  getStyle(border,'width')/scaleX;
+        var maskH =  getStyle(border,'height')/scaleY;
+
+        
+        
+        
+        // 移入左边图时
+        left.addEventListener("mouseover",function(){
+
+          // 圈显示
+          mask.style.display = "block";
+          // 右边图显示
+          right.style.display = "block";
+          // 移入时给圈宽和高
+          mask.style.width = maskW + 'px';
+          mask.style.height = maskH + 'px';
+
+          
+        });
+        
+
+        // 鼠标移动
+        left.addEventListener("mousemove",function(e){
+        
+          
+
+          // 获取鼠标位置，获取到的位置距离页面左上角的位置，但是这里不是根据页面左上角定位置，而是根据左图确定位置
+          // 移入的位置是相对于页面的位置，但是在左图显示，在左图中显示移入时相对于页面左上角的位置，要减去左图相对于页面左上角的位置，才能拿到移入时相对于左图的位置
+          var mouseX = e.clientX;
+          var mouseY = e.clientY;
+
+          // 圈的位置是，鼠标基于页面的位置 减去 左图距离可视区的位置，在减去圈的一半，把中心点放到圈的中心
+          var left = mouseX - leftPos.left - maskW/2 ;
+          var top = mouseY - leftPos.top - maskH/2 ;
+
+          //临界处理
+          // 左边小于就=0停留在左边
+          if (left < 0) {
+            left = 0;
+            }
+            // 上边小于就=0停留在上边
+            if (top < 0) {
+              top = 0;
+            }
+            // 圈的位置 > 图的宽度 - 圈的宽度 --> 超出了，让圈的位置在最大位置，图的宽 - 圈的宽，最右边
+            if (left > leftPos.width - maskW) {
+              left = leftPos.width - maskW;
+            }
+            // 圈的位置 > 图的高度 - 圈的高度 --> 超出了，让圈的位置在最大位置，图的高 - 圈的高，最下边
+            if (top > leftPos.height - maskH) {
+              top = leftPos.height - maskH;
+            }
+            
+          
+          // 改变小框的left和top
+          mask.style.left = left + 'px';
+          mask.style.top = top + 'px';
+
+          // 通过比例和左图圈的位置 换算右图圈的位置
+          // 方向是反的,圈是固定的，移动的是右图整图，所以是反的
+          img2.style.left = -left * scaleX + 'px';
+          img2.style.top = -top * scaleY + 'px';
+
+          
+          
+        });
+
+
+        // 移出
+        left.addEventListener("mouseout",function(){
+          // console.log(1);
+          // 移出消失
+          mask.style.display = "none";
+          right.style.display = "none";
+        });
+     }
+    </script>
+
+</html>

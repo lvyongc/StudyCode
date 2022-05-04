@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .nav {
+            padding: 100px;
+        }
+        .nav a {
+            perspective: 50px;
+            float: left;
+            margin: 0 10px;
+            height: 30px;
+            font: 16px/30px "宋体";
+        }
+        .nav span {
+            transform-style: preserve-3d;
+            float: left;
+            height: 30px;
+            transition: .5s;
+            transform-origin: center center -15px;
+        }
+        .nav em {
+            display: block;
+            font-style: normal;
+            backface-visibility: hidden;
+            /* 隐藏背面：加给 3d 每一个面
+                背面：和父级角度相对面
+             */
+        }
+        .nav em:nth-child(1) {
+            transform: rotateX(0deg);
+            color: #000;    
+        }
+        .nav em:nth-child(2) {
+            transform-origin: top;
+            transform: rotateX(-90deg);
+            color: red;    
+        }
+        .nav a:hover span {
+            transform: rotateX(90deg);
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a href="#">
+            <span>
+                <em>首页</em>
+                <em>首页</em>
+            </span>
+        </a>
+        <a href="#">
+            <span>
+                <em>关于妙味</em>
+                <em>关于妙味</em>
+            </span>
+        </a>
+        <a href="#">
+            <span>
+                <em>关于开课吧</em>
+                <em>关于开课吧</em>
+            </span>
+        </a>
+    </nav>
+</body>
+</html>

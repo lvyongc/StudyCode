@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div {
+            display: flex;
+            width: 600px;
+            margin: 100px auto;
+        }
+        div p {
+            margin: auto;
+            border: 2px solid #FFF;
+            width: 100px;
+            height: 200px;
+            background: #000;
+            font: 100px/200px "宋体";
+            color: #fff;
+            text-align: center;
+            border-radius: 20px;  
+        }
+        button {
+            margin: auto;
+            flex: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;    
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <button>prev</button>
+        <p>A</p>
+        <p>B</p>
+        <p>C</p>
+        <p>D</p>
+        <button>next</button>
+    </div>    
+    <script>
+       (function(){
+           var btns = document.querySelectorAll('button');
+           var p = document.querySelectorAll('p');
+           var arr = [];
+           for(var i = 0;i < p.length; i++){
+                arr.push(p[i].innerHTML)
+           };
+        //    console.log(arr);
+           btns[0].onclick = function(){
+                arr.unshift(arr.pop());
+                console.log(arr)
+                for(var i = 0;i < p.length; i++){
+                    p[i].innerHTML = arr[i];
+                    // ABCD = DCBA
+                    // 打印出来的arr是就是想要的结果
+                    // p[i].innerHTML是页面显示的内容
+                    // 把想要的结果移到页面上就完成了想要的结果
+                    // 把p的每一位都替换成arr的每一位，就是把打印的结果移到了页面上
+           };
+               
+           };
+           btns[1].onclick = function(){
+                arr.push(arr.shift());
+                console.log(arr)
+                for(var i = 0;i < p.length; i++){
+                    p[i].innerHTML = arr[i];
+                    // ABCD = BCDA
+           };
+           };
+       })();
+    </script>
+</body>
+</html>

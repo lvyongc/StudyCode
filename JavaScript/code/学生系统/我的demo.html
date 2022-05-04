@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+    <div class="wrap">
+        <div id="form">
+            <p>姓名<input id="username" type="text" value="miaov" /></p>
+            <p>年龄<input id="age" type="text" value="11" /></p>
+            <p>性别
+                <select id="gender">
+                    <option>男</option>
+                    <option>女</option>
+                    <option>你猜</option>
+                </select>
+            </p>
+            <p><input type="button" value="添加" id="addBtn" /></p>
+        </div>
+        <table id="table">
+            <thead>
+                <tr>
+                    <th>
+                        <label>
+                        <input type="checkbox" id="checkAll" />
+                        全选
+                    </label>
+                    </th>
+                    <th>
+                        id
+                    </th>
+                    <th>姓名</th>
+                    <th>年龄</th>
+                    <th>性别</th>
+                    <th>操作</th>
+                    <th><a href="javascript:;" id="removeChecked">删除</a></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+<script>
+    var addBtn = document.querySelector('#addBtn');
+    var username = document.querySelector('#username');
+    var age = document.querySelector('#age');
+    var gender = document.querySelector('#gender');
+    var tbody = document.querySelector('tbody');
+    var checkAll = document.querySelector('#checkAll');
+    var removeChecked = document.querySelector('#removeChecked');
+    addBtn.onclick=function(){
+        var  name = username.value;
+        var  ag = age.value;
+        var  gen = gender.value;
+        var num=0;
+        var th1 = document.createElement('th');
+        var th2 = document.createElement('th');
+        var th3 = document.createElement('th');
+        var th4 = document.createElement('th');
+        var th5 = document.createElement('th');
+        var th6 = document.createElement('th');
+        var th7 = document.createElement('th');
+        var tr = document.createElement('tr');
+
+        let checkInp=document.createElement('input');
+        checkInp.type='checkbox';
+        checkInp.onclick=function(){
+            isCheckAll();
+        }
+
+        th2.innerHTML=num++;
+        th3.innerHTML=name;
+        th4.innerHTML=ag;
+        th5.innerHTML=gen;
+        th6.innerHTML='<a href="javascript:;" class="prev">↑</><a href="javascript:;" class="next">↓</>';
+        th7.innerHTML='<a href="javascript:;" class="del">删除</>';
+
+        tr.appendChild(checkInp);
+        tr.appendChild(th2);
+        tr.appendChild(th3);
+        tr.appendChild(th4);
+        tr.appendChild(th5);
+        tr.appendChild(th6);
+        tr.appendChild(th7);
+
+        tbody.appendChild(tr);
+
+        th7.onclick=function(){
+            var pa = this.parentNode;
+            pa.remove();
+        }
+
+        th6.children[0].onclick=function(){
+            var now = this.parentNode.parentNode;
+            var up = now.previousElementSibling ;
+            tbody.insertBefore(now,up);
+        };
+
+        th6.children[1].onclick=function(){
+            var now = this.parentNode.parentNode;
+            var down = now.nextElementSibling;
+            var one = this.parentNode.parentNode.parentNode.children[0];
+            if(down){
+                tbody.insertBefore(down,now);
+            }else{
+                tbody.insertBefore(now,one);
+            }
+        };
+
+        function isCheckAll(){
+            var inS = tbody.querySelectorAll('input[type=checkbox]');
+            checkAll.checked=[...inS].every (item=>item.checked) && inS.length>0;
+
+        };
+
+        checkAll.onclick=function(){
+            let checkBoxs=tbody.querySelectorAll('input[type=checkbox]');
+            checkBoxs.forEach(item=>{
+                item.checked=checkAll.checked;
+            })
+        };
+
+        removeChecked.onclick=function(){
+            let checkedInps=tbody.querySelectorAll('input:checked');
+            checkedInps.forEach(item=>{
+                item.parentNode.remove();
+                isCheckAll()
+            })
+        }
+    }
+</script>
+</body>
+
+</html>

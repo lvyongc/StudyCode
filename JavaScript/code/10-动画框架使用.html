@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #box {
+            position: absolute;
+            left: 0;
+            top: 100px;
+            width: 100px;
+            height: 100px;
+            background: red;
+        }
+    </style>
+</head>
+<body>
+<button id="run">跑</button>
+<button id="stop">停</button>    
+<div id="box"></div>
+<script src="mTween.js"></script>
+<script>
+(function(){
+    var run = document.querySelector("#run");
+    var stop = document.querySelector("#stop");
+    var box = document.querySelector("#box");
+    run.onclick = function(){
+      // transform 相关的样式，在动画前，一定记得先设置初始值
+        css(box,"rotate",0);
+        mTween({
+           el: box,
+           attr: {
+               width: 300,
+               height: 300,
+               rotate: 360
+           },
+           //duration: 100 //默认值 400
+           duration: {
+                multiple: .5, /* 根据要动画的样式中，最大的差值计算一个时间 multiple 差值的倍数 */
+                min: 400, //完成动画的最少时间 毫秒
+                max: 1000 //完成动画的最大时间 毫秒
+           },
+           fx : "backOut", // 动画形式: 参考 Tween
+
+           cb: function(){
+               console.log("动画执行完成"); //完成后要做什么
+               mTween({
+                   el: box,
+                   attr: {
+                       height: 300
+                   }
+               });
+           },
+           moveing: function(){
+               console.log("动画执行过程中");   //过程中要做什么
+           }
+       });
+    };
+    stop.onclick = function(){
+        mTween.stop(box);   //stop是mTween下的方法，（）内放要停止动画的元素
+    };
+})();    
+</script>    
+</body>
+</html>

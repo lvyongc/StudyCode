@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body,ul,li{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        img{
+            vertical-align: top;
+        }
+        a{
+            text-decoration: none;
+            color: #333;
+        }
+        .box{
+            position: relative;
+            width: 400px;
+            height: 267px;
+            margin: 40px auto;
+            overflow: hidden;
+        }
+        .pic{
+            display: flex;
+            position: absolute;
+            left: 0;
+            top: 0;
+            overflow: hidden;
+        }
+        .pic li img{
+            width: 400px;
+        }
+        .prev,.next{
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            font: 20px/30px '宋体';
+            background-color: rgba(255 , 255, 255, .6);
+            text-align: center;
+            top:110px
+        }
+        .prev{
+            left: 0px;
+        }
+        .next{
+            right: 0;
+        }
+        .nav{
+            position: absolute;
+            top: 220px;
+            left: 166px;
+        }
+        .nav a{
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: white;
+        }
+        .nav .active{
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <ul class="pic">
+            <li>
+                <img src="./img2/img (1).jpg" alt="">
+            </li>
+            <li>
+                <img src="./img2/img (2).jpg" alt="">
+            </li>
+            <li>
+                <img src="./img2/img (3).jpg" alt="">
+            </li>
+            <li>
+                <img src="./img2/img (4).jpg" alt="">
+            </li>
+            <li>
+                <img src="./img2/img (5).jpg" alt="">
+            </li>
+        </ul>
+        <a href="#" class="prev"><</a>
+        <a href="#" class="next">></a>
+        <nav class="nav">
+            <a href="#" class="active"></a>
+            <a href="#"></a>
+            <a href="#"></a>
+            <a href="#"></a>
+            <a href="#"></a>
+        </nav>
+    </div>
+
+    <script>
+        var next = document.querySelector('.next');
+        var prev = document.querySelector('.prev');
+        var box = document.querySelector('.box');
+        var lis = document.querySelectorAll('.pic li');
+        var pic = document.querySelector('.pic');
+        var nav = document.querySelector('.nav');
+        var navS = document.querySelectorAll('.nav a');
+        var num = 0;
+        next.addEventListener('click',function(){
+            num++;
+            if(num > lis.length - 1){
+                num = 0;
+            };
+            pic.style.left = num * -400 + 'px';
+            for(i=0;i<navS.length;i++){
+                        navS[i].classList.remove('active');
+                        navS[num].classList.add('active');
+            }
+        });
+        prev.addEventListener('click',function(){
+            if(num == 0){
+                num = lis.length;
+            };
+            num--;
+            pic.style.left = num * -400 + 'px';
+            for(i=0;i<navS.length;i++){
+                        navS[i].classList.remove('active');
+                        navS[num].classList.add('active');
+            }
+        });
+        
+            for(i=0;i<navS.length;i++){
+                navS[i].index = i;
+                navS[i].addEventListener('click',function(){
+                    for(i=0;i<navS.length;i++){
+                        navS[i].classList.remove('active');
+                        this.classList.add('active');
+                        pic.style.left = this.index * -400 + 'px';
+                        num = this.index;
+                    }
+                });
+                
+            };
+
+            var time = setInterval(function(){
+                next.click();
+            },1000);
+            box.addEventListener('mouseover',function(){
+                clearInterval(time)
+            })
+            box.addEventListener('mouseout',function(){
+                time = setInterval(function(){
+                    next.click();
+            },1000);
+            });
+    </script>
+</body>
+</html>

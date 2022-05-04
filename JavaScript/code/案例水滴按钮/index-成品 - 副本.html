@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>水滴按钮</title>
+    <style>
+        @keyframes move {
+            0%{
+                transform: scale(1,1);
+            }
+            25%{
+                transform: scale(0.8,0.8);
+            }
+            50%{
+                transform: scale(0.6,0.6);
+            }
+            100%{
+                transform: scale(1,1);
+            }
+        }
+       .btn{
+           border-radius: 50%;
+           background-color: antiquewhite;
+           width: 100px;
+           height: 100px;
+           display: block;
+           text-align: center;
+           line-height: 100px;
+       }
+       .btnm{
+           
+        animation: move 1s;
+       }
+
+    </style>
+</head>
+
+<body>
+    
+    <a class="btn">More</a>
+
+    <script>
+        var btn =document.querySelector('.btn');
+        btn.addEventListener('mouseover',function(){
+            btn.classList.add('btnm')
+        })
+        btn.addEventListener('animationend',function(){
+            btn.classList.remove('btnm')
+        })
+
+       /*var btn=document.querySelector('.btn');
+
+        // 事件绑定下this是window
+       btn.addEventListener('mouseover',function(){
+           this.classList.add('animation-start');
+            // this.className='aaaa';
+       })
+
+        //animationstart 动画开始之前触发
+        //animationiteration 动画重新播放时触发   
+        //animationend 动画完成之后触发
+        btn.addEventListener("animationend",function(){
+            this.classList.remove('animation-start');
+        })*/
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="box">box</div>
+    <div id="box2">box2</div>
+    <div id="box3">box3</div>
+
+    <script>
+        function id(idName){
+            return document.getElementById(idName);
+        }
+        var box = id('box');
+        console.log(box)
+
+        function css(parent,selector){
+            return parent.querySelector(selector);
+        }
+        var box2 = css(document,'#box2')
+        console.log(box2)
+
+        function cssAll(parent,selector){
+            return parent.querySelectorAll(selector);
+        }
+        var boxs = cssAll(document,'div')
+        console.log(boxs)
+    </script>
+</body>
+</html>

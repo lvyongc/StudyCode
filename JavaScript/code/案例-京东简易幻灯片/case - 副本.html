@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        a{
+            text-decoration: none;
+        }
+        .wrap{
+            width: 1000px;
+            height: 800px;
+            background: url(img/bg.jpg) no-repeat;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -500px;
+            margin-top: -400px;
+        }
+        #prev,#next{
+            position: absolute;
+            width: 25px;
+            height: 45px;
+            background: url(img/ar.png) no-repeat;
+            
+            top: 155px;
+        }
+        #prev{
+            left: 13px;
+        }
+        #next{
+            transform: rotate(180deg);
+            right: 13px;
+        }
+        .pic{
+            width: 536px;
+            height: 356px;
+            position: absolute;
+            top: 170px;
+            left: 297px;
+        }
+        img{
+            vertical-align: top;
+            width: 536px;
+            height: 356px;
+        }
+        #txt{
+            width: 536px;
+            height: 71px;
+            position: absolute;
+            left: 297px;
+            bottom: 185px;
+            text-align: center;
+            font: 20px/71px "微软雅黑";
+            color: #666;
+        }
+        #navs {
+            position: absolute;
+            left: 0;
+            bottom: 10px;
+            z-index: 10;
+            width: 100%;
+            text-align: center;
+        }
+        #navs a {
+            margin: 0 3px;
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            width: 10px;
+            height: 10px;
+            background: #fff;
+            border-radius: 50%;
+        }
+        #navs img {
+            position: absolute;
+            left: -17px;
+            top: -60px;
+            width: 40px;
+            height: 40px;
+            display: none;
+            border: 2px solid #fff;
+        }
+        #navs .active {
+            background: #f60;
+        }
+    </style>
+</head>
+<body>
+   <div class="wrap">
+       <div class="pic">
+            <a id="prev" href="javascript:;"></a>
+            <img id="img" src="img/img1.jpg" alt="">
+            <a id="next" href="javascript:;"></a>
+            <nav id="navs">
+                <a class="active">
+                    <img class="img" src="img/img1.jpg" alt="">
+                </a>
+                <a>
+                    <img class="img" src="img/img2.jpg" alt="">
+                </a>
+                <a>
+                    <img class="img" src="img/img3.jpg" alt="">
+                </a>
+                <a>
+                    <img class="img" src="img/img4.jpg" alt="">
+                </a>
+                <a>
+                    <img class="img" src="img/img5.jpg" alt="">
+                </a>
+            </nav>
+       </div>
+       <p id="txt">这是第 <span id="number">1</span> 张图片</p>
+   </div>
+    <script>
+        var prev=document.querySelector('#prev');
+        var next=document.querySelector('#next');
+
+        var img=document.querySelector('#img');
+        var text=document.querySelector('#number');
+        var navs=document.querySelectorAll('#navs a');
+
+        var arr=['img/img1.jpg','img/img2.jpg','img/img3.jpg','img/img4.jpg','img/img5.jpg'];
+        var num =0;
+        prev.onclick=function(){
+            num--;
+            if(num<0){
+                num=arr.length-1;
+                img.src=arr[num];
+                text.innerHTML=num+1;
+            }else{
+                img.src=arr[num];
+                text.innerHTML=num+1;
+            };
+            
+        }
+        next.onclick=function(){
+            num++;
+            console.log(num)
+            if(num>4){
+                num=0;
+                img.src=arr[num];
+                text.innerHTML=num+1;
+            }else{
+                img.src=arr[num];
+                text.innerHTML=num+1;
+            };
+        }
+        for(i=0;i<navs.length;i++){
+                navs[i].onclick=function(){
+                    for(i=0;i<navs.length;i++){
+                        navs[i].className='';
+                        navs[i].index=i;
+                    };
+                    this.className='active';
+                    num=this.index;
+                    img.src=arr[num];
+                    text.innerHTML=num+1;
+                }
+        };
+    </script>
+
+
+
+
+
+<!-- <script>
+    var img = document.querySelector("#img");
+    var prev = document.querySelector("#prev");
+    var next = document.querySelector("#next");
+    var txt = document.querySelector("#txt");
+    var navs = document.querySelectorAll("#navs a");
+    
+    var nub = 0; // 记录员,记录当前显示的是第几张图
+    
+    // 存储所有图片地址
+    var data = [
+        "img/img1.jpg",
+        "img/img2.jpg",
+        "img/img3.jpg",
+        "img/img4.jpg",
+        "img/img5.jpg"
+    ];
+    // 存储图片对应的文字描述
+    var text = [
+        "这是程序员的春天-1",
+        "这是程序员的秋天-2",
+        "随便来点啥呗-3",
+        "随便来点啥呗-4",
+        "随便来点啥呗-5"
+    ];
+    // 下一张
+    next.onclick = function(){
+        nub++; 
+        nub = nub>data.length - 1?0:nub; 
+        img.src = data[nub]; 
+        txt.innerHTML = text[nub]; 
+        for(var i = 0; i < navs.length; i++){
+            navs[i].className = "";
+        }
+        navs[nub].className = "active";
+    };
+    prev.onclick = function(){
+        nub--;
+        nub = nub<0?data.length - 1:nub;
+        img.src = data[nub];
+        txt.innerHTML = text[nub];
+        for(var i = 0; i < navs.length; i++){
+            navs[i].className = "";
+        }
+        navs[nub].className = "active";
+    };
+    
+    /*批量添加事件*/
+    for(var i = 0; i < navs.length; i++){ 
+        navs[i].index = i;//当我们在事件中需要知道当前操作的是第几项一定记得加索引
+        navs[i].onmouseover = function(){
+            var sImg = this.querySelector(".img");
+            sImg.style.display = "block";
+        };
+        navs[i].onmouseout = function(){
+            var sImg = this.querySelector(".img");
+            sImg.style.display = "none";
+        };
+        navs[i].onclick = function(){
+            // 清除其他项的选中
+            for(var i = 0; i < navs.length; i++){
+                navs[i].className = "";
+            }
+            // 给当前项加上 选中
+            this.className = "active";
+            // 让图片和文字跳转至对应项,点击的是第几个按钮，咱们就需要图片显示第几张
+            //console.log(this.index);
+            img.src = data[this.index]; 
+            txt.innerHTML = text[this.index]; 
+            // 在这里 显示是第几张已经修改了，所以同步一下记录，记录一下当前显示的是第几张
+            nub = this.index;
+        };
+    }
+    </script> -->
+</body>
+</html>

@@ -1,0 +1,64 @@
+.col-width(@index,@s) when(@index>0){
+  .col-width(@index - 1,@s);
+  .col-@{s}-@{index}{
+    width: 100% / 10 * @index;
+    float: left;
+    box-sizing: border-box;
+  }
+  .col-@{s}-offset-@{index}{
+    margin-left: 100% / 10 * @index ;
+  }
+  .col-@{s}-push-@{index}{
+    position: relative;
+    left: 100% / 10 * @index ;
+  }
+  .col-@{s}-pull-@{index}{
+    position: relative;
+    left: -100% / 10 * @index;
+  }
+}
+.row:after{
+  content: '';
+  display: block;
+  clear: both;
+}
+.row{
+  margin-left: -50px;
+  margin-right: -50px;
+}
+.col-width(10,xs);
+div[class|="col"]{
+  height: 50px;
+  border:1px solid #fff;
+  color: #fff;
+  font-size: 25px;
+  text-align: center;
+}
+
+//布局容器
+.container{
+  padding: 0 50px;
+  background: #000;
+  margin:0 auto;
+}
+@media all and (min-width: 768px) {
+  .container{
+    width: 750px;
+    background: red;
+  }
+  .col-width(10,sm);
+}
+@media all and (min-width: 992px) {
+  .container{
+    width: 970px;
+    background: orange;
+  }
+  .col-width(10,md);
+}
+@media all and (min-width: 1200px) {
+  .container{
+    width: 1170px;
+    background: blue;
+  }
+  .col-width(10,lg);
+}

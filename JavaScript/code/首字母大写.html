@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function toA(str){
+            var arr = str.split('-');
+            var newStr = arr[0];
+            for(var i = 1;i< arr.length;i++){
+                newStr += arr[i][0].toUpperCase() + arr[i].substring(1);
+            }
+            return newStr;
+        }
+        console.log(toA('kai-ke-ba'))
+        
+        // function toRegex(str){
+        // var arr = str.split("-");
+        // var newStr = arr[0];
+        // for(var i = 1; i < arr.length; i++){
+        //     newStr += arr[i][0].toUpperCase() + arr[i].substring(1);
+        // }
+        // return newStr;
+        // }
+        // console.log(toRegex('kai-ke-ba'));
+        // console.log(toRegex('miao-wei-ke-tang'));
+    </script>
+</body>
+</html>

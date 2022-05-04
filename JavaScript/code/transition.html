@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #box {
+            width: 200px;
+            height: 100px;
+            background: red;
+            /* transition: 1s width,3s 1s height ease; */
+            /* transition: 3s cubic-bezier(1,.92,.72,1.83); */
+        }
+        #box.hover {
+            width: 900px;
+            /* height: 300px; */
+            background: antiquewhite;
+        }
+    </style>
+</head>
+<body>
+<div id="box"></div>  
+<script>
+    box.onmouseover = function(){
+    this.classList.add("hover");
+};
+box.onmouseout = function(){
+    this.classList.remove("hover");
+};
+
+// transition 元素的样式发生改变，给元素加一个过渡动画
+// transition-delay 动画延迟时间，动画延迟多长时间执行（s/ms）默认0s
+// transition-duration 动画时长，动画用多少时间完成（s/ms）默认0s
+// transition-property 执行动画的样式 默认all
+// transition-timing-function 动画形式：
+//     linear 匀速
+//     ease 默认缓冲
+//     ease-in 加速
+//     ease-out 减速
+//     ease-in-out 先加速再减速
+//     cubic-bezier()
+</script>
+
+
+
+
+
+
+<!-- <script>
+/*
+- transition  transition 元素的样式发生改变，给元素添加一个过渡动画
+  - transition-delay 延迟时间，动画延迟多长时间执行(s|ms) 默认值0s 
+  - transition-duration 动画时长，动画用多长时间完成(s|ms) 默认值 0s
+  - transition-property 要动画的样式 默认值 all
+  - transition-timing-function 动画形式
+     linear 匀速
+     ease 缓冲(默认值)
+     ease-in 加速
+     ease-out 减速
+     ease-in-out 先加速再减速
+     cubic-bezier()   
+*/
+</script>   -->
+</body>
+</html>

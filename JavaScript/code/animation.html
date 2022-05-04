@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @keyframes move {
+            /* 0%{
+                width: 100px;
+                height: 100px;      默认开始时是计算后样式
+                                    计算后样式是渲染后的样式
+            } */
+
+            50%{
+                width: 200px;
+                height: 100px;
+            }
+            /* 100%{
+                width: 300px;
+                height: 300px;       默认结束时是计算后样式
+                                     动画执行完成后回到计算后样式
+            } */
+        }
+        #box{
+            width: 100px;
+            height: 100px;
+            background: blueviolet;
+            animation: move 2s 5s linear 3 alternate;
+            animation-fill-mode:forwards;
+            /* backwards   动画开始前，元素的样式保留在动画帧 0%
+            forwards    动画结束后，元素的样式保留在动画帧 100%
+            both        都有 */
+        }
+        #box:hover{
+            animation-play-state:paused;
+            /* paused  暂停
+            running 播放 */
+        }
+        /* webkit-animation    兼容
+        animation-name  动画帧名称
+        animation-duration  动画持续时间
+        animation-timing-function   动画形式
+        animation-delay 动画开始前的延迟时间
+        animation-iteration-count   动画执行次数 number默认1 / infinite无限次
+        animation-direction  偶数次动画执行过程 alternate(倒序执行) / normal(顺序执行) */
+    </style>
+</head>
+<body>
+    <div id="box"></div>
+    <script>
+        (function(){
+            var box = document.getElementById('box');
+            box.addEventListener('animationstart',function(){
+                console.log('1')
+            })
+            box.addEventListener('animationend',function(){
+                console.log('2')
+            })
+            box.addEventListener('animationiteration',function(){
+                console.log('6')
+            })
+        })();
+    </script>
+</body>
+</html>

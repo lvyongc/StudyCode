@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        ul{
+            width: 100px;
+            height: 100px;
+            background: blue;
+            position: absolute;
+            left: 100px;
+            top:100px;
+            color: #333;
+            display: none;
+        }
+        li{
+            background: yellow;
+            border: 1px solid #FFF;
+        }
+    </style>
+</head>
+<body>
+    <ul>
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+    </ul>
+    <script>
+        var ul = document.querySelector('ul');
+        window.addEventListener('contextmenu',function(e){
+            // 获取当前鼠标点击的位置，距离左上角
+            var x = e.clientX;
+            var y = e.clientY;
+
+            console.log(x,y)
+            // 阻止右键
+            e.preventDefault();
+            // 自定义显示
+            ul.style.display = 'block';
+            // 自定义给定位
+            ul.style.left = x+'px';
+            ul.style.top = y+'px';
+        })
+
+        // 点击内容消失
+        ul.addEventListener('click',function(e){
+            var li = e.target;
+            // 比较 是 两个 等号 ==
+            if(li.tagName == 'LI'){
+                console.log(li.innerHTML);
+                ul.style.display = 'none';
+            }
+        })
+    </script>
+</body>
+</html>

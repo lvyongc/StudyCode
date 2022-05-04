@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button>a</button>
+    <button>b</button>
+    <button>c</button>
+    <button>d</button>
+    <script>
+        // var arr = ['a','b','c','d','e','f'];
+        // arr.forEach(function(item,index){
+        //     console.log(item,index)
+        // })
+        (function(){
+            var btns = document.querySelectorAll('button');
+            btns.forEach(function(item,index){
+                // console.log(item,index)
+                item.onclick = function(){
+                    console.log(index)
+                }
+            })
+        })();
+    </script>
+</body>
+</html>

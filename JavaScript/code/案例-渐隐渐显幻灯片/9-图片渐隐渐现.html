@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        ul,li{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .wrap{
+            width: 500px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .picList{
+            width: 400px;
+            height: 300px;
+        }
+        img{
+            width: 500px;
+        }
+        .prev{
+            position: absolute;
+            top: 100px;
+            left: 20px;        
+        }
+        .next{
+            position: absolute;
+            top: 100px;
+            left: 300px;        
+        }
+        .picList li{
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+        }
+        .picList .show{
+            opacity: 1;
+            transition: 1s;
+        }
+        
+        
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <ul class="picList">
+        <li class="show">
+            <a href="#1">
+                <img src="img/img1.jpg" />
+            </a>
+        </li>
+        <li>
+            <a href="#2">
+                <img src="img/img2.jpg" />
+            </a>
+        </li>
+        <li>
+            <a href="#3">
+                <img src="img/img3.jpg" />
+            </a>
+        </li>
+        <li>
+            <a href="#4">
+                <img src="img/img4.jpg" />
+            </a>
+        </li>
+    </ul>   
+    <a href="javascript:;" class="btn prev">prev</a>
+    <a href="javascript:;" class="btn next">next</a>
+</div>
+<script>
+
+    var next = document.querySelector('.next');
+    var prev = document.querySelector('.prev');
+    var lis = document.querySelectorAll('.picList li');
+    var num = 0;
+    next.onclick=function(){
+        num++;
+        if(num>3){
+            num=0
+        }
+        for(i=0;i<lis.length;i++){
+            lis[i].classList.remove('show');
+            lis[num].classList.add('show');
+        }
+    }
+    prev.onclick=function(){
+        num--;
+        if(num<0){
+            num=3
+        }
+        for(i=0;i<lis.length;i++){
+            lis[i].classList.remove('show');
+            lis[num].classList.add('show');
+        }
+    }
+
+    // (function(){
+    //     // 所有的点
+    //     var navs = document.querySelectorAll('.nav a');
+    //     // 所有的li
+    //     var lists = document.querySelectorAll('.picList li');
+    //     // 点循环拿到每个点
+    //     navs.forEach(function(nav,index){
+    //         // 点击
+    //         nav.onclick = function(){
+    //             // 循环点和图片删除所有class
+    //             navs.forEach(function(nav,index){
+    //                 nav.classList.remove('active');
+    //                 lists[index].classList.remove('show');
+    //             });
+    //             // 当前的点和图片加上class
+    //                 nav.classList.add('active');
+    //                 lists[index].classList.add('show');
+    //         };
+    //     });
+    // })();
+</script>
+
+
+
+<!-- <script>
+    var ul=document.querySelector('.picList');
+    var lis=ul.querySelectorAll('li');
+    var nav=document.querySelector('.nav');
+    var navAs=nav.querySelectorAll('a');
+    var prev=document.querySelector('.prev');
+    var next=document.querySelector('.next');
+    var iNow=0;
+
+    function tab(){
+        for(var i=0; i<lis.length;i++){
+            lis[i].className='';
+            navAs[i].className='';
+        }
+        lis[iNow].className='show';
+        navAs[iNow].className='active';
+    }
+
+    next.onclick=function(){
+        iNow++;
+        if(iNow==lis.length){
+            iNow=0;
+        }
+        tab()
+    }
+
+    prev.onclick=function(){
+        iNow--;
+        if(iNow==-1){
+            iNow=lis.length-1;
+        }
+        tab()
+    }
+
+</script> -->
+</body>
+</html>

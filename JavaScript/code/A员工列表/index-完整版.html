@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>员工列表</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body
+        a{
+            text-decoration: none;
+            color: #0d3a4b;
+        }
+        .active{
+            color: #ffffff;
+        }
+
+        .wrap {
+            width: 700px;
+            height: 500px;
+            background-image: url(./images/bg.png);
+            background-repeat: no-repeat;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .wrap #table {
+            width: 460px;
+            border-radius: 12px;
+            position: absolute;
+            left: 50%;
+            top: 160px;
+            transform: translateX(-50%);
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .wrap #table thead {
+            width: 100%;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            color: #fff;
+            background: #4cbfe5;
+        }
+
+        .wrap #table thead a {
+            color: #fff;
+        }
+
+        .wrap #table tbody {
+            color: #19c2ff;
+        }
+
+        .wrap #table tbody a {
+            color: #19c2ff;
+        }
+
+        .wrap #table tbody tr {
+            background: #fff;
+        }
+
+        .ctrl {
+            position: absolute;
+            left: 200px;
+            top: 100px;
+        }
+
+        .ctrl div {
+            width: 300px;
+            line-height: 30px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <div class="ctrl">
+        <div class="age_sort nu">
+            <a href="javascript:;">年龄从小到大</a>
+            <a href="javascript:;">年龄从大到小</a>
+            <a href="javascript:;" class="active">默认排序</a>
+        </div>
+        <div class="gender_show">
+            <a href="javascript:;">只显示男性</a>
+            <a href="javascript:;">只显示女性</a>
+            <a href="javascript:;" class="active">默认</a>
+        </div>
+    </div>
+    <table id="table">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>姓名</th>
+                <th>年龄</th>
+                <th>性别</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- <tr>
+                <th>0</th>
+                <th>小明</th>
+                <th>24</th>
+                <th>男</th>
+            </tr>      -->
+        </tbody>
+    </table>
+</div>
+<script>
+// 数据    
+let data = [
+    {
+        id: 0,
+        name: '小明',
+        age: 24,
+        gender: '男'
+    },
+    {
+        id: 1,
+        name: '小芳',
+        age: 30,
+        gender: '女'
+    },
+    {
+        id: 2,
+        name: '小美',
+        age: 31,
+        gender: '女'
+    },
+    {
+        id: 3,
+        name: '小刚',
+        age: 21,
+        gender: '男'
+    },
+    {
+        id: 4,
+        name: '小琪',
+        age: 18,
+        gender: '女'
+    }
+];
+{
+    let tbody = document.querySelector("#table tbody");
+    let ageSort = document.querySelectorAll(".age_sort a");  
+    let genderShow = document.querySelectorAll(".gender_show a");
+
+    // 根据数据生成 tbody 中的视图
+    let render = (data)=>{
+        let inner = '';
+        data.forEach(item=>{
+            inner += `
+                <tr>
+                    <th>${item.id}</th>
+                    <th>${item.name}</th>
+                    <th>${item.age}</th>
+                    <th>${item.gender}</th>
+                </tr>
+            `; 
+        });
+        tbody.innerHTML = inner;
+    };
+    
+    // 排序
+    let sortType = [
+        ()=>{ // 年龄从小到大
+            data.sort((r1,r2)=> r1.age - r2.age);
+        },
+        ()=>{ // 年龄从大到小
+            data.sort((r1,r2)=> r2.age - r1.age);
+        },
+        ()=>{ // id从小到大
+            data.sort((r1,r2)=> r1.id - r2.id);
+        }
+    ];
+
+    // 筛选的方法
+    let filterType = [
+        ()=>data.filter(item=>item.gender=="男"), //筛选男性
+        ()=>data.filter(item=>item.gender=="女"), //筛选女性
+        ()=>[...data]
+    ];
+
+    let sortState = 2;// 记录当前是什么排序状态   0: 年龄从小到大排序，1：年龄从大到小排序，2：id 从小到大排序
+    let filterState = 2; // 记录当前是什么筛选状态 0: 只显示男性  1： 只显示女性， 2：默认全部显示
+
+    // 根据当前的数据状态来操作数据
+    let createData = ()=>{
+        //排序操作 
+        sortType[sortState]();
+        // 筛选操作
+        let newData = filterType[filterState]();
+        //渲染视图
+        render(newData);
+    }; 
+
+    // 排序的事件
+    ageSort.forEach((item,index)=>{
+        item.onclick = function(){
+            ageSort.forEach(item=>{
+                item.classList.remove("active");
+            });
+            this.classList.add("active");
+            sortState = index;
+            createData();
+        };
+    });    
+
+    // 筛选的事件
+    genderShow.forEach((item,index)=>{
+        item.onclick = function(){
+            genderShow.forEach(item=>{
+                item.classList.remove("active");
+            });
+            this.classList.add("active");
+            filterState = index;
+            createData();
+        };
+    });
+
+    render(data);
+}
+/*
+    功能抽离, 把每一块的功能单独的抽离处理，封装成单独的一个处理函数
+
+    1. 添加事件
+    2. 点击事件只做一件事：修改数据状态(sortState 排序状态，filterState筛选的状态)
+    3. createData 根据状态码对数据进行操作
+    4. render 根据数据渲染视图
+
+   数据驱动视图, 不要去操作视图，而是操作数据，然后通过数据在渲染视图 
+   !! 不要直接修改页面内容，而是修改数据，修改完数据之后，通过数据去同步我们的页面
+
+    
+*/
+</script>
+</body>
+
+</html>

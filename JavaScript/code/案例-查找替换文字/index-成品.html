@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+    <div id="box">
+        <div id="content">
+            目前主要针对的是javascript培训，同时还提供了css教程、javascript视频、js特效等，最新推出了外地学员们喜欢的javascript网络课程服务，同时还为处于javascript入门阶段的朋友录制了大量javascript视频，其中涉及了大量javascript基础知识，希望妙味课堂推出的javascript网络培训课程能带给大家更多惊喜。目前主要针对的是javascript培训，同时还提供了css教程、javascript视频、js特效等，最新推出了外地学员们喜欢的javascript网络课程服务，同时还为处于javascript入门阶段的朋友录制了大量javascript视频，其中涉及了大量javascript基础知识，希望妙味课堂推出的javascript网络培训课程能带给大家更多惊喜。目前主要针对的是javascript培训，
+        </div>
+        <div id="open">
+            <a href="javascript:;">展开</a>
+            <ul style="display: none;">
+                <li><a href="javascript:;">查找</a></li>
+                <li><a href="javascript:;">替换</a></li>
+            </ul>
+        </div>
+        <div id="fun" style="display: none;">
+            <div class="btns">
+                <a href="javascript:;" class="active">查找</a>
+                <a href="javascript:;">替换</a>
+            </div>
+
+            <div id="search" style="display: block;">
+                <input type="text" />
+                <input type="button" value="" />
+            </div>
+            <div id="replace">
+                <input type="text" />
+                <input type="text" />
+                <input type="button" value="" />
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>
+<script type="text/javascript">
+    /*
+        1、列表的显示隐藏
+        2、显示查找或者替换的功能项
+        3、上边列表选项和下边选项的关联
+        4、功能项自身选项切换
+        5、实现查找功能
+        6、实现替换功能、删除功能
+        7、检查
+    */
+
+    var open=document.querySelector('#open');
+    var openUl=open.querySelector('ul');
+    var openAs=open.querySelectorAll('a');
+    var fun=document.querySelector('#fun');
+    var search=document.querySelector('#search');
+    var replace=document.querySelector('#replace');
+    var funAs=fun.querySelectorAll('a');
+    var sInp=search.querySelectorAll('input');
+    var rInp=replace.querySelectorAll('input');
+    var content=document.querySelector('#content');
+    var txt=content.innerHTML;
+
+    // 展开 收起  切换
+    openAs[0].onclick=function(){
+        if(this.onOff){
+            openUl.style.display='none';   
+        }else{
+            openUl.style.display='block';
+        }
+        this.onOff=!this.onOff;
+    }
+
+    function show(){
+        fun.style.display='block';
+        search.style.display='block';
+        replace.style.display='none';
+    }
+
+    function show2(){
+        fun.style.display='block';
+        search.style.display='none';
+        replace.style.display='block';
+    }
+
+    openAs[1].onclick=function(){
+        show();
+        openAs[0].onclick();
+    }
+
+    openAs[2].onclick=function(){
+        show2();
+        openAs[0].onclick();
+    }
+
+    funAs[0].onclick=show;
+    funAs[1].onclick=show2;
+
+
+    // 查找
+    sInp[1].onclick=function(){
+        // 输入框内容
+        var val=sInp[0].value;
+        if(val==''){
+            alert('请输入查找内容');
+            return;
+        }
+        //  str.indexOf(subStr,index) 查找 str 中 是否包含  subStr，如果包含，就返回 subStr 第一次出现的位置
+        //  index 从第几位开始向后查找
+        //  如果找不到就返回 -1
+        if(txt.indexOf(val)==-1){
+            alert('当前文本内不含查找内容');
+            return;
+        }
+        // 先分割 再拼接 达到替换的效果
+        // 把输入的内容 用 split 进行分割，得到数组,数组是用内容来做的分割，这时输入的内容已经没有了
+        // join 用"分隔符"把数组的每一位链接一个字符串
+        // 用什么来拼接呢？用加上样式后的 原来的输入内容
+        content.innerHTML=txt.split(val).join('<span>'+val+'</span>');
+
+        // txt.split(val)   分割
+
+        // txt.split(val).join('<span>'+val+'</span>')  拼接
+    }
+
+    // 替换
+    rInp[2].onclick=function(){
+        // 查找内容
+        var val1=rInp[0].value;
+        // 替换内容
+        var val2=rInp[1].value;
+
+        if(val1==''){
+            alert('请输入需要替换的内容');
+        }else if(txt.indexOf(val1)==-1){
+            alert('当前文本不含查找内容');
+        }else if(val2==''){
+            if(confirm('确定删除'+val1+'?')){
+                content.innerHTML=txt.split(val1).join('');
+            }
+        }else{
+            content.innerHTML=txt.split(val1).join(val2);
+        }
+        // 保留每一次替换的结果
+        txt=content.innerHTML;
+    }
+</script>

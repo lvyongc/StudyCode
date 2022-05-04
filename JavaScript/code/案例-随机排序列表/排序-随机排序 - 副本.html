@@ -1,0 +1,194 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>无标题文档</title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+<div class="wrap">
+    <div class="nav">
+        <a href="javascript:;">从大到小</a>
+        <a href="javascript:;">打乱顺序</a>
+    </div>
+    <ul id="list">
+        <li><img src="images/8.png" alt="">
+            <p>8-指尖社区</p>
+        </li>
+        <li><img src="images/1.png" alt="">
+            <p>1-温馨办公</p>
+        </li>
+        <li><img src="images/2.png" alt="">
+            <p>2-游戏桌面</p>
+        </li>
+        <li><img src="images/3.png" alt="">
+            <p>3-汽车摇滚</p>
+        </li>
+        <li><img src="images/4.png" alt="">
+            <p>4-狭路相逢</p>
+        </li>
+        <li><img src="images/5.png" alt="">
+            <p>5-棒球小子</p>
+        </li>
+        <li><img src="images/6.png" alt="">
+            <p>6-球鞋动力</p>
+        </li>
+        <li><img src="images/7.png" alt="">
+            <p>7-游戏官网</p>
+        </li>     
+    </ul>
+</div>
+<script type="text/javascript">
+    var btn=document.querySelectorAll('a');
+    var ul=document.querySelector('ul');
+    var lis=document.querySelectorAll('li');
+    var arr=[];
+    var off =true;
+    for(i=0;i<lis.length;i++){
+            arr.push(lis[i])
+    }
+
+    btn[0].onclick=function(){
+        arr.sort(function(n1,n2){
+            var p1= n1.querySelector('p').innerHTML.charAt(0);
+            var p2= n2.querySelector('p').innerHTML.charAt(0);
+            if(off){
+                return p1-p2;
+            }else{
+                return p2-p1;
+            }
+        })
+        for(i=0;i<arr.length;i++){
+            ul.append(arr[i])
+        }
+        off=!off;
+        this.innerHTML=off?'大下':'小大';
+    };
+    btn[1].onclick=function(){
+        arr.sort(function(n1,n2){
+            return Math.random() - 0.5
+        });
+        for(i=0;i<arr.length;i++){
+            ul.append(arr[i])
+        }
+    }
+
+
+
+//  var data = [
+//     {
+//         title: "1-温馨办公",
+//         img: "images/1.png"
+//     },{
+//         title: "2-游戏桌面",
+//         img: "images/2.png"
+//     },{
+//         title: "3-汽车摇滚",
+//         img: "images/3.png"
+//     },{
+//         title: "4-狭路相逢",
+//         img: "images/4.png"
+//     },{
+//         title: "5-棒球小子",
+//         img: "images/5.png"
+//     },{
+//         title: "6-球鞋动力",
+//         img: "images/6.png"
+//     },{
+//         title: "7-游戏官网",
+//         img: "images/7.png"
+//     },{
+//         title: "8-指尖社区",
+//         img: "images/8.png"
+//     }
+// ];
+// (function(){
+//     var list = document.querySelector('#list');
+//     var navs = document.querySelectorAll('.nav a');
+//     // 自定义判断条件
+//     var isReverse = false;  // 小到大
+//     // 根据data数据，渲染 list 的结构
+//     function render(){
+//         var inner = data.map(function(item,index){
+//             // 数组每一个和下标
+//             console.log(item,index);
+//             return '<li><img src="'+item['img']+'" alt=""><p>'+item['title']+'</p>';
+//         });
+//         // console.log(inner.join(''));
+//         list.innerHTML = inner.join('');
+//     };
+//     render();
+
+//     // 排序
+//     navs[0].onclick = function(){
+//         data.sort(function(n1,n2){
+//             n1 = parseInt(n1.title);
+//             n2 = parseInt(n2.title);
+//             return isReverse?n1 - n2:n2 - n1;
+//         });
+//         isReverse = !isReverse;
+//         render();
+//         this.innerHTML = isReverse?'从小到大':'从大到小';
+//     };
+//     navs[1].onclick = function(){
+//         data.sort(function(n1,n2){
+//             n1 = parseInt(n1.title);
+//             n2 = parseInt(n2.title);
+//             return Math.random() - .5;
+//         });
+//         render();
+//     };
+// })();
+
+
+
+// (function(){
+//     var list = document.querySelector("#list");
+//     var navs = document.querySelectorAll(".nav a");
+//     var isReverse = false; // false 代表从小到大，true 从大到小
+//     /**
+//      * undefined render() 根据data的数据渲染list的内容
+//      * 参数：无
+//      * 可选参数：无
+//      * 返回值：undefined   
+//     */
+//     function render(){
+//         var inner = data.map(function(item,index){
+//             //console.log(item,index);
+//             return '<li><img src="'+item["img"]+'" alt=""><p>'+item["title"]+'</p></li>';
+//         });
+//         //console.log(inner.join(""));
+//         list.innerHTML = inner.join("");
+//     }
+//     render();
+//     /* 1. 从小到大排序，2. 从大到小排序*/
+//     navs[0].onclick = function(){
+//         data.sort(function(n1,n2){
+//             n1 = parseInt(n1.title);
+//             n2 = parseInt(n2.title);
+//             // n2 - n1 从大到小
+//             // n1 - n2 从小到大
+//             // if(isReverse){
+//             //     return n1 - n2;
+//             // } else {
+//             //     return n2 - n1;
+//             // }
+//             return isReverse?n1 - n2:n2 - n1;
+//         });
+//         render();
+//         isReverse = !isReverse;
+//         this.innerHTML = isReverse?"从小到大":"从大到小";  
+//     };
+//     navs[1].onclick = function(){
+//         data.sort(function(n1,n2){
+//             n1 = parseInt(n1.title);
+//             n2 = parseInt(n2.title);
+//             return Math.random() - .5;
+//         });
+//         render();
+//     }
+// })();
+</script>
+</body>
+
+</html>

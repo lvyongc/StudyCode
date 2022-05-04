@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #wrap {
+            margin: 100px auto;
+            width: 200px;
+            height: 200px;
+            padding: 200px;
+            border: 2px solid #000;
+            perspective: 400px;
+            /* perspective-origin: right center; */
+        }
+        #box {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            font: 140px/200px "宋体";
+            color: #fff;
+            text-align: center;
+            transform-style: preserve-3d;
+            transition: 5s;
+            transform-origin: center center -100px;
+            /*transform-origin: x y z;  */
+        }
+        #wrap:hover #box {
+            transform: rotateY(360deg);
+        }
+        #box div {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            opacity: .5;
+        }
+        #box div:nth-child(1) {
+            left: 0;
+            top: -200px;
+            background: red;
+            transform-origin: bottom;
+            transform: rotateX(90deg);
+        }
+        #box div:nth-child(2) {
+            left: -200px;
+            top: 0;
+            background: yellow;
+            transform-origin: right;
+            transform: rotateY(-90deg);
+        }
+        #box div:nth-child(3) {
+            left: 0;
+            top: 0;
+            background: rgb(80, 80, 82);
+        }
+        #box div:nth-child(4) {
+            left: 200px;
+            top: 0;
+            background: bisque;
+            transform-origin: left;
+            transform: rotateY(90deg);
+        }
+        #box div:nth-child(5) {
+            left: 0px;
+            top: 200px;
+            background: greenyellow;
+            transform-origin: top;
+            transform: rotateX(-90deg);
+        }
+        #box div:nth-child(6) {
+            left: 0px;
+            top: 0;
+            background: peru;
+            transform: translateZ(-200px);
+        }
+    </style>
+</head>
+<body>
+<div id="wrap">
+    <div id="box">
+        <div>1</div>
+        <div>2</div>
+        <div>3</div>
+        <div>4</div>
+        <div>5</div>
+        <div>6</div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<a>长按</a>    
+<script>
+
+    // onclick  ...  系统自带的事件
+
+// 长按: 当鼠标在一个元素上长按超过 750 毫秒触发
+let longTap = new Event("longTap",{ // 事件名
+    bubbles: true //如果设定为 false 也就是这个事件不冒泡，那就只能在那个元素上触发，那就只有这个一个元素是有这个事件的
+});//自定义一个新事件
+
+let timer = 0;
+
+{
+
+    let a = document.querySelector("a");
+    // 鼠标按下
+    a.addEventListener("mousedown",function(){
+        // 清除定时器
+        clearTimeout(timer);
+        // 定时器
+        timer = setTimeout(()=>{
+            // 通过手动的使用dispatchEvent()方法派发的事件。
+            a.dispatchEvent(longTap); // 在 a 标签触发，a 及它所有的父级都会有这个事件
+            // 如果是document触发，就只有 document 及 它的父级有这个事件，document 的内容就没有了
+            
+        },750);
+    });
+    // 抬起清除
+    a.addEventListener("mouseup",function(){
+        clearTimeout(timer);
+    });
+    // 执行
+    document.addEventListener("longTap",function(e){
+        if(e.target == a){
+            console.log("这是一个长按事件");
+        } 
+    });
+}
+
+</script>    
+</body>
+</html>

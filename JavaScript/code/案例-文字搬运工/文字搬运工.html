@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>文字搬运工</title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+    <div class="bg">
+        <div id="box">
+            <textarea>妙味课堂是一支充满温馨并且极富人情味的IT培训团队；2010-2011年，妙味深度关注WEB前端开发领域，为此精心研发出一套灵活而充满趣味的JavaScript课程。2011-2013年，妙味精准研发出最新HTML5\CSS3课程，并推出远程培训课程方案，尝试将线下优良的培训模式移植到远程网络培训中，希望尽最大努力，将一种快乐愉悦的授课体验、结合HTML\CSS\JS知识点，精准传递给妙味课堂的每一位学员。</textarea>
+            <div>
+                <a href="javascript:;"></a>
+                <span>0/0</span>
+                <ul>
+                    <li class="active"></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+            </div>
+
+            <p></p>
+        </div>
+    </div>
+
+</body>
+
+</html>
+<script type="text/javascript">
+    var text =document.querySelector('textarea');
+    var btn =document.querySelector('a');
+    var ul =document.querySelector('ul');
+    var lis =document.querySelectorAll('li');
+    var p =document.querySelector('p');
+    var span =document.querySelector('span');
+    var tim;
+    var len=text.value.length;
+    var num =0;
+
+    btn.onclick=function(){
+        
+        tim = setInterval(function(){
+            var val=text.value;
+            var ten=val.length;
+            p.innerHTML+=val.charAt(0);
+            text.value = val.substr(1);
+            
+        
+            var pen=p.innerHTML.length;
+            span.innerHTML=pen+'/'+len;
+
+            console.log(ten,pen,len)
+
+            num++;
+            for(i=0;i<lis.length;i++){
+                lis[num%lis.length].className='active';
+                lis[(num-1)%lis.length].className='';
+            }
+
+            if(ten==0){
+                clearInterval(tim);
+            };
+        },10);
+        
+    }
+
+
+
+
+    /*
+        1,实现文字的搬运
+            a、先实现减少
+            b、实现添加
+        2、计数的实现
+        3、实现进度条
+    */
+    // var area = document.getElementsByTagName('textarea')[0];
+    // var oBtn = document.getElementsByTagName('a')[0];
+    // var oP = document.getElementsByTagName('p')[0];
+    // var oSpan = document.getElementsByTagName('span')[0];
+    // var oUl = document.getElementsByTagName('ul')[0];
+    // var aLi = oUl.getElementsByTagName('li');
+    // var timer = null,
+    //     num = 0;
+    // oBtn.onclick = function() {
+
+    //     var len = area.value.length
+    //     oSpan.innerHTML = '0/' + len;
+    //     oP.innerHTML = '';
+    //     //运动到半透明
+    //     move(this, 'opacity', 2, 50);
+    //     //完全不透明。
+    //     move(oUl, 'opacity', 2, 100);
+
+    //     //防止多次点击触发多个定时器。
+    //     clearInterval(timer);
+    //     timer = setInterval(function() {
+    //         num++;
+    //         //清除上一个
+    //         aLi[(num - 1) % aLi.length].className = '';
+    //         //添加当前的。
+    //         aLi[num % aLi.length].className = 'active';
+    //         //每次从textarea中取出第一位加到p标签中。
+    //         oP.innerHTML += area.value.charAt(0);
+    //         //当前走了几个字。
+    //         oSpan.innerHTML = oP.innerHTML.length + '/' + len;
+
+    //         //每次删除textarea的第一位。
+    //         area.value = area.value.substring(1);
+    //         //如果textarea没有内容就清除定时器。
+    //         if (area.value.length == 0) {
+    //             clearInterval(timer);
+    //             //按钮和ul运动透明度。
+    //             move(oBtn, 'opacity', '2', 100); //到不透明
+    //             move(oUl, 'opacity', 2, 0); //到透明
+
+    //         }
+    //     }, 30)
+    // }
+
+    // function move(el, attr, time, target) {
+    //     el.style.transition = time + "s";
+    //     el.style[attr] = target / 100;
+    // }
+</script>

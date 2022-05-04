@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        #box{
+            width: 100px;
+            height: 100px;
+            background-color: aqua;
+        }
+    </style>
+</head>
+<body>
+    <div id="box" onclick="alert(1)">
+        <!-- 行间JS -->
+    </div>
+    <script>
+        document.querySelector('#box').onclick = function(){
+            alert(2)
+        }
+        //内部样式
+    </script>
+    <script src="js样式.js">
+        //外部引入JS
+    </script>
+    <script type="text/javascript">
+
+    </script>
+</body>
+</html>

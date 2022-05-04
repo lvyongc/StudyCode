@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>自定义滚动条</title>
+    <style>
+        body {
+            margin: 0;
+            width: 100vw;
+            height: 100vh;
+            background: url(./imgs/bg.png) no-repeat;
+            background-size: 100% 100%;
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            position: absolute;
+        }
+
+        .wrap {
+            width: 100px;
+            height: 360px;
+            background-color: #fdfdfd;
+            position: relative;
+            border-radius: 10px;
+            margin: 200px auto;
+            padding-top: 11px;
+            padding-bottom: 16px;
+            overflow: hidden;
+        }
+
+        .scroll-wrap {
+            width: 13px;
+            height: 363px;
+            background-color: #dedede;
+            position: absolute;
+            border: 1px solid #dedede;
+            top: 11px;
+            right: 7px;
+            border-radius: 10px;
+        }
+
+        .scroll {
+            width: 13px;
+            height: 30px;
+            background-color: #fcfcfc;
+            border-radius: 10px;
+            position: absolute;
+        }
+
+        li {
+            line-height: 36px;
+            text-indent: 21px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <ul class="list"></ul>
+        <div class="scroll-wrap">
+            <div class="scroll"></div>
+        </div>
+    </div>
+   
+    <script>
+        let arr = ['河北', '山西', '辽宁', '吉林', '黑龙江', '江苏', '浙江', '安徽', '福建', '江西','山东', '河南', '湖北', '湖南', '广东', '海南', '四川', '贵州', '云南', '陕西', '甘肃', '青海', '台湾',
+            '北京', '天津', '上海', '重庆'
+        ];
+
+        // 封装css方法
+        function css(el,attr,val){
+            // 设置
+            if(arguments.length == 3){
+                el.style[attr] = val +'px';
+            }else{
+                return parseInt(getComputedStyle(el)[attr]);
+            }
+        }  
+
+
+        // 1. 渲染数据
+        let list = document.querySelector('.list');
+        let wrap = document.querySelector('.wrap');
+        let scroll = document.querySelector('.scroll');
+        let scrollWrap = document.querySelector('.scroll-wrap');
+        let inner = '';
+
+        arr.forEach(item=>{
+            inner += `
+                <li>
+                    ${item}
+                </li>
+            `
+        });
+
+        list.innerHTML = inner;
+
+        // console.log(css(list,'height'))
+
+        // 滚动块 高度
+
+        //  左侧 显示区高度 / 整体内容高度 = 右侧 滚动块高度 / 滚动条整体高度
+
+        // 右侧 滚动块高度 = 左侧 显示区高度 / 整体内容高度 *  滚动条整体高度
+
+        // scroll.style.height = 
+        let scrollBtnH = css(wrap,'height') / css(list,'height') * css(scrollWrap,'height');
+
+        // 设置滚动块高度
+        css(scroll,'height',scrollBtnH)
+
+        // 滚动块最大可拖拽高度 = 滚动条区域高度 - 滚动块高度
+        let maxScrollT = css(scrollWrap,'height') - css(scroll,'height');
+
+        // 内容最大可滚动高度
+        let maxScreenT = css(list,'height')  - css(wrap,'height');
+
+        // 滚动块添加拖拽事件
+        scroll.addEventListener('mousedown',function(e){
+            // console.log(e)
+            let startY = e.clientY;
+            let startPos = css(scroll,'top');
+
+            function move(e){
+                let disY = e.clientY - startY;
+                let y = disY + startPos;
+                // 最小值 取俩个值当中的最大、最小值
+                y = Math.max(0,y);
+                y = Math.min(y,maxScrollT);
+
+                // 计算比例
+                // 当前滚动块top值 / 最大的top值  =  当前拖拽比例
+                let scale = y / maxScrollT;
+                // console.log(scale)
+
+                //  左侧当前top / 左侧最大top  = 右侧 当前滚动块top / 滚动块最大top 
+
+                // 当前内容区 top 值 = maxScreenT * scale;
+                css(list,'top', - maxScreenT * scale);
+
+
+                css(scroll,'top',y);
+                e.preventDefault();
+            }
+
+            document.addEventListener('mousemove',move)
+            document.addEventListener('mouseup',function(){
+                document.removeEventListener('mousemove',move)
+            },{
+                once:true
+            })
+        })
+
+
+
+
+
+    </script>
+</body>
+
+</html>

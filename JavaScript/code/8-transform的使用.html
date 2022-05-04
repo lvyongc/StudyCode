@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #box {
+            position: absolute;
+            left: 0;
+            top: 100px;
+            width: 100px;
+            height: 100px;
+            background: red;
+        }
+    </style>
+</head>
+<body>
+<button id="run">跑</button>
+<button id="stop">停</button>    
+<div id="box"></div>
+<script src="mTween.js"></script>
+<script>
+(function(){
+    var run = document.querySelector("#run");
+    var stop = document.querySelector("#stop");
+    var box = document.querySelector("#box");
+    run.onclick = function(){
+        // 注意：transform 没有办法获取计算后样式，所以在使用 transform，所有的操作，都需要通过 css 方进行，而且必须 先设置 在获取
+        // css(box,"scale",.5)
+        // css(box,"translateX",100);
+       
+        // console.log(css(box,"scale"),css(box,"translateX"));
+        css(box,{
+            width: 200,
+            height: 200,
+            scale: 2,
+            translateX: 100
+        });
+    };
+})();    
+</script>    
+</body>
+</html>

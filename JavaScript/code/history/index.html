@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <ul>
+        <li><a href="/index">首页</a></li>
+        <li><a href="/about">关于我们</a></li>
+        <li><a href="/lesson">课程介绍</a></li>
+    </ul>
+    <div id="view">
+
+    </div>
+    <script>
+        // history 历史记录  记录的是地址栏的变化
+        // history 静态路由  不是跳转页面
+        // 要实现 history 路由 必须在服务器环境才能实现
+        // history 做的路由 需要 后端服务器做配置 判断当前路径是否真实存在
+
+        let btnS = document.querySelectorAll('ul a');
+        let view = document.querySelector('#view');
+
+        btnS.forEach((item,index)=>{
+            item.onclick = function(){
+                console.log(item.href)
+
+                // 切换对应模板 --> 条件 history的值
+                // 先设置 history 的值
+                // 添加一个状态，有3个参数
+                // 第一个是对象，也可以不传
+                // 第二个一般不传，空
+                // 第三个 history 状态值
+                history.pushState({
+                    info:index
+                },'',item.href)
+
+                matching();
+
+                // 阻止a跳转
+                return false;
+            }
+        })
+
+        // 页面进来调用
+        matching();
+
+        // 判断显示对应内容
+        function matching(){
+            // history改变后的值
+            console.log(location.pathname)
+
+            let path = location.pathname;
+
+            switch(path){
+                case '/index':
+                case '/index.html':
+                view.innerHTML = indexR();
+                break;
+                case '/about':
+                view.innerHTML = aboutR();
+                break;
+                case '/lesson':
+                view.innerHTML = lessonR();
+                break;
+            }
+        }
+
+        // 历史记录上下切换
+        // onpopstate 浏览器上 前进后退触发事件
+        window.onpopstate = function(){
+            // console.log(1);
+
+            // 获取 history 传递过来的值(index下标)
+            console.log(history.state)
+            matching();
+        }
+
+        function indexR(){
+            return `
+                <h3>这是首页</h3>
+            `
+        }
+        function aboutR(){
+            return `
+                <h3>关于我们</h3>
+                <p>123213213123213132</p>
+            `
+        }
+        function lessonR(){
+            return `
+                <h3>课程介绍</h3>
+                <p>asdqweasdsaewdsadwdsawdsad</p>
+            `
+        }
+
+
+    </script> 
+</body>
+</html>

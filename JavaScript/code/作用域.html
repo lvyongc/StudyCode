@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+    <script>
+        // 中间作用域的目的就是防止默认参数被函数里面的变量污染。默认参数本意是为了让参数有默认值，假如函数内部的变量还能提升上来，那么默认参数就没意义了
+        // 当用var x=3时，foo里面的console.log(x)打印的就是foo里的局部变量x，
+        // y（）修改的只是参数x
+        // 当不用var时，foo里的所有x都指向参数x，而用y（）把参数x修改为2，最终输出2
+
+        var x = 1;  // 这个 x 是全局
+        function foo(x,y = function(){x = 2}){   // foo参数是独立的作用域，所以x是undefined，这个foo的参数 y函数 x=2，
+            x = 3;                               // 这个 x=3，是对x赋值，y函数里面的x，所有的x都是同一个x
+            y();                                 // 这里 x=2，对x再次赋值，把上面的覆盖了，所以是2
+            console.log(x);                      // 
+        };
+        foo();// 2
+        console.log(x) // 1
+
+        var x = 1;
+        function foo(x,y = function(){x = 2}){
+            var x = 3;                           // 这个 x = 3 是声明的局部变量x  ，覆盖了参数中声明的x，就覆盖了y函数中的x                       
+            y();                                  // 这里 x = 2
+            console.log(x);                      // 
+        };
+        foo();// 3  
+        console.log(x) // 1
+
+        
+
+        var x=1;
+        
+        function foo(x2,y=function(){x=2;}){
+            var x=3;
+            y();
+            console.log(x);}
+        foo();
+
+        // 这里有三个作用域，把x由外到里标记出来就是：
+        var x1=1;
+        function foo(x2,y=function(){x2=2;console.log(x2);}){
+            var x3=3;
+            y();
+            console.log(x3);}
+            foo();
+        console.log(x1);
+
+        // 假如没有了参数的x，那么标记出来就是：
+        var x1=1;
+        function foo(y=function(){x1=2;console.log(x1);}){
+            var x2=3;
+            y();
+            console.log(x2);}
+            foo();
+        console.log(x1);
+        
+    </script>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .list{
+            height: 300px;
+            border: 1px solid red;
+        }
+        .box{
+            width: 100px;
+            height: 100px;
+            border: 2px solid blue;
+            float: left;
+            margin: 20px;
+            font-size: 50px;
+            text-align: center;
+            line-height: 100px;
+        }
+
+        .active{
+            background: yellow;
+        }
+
+        .frame{
+            border:2px dotted #333;
+            position: absolute;
+            top:0;
+            left:0;
+        }
+    </style>
+</head>
+<body>
+    <div class="list">
+
+    </div>
+
+    <script>
+        // 展开运算符，变成数组
+        // repeat 重复 ，12个a
+        var arr = [...'a'.repeat(12)];
+        arr.forEach((item,index)=>{
+            // 创建 box
+            var box = document.createElement('div');
+            // 添加 class
+            box.classList.add('box');
+            // 内容递增
+            box.innerHTML = index+1;
+            // 添加到页面
+            document.body.appendChild(box);
+        })
+
+        var list = document.querySelector('.list');
+        var boxS = document.querySelectorAll('.box');
+
+        function css(obj,attr,val){
+            if(arguments.length == 2){
+                return parseFloat(getComputedStyle(obj)[attr]);
+            }else{
+                obj.style[attr] = val + 'px';
+            }
+        }
+
+        document.addEventListener('mousedown',function(e){
+            var start = {
+                x:e.clientX,
+                y:e.clientY
+            }
+
+            // 创建一个虚线框
+            var box = document.createElement('div');
+            box.classList.add('frame');
+            document.body.appendChild(box);
+
+            // 设置元素的位置
+            css(box,'left',start.x)
+            css(box,'top',start.y)
+
+            document.addEventListener('mousemove',move)
+
+            function move(e){
+                // 取消浏览器默认行为
+                e.preventDefault();
+                var dis = {
+                    x:Math.abs(e.clientX - start.x),
+                    y:Math.abs(e.clientY - start.y),
+                }
+
+                css(box,'width',dis.x)
+                css(box,'height',dis.y)
+
+                // top、left  只听最小的值
+                css(box,'left',Math.min(start.x,e.clientX))
+                css(box,'top',Math.min(start.y,e.clientY))
+
+
+                // 碰撞检测 - 多个元素检测
+                boxS.forEach(item=>{
+                    if(contactFn(box,item)){
+                        // 碰撞成功
+                        item.classList.add('active')
+                    }else{
+                        // 没有碰撞
+                        item.classList.remove('active')
+                    }
+                })
+            }
+
+            document.addEventListener('mouseup',function(){
+                document.removeEventListener('mousemove',move)
+
+                // 删除虚线框
+                box.remove();
+
+                // 将选中的元素 插入到 list当中
+                var activeBoxs = document.querySelectorAll('.active');
+
+                activeBoxs.forEach(item=>{
+                    list.appendChild(item);
+                    item.classList.remove('active');
+                })
+
+            },{
+                once:true
+            })
+        })
+
+
+        // 碰撞检测 - 功能型函数
+        function contactFn(o1,o2){
+            // 获取俩个元素的四条边的坐标
+            var o1Pos = o1.getBoundingClientRect();
+            var o2Pos = o2.getBoundingClientRect();
+
+            if(
+                o1Pos.right < o2Pos.left ||
+                o1Pos.left > o2Pos.right ||
+                o1Pos.bottom < o2Pos.top ||
+                o1Pos.top > o2Pos.bottom
+                ){
+                return false
+            }
+            return true
+        }
+
+    </script>
+
+
+</body>
+</html>

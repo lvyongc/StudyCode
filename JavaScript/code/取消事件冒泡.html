@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            font: 30px / 90px "微软雅黑";
+        }
+        ul{
+            list-style: none;
+        }
+        .wrap{
+            width: 1000px;
+            height: 1000px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-top: -500px;
+            margin-left: -500px;
+            background: url(img/bg.jpg) no-repeat;
+        }
+        .menu{
+            width: 330px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 285px;
+            margin-left: 335px;
+            background: #f87a75;
+            box-shadow: 0 20px 50px rgba(248,122,117,.5);
+        }
+        .title{
+            height: 90px;
+            padding-left: 112px;
+            box-sizing: border-box;
+            color: #fff;
+            position: relative;
+        }
+        .title::after{
+            content: '';
+            position: absolute;
+            right: 36px;
+            top: 41px;
+            background: url(img/ar.png) no-repeat ;
+            width: 28px;
+            height: 16px;
+        }
+        .list{
+            width: 316px;
+            padding-left:7px; 
+            padding-bottom: 5px;
+            display: none;
+        }
+        .list li{
+            height: 90px;
+            margin-bottom: 2px;
+            background:#fee4e3;
+            border-radius: 20px;
+            padding-left: 112px;
+            box-sizing: border-box;
+            background-position: 23px 24px;
+            background-repeat: no-repeat;
+
+        }
+        .list li:hover{
+            background-color: #fff;
+            box-shadow:0 0 50px rgba(248,122,117,0.93);
+            position: relative;
+        }
+        .list li:nth-of-type(1){
+            background-image: url(img/icon1.png);
+        }
+        .list li:nth-of-type(2){
+            background-image: url(img/icon2.png);
+        }
+        .list li:nth-of-type(3){
+            background-image: url(img/icon3.png);
+        }
+        .list li:nth-of-type(4){
+            background-image: url(img/icon4.png);
+        }
+        .list li:nth-of-type(5){
+            background-image: url(img/icon5.png);
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <div class="menu">
+        <div class="title">菜单</div>
+        <ul class="list">
+            <li>微博</li>
+            <li>图片</li>
+            <li>博客</li>
+            <li>视频</li>
+            <li>更多>></li>
+        </ul>
+    </div>
+</div>
+<script>
+{
+    let list = document.querySelector(".list");
+    let menu = document.querySelector(".menu");
+    let title = document.querySelector(".title")
+    var lis = list.querySelectorAll('li');
+    // 父级点击事件
+    menu.addEventListener("click",function(e){
+        // 这里点击会冒泡到menu的父级document，执行document的事件，变成none
+        // 这里取消事件冒泡，是为了让它只执行menu本身的事件，变成block
+        e.cancelBubble = true;
+        list.style.display = 'block';
+    });
+
+    lis.forEach((item)=>{
+        // 冒泡有内向外依次触发，内的事件执行完，执行外的，外有事件就执行，没有就不执行
+        // 所以子级的点击事件完成后，会冒泡去执行父级的点击事件，导致刚变成none后瞬间又变成block
+        item.addEventListener('click',function(ev){
+            // console.log(ev); -->  mouseEvent 是 事件对象
+            // cancelBubble 是 阻止事件冒泡 ，不让它去执行父级的事件，只执行它本身的事件
+            ev.cancelBubble = true;
+
+            var val = item.innerHTML;
+            title.innerHTML = val;
+            list.style.display = 'none';
+        })
+    })
+
+    // 点击页面其他空白区域 自动收起
+    document.addEventListener('click',function(){
+        list.style.display = 'none';
+    })
+    
+
+}
+</script>
+</body>
+</html>

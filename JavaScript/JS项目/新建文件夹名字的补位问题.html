@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    let data = [
+        "我的音乐",
+        "我的课程",
+        "新建文件夹",
+        "新建文件夹(3)",
+        "新建文件夹(8)",
+    ];
+    // 新建文件夹
+    // 新建文件夹（2）
+    // 新建文件夹（3）
+    // 规律1：新建文件夹
+    // 规律2：新建文件夹（num >= 2）
+    document.onclick = function(){
+        // 过滤
+        let names = data.filter(item=>{
+            // 规律1：新建文件夹
+            if(item === "新建文件夹"){
+                // 符合规律1，保留
+                return true;
+            }
+            // console.log(item.substring(0,6),item.substring(6,item.length-1),item.length-1)
+
+            // console.log(item.substring(0,6) === "新建文件夹(",Number(item.substring(6,item.length-1)) >= 2,item[item.length-1] == ")")
+
+            // 规律2：新建文件夹（num >= 2）
+            if(
+                // substr() 方法可在字符串中抽取从 start 下标开始的指定数目的字符。不包含第end位
+                // substring() 方法用于提取字符串中介于两个指定下标之间的字符。不包含第end位
+                item.substring(0,6) === "新建文件夹("
+                &&Number(item.substring(6,item.length-1)) >= 2
+                &&item[item.length-1] == ")"
+            ){
+                return true; // 符合保留
+            }
+            return false;  // 不符合排除
+        });
+        // console.log(names)
+
+        // 补位排序
+        names.sort((n1,n2)=>{
+            n1 = n1.substring(6,n1.length-1);
+            n2 = n2.substring(6,n2.length-1);
+            // 检测第一个是新建文件夹返回0，否则返回本身
+            n1 = isNaN(n1)?0:n1;
+            // n2 = isNaN(n2)?0:n2;
+            return n1 - n2;
+            // console.log(n1,n2)
+        });
+        console.log(names)
+
+        // 检测第0位
+        if(names[0]!=="新建文件夹"){
+            data.push("新建文件夹");
+            return;
+        }
+        // 补缺
+        for( let i = 1;i < names.length;i++){
+            if(Number(names[i].substring(6,names[i].length-1)) !== i+1){
+                // 不等于 i 是错的
+                console.log(i,"缺失")
+                // 补位
+                data.push(`新建文件夹(${i + 1})`);
+                return;
+            }
+        }
+        
+        // 按顺序排序添加对应的数据
+        data.push(`新建文件夹(${names.length + 1})`);
+    }
+</script>
+</html>

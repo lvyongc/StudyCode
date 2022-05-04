@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head lang="en">
+    <meta charset="UTF-8" />
+    <title></title>
+    <link rel="stylesheet" href="./checkbox.css" />
+    <style>
+      h3{
+        margin: 0;
+        color: #e15671;
+        position: absolute;
+        left: 50%;
+        top: 130px;
+        z-index: 9;
+      }
+      .option{
+        background: url(./images/checkboxbg.png) no-repeat 0 -260px;
+      }
+    </style>
+
+    <script type="text/miaov">
+      注意：
+          1. 可以提一下，获取的元素为对象，是对象都可以添加属性
+          2. 通过元素.属性名来获取对应的值
+          3. 回顾一下开关的使用
+          4. 可以开两个文件，点击打印自定义属性前为一个，第二个文件完善
+    </script>
+
+    <script>
+      /*
+
+        */
+      window.onload = function() {
+        var as = document.getElementsByTagName("a");
+
+        /*as[0].attr = 123; //自定义属性为 attr
+
+            alert( as[0].attr ) //通过属性名attr，取出对应的值*/
+
+        /*as[1].attr = 456; //自定义属性为 attr
+
+            alert( as[1].attr )*/
+
+        for (var i = 0; i < as.length; i += 1) {
+          as[i].isChecked = false; //给每一个a添加自定义属性，代表未被选中
+
+          as[i].onclick = function() {
+            /* alert( this.isChecked )*/
+
+            //同一个元素每次点击的时候要处理的事情是不一样的
+            //如果是选中则取消，如果是没有选中的则选中
+            //通过上面方式知道是选中还是未选中
+
+            if (this.isChecked) {
+              //选中
+              this.className = "";
+              this.isChecked = false;
+            } else {
+              //未选中
+              this.className = "checked";
+              this.isChecked = true;
+            }
+          };
+        }
+      };
+    </script>
+  </head>
+  <body>
+    <div class="box">
+      <!-- <form action="">
+        <input type="checkbox" name="sex" />美食
+        <input type="checkbox" name="sex" />逛街
+        <input type="checkbox" name="sex" />旅游
+      </form>
+
+       -->
+       <h3>模拟复选</h3>
+      <div class="option">
+        <a href="javascript:;">美食</a>
+        <a href="javascript:;">逛街</a>
+        <a href="javascript:;">旅游</a>
+      </div>
+    </div>
+  </body>
+</html>

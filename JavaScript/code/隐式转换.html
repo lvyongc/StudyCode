@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        console.log([]==0)  // true
+
+        console.log([] == true)  // false
+
+        console.log(![] == true)  // false
+
+        console.log(![]==0)  // true
+
+        
+        console.log([]==![])	// true
+
+        
+        console.log({}=={})	// false
+
+        
+        console.log(!{}==![])	 // true
+
+        
+        console.log([]==[]) // false
+        console.log([]===[]) // false
+        console.log([] === ![]) // false
+
+        console.log(([])?true:false); console.log(([]==false?true:false)); console.log(({}==false)?true:false)  // true true  false
+
+        // 空数组[]转化为Number，得到0；空对象{}转化为Number，得到NaN
+
+        console.log({} == []) 	// false
+        console.log({} == !{})  // false
+
+        console.log([] + {})    // [object Object]      // {} --> [object Object] 
+        console.log({} + [])    // [object Object]
+        console.log([] + [])    // 无打印信息
+        console.log({} + {})    // [object Object][object Object]
+
+        var n =1;
+        alert(+n);  // 1
+        alert(-n);  // -1
+
+        //示例1
+        a=(1,2,3);
+        console.log(a) // 3
+        //示例2
+        a=1,2,3;
+        console.log(a) // 1
+        //示例3
+        a=[1,2,(3,4,5),6];
+        console.log(a) // [1, 2, 5, 6]
+        //示例4
+        // var a = 1,2,3;
+        console.log(a) // [1, 2, 5, 6]
+
+        a = [ [1][1] ]; // undefined
+        var a = [ ['a',1,2]['b',3,4] ];  // undefined
+
+    </script>
+</body>
+</html>

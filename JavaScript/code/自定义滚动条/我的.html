@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>自定义滚动条</title>
+    <style>
+        body {
+            margin: 0;
+            width: 100vw;
+            height: 100vh;
+            background: url(./imgs/bg.png) no-repeat;
+            background-size: 100% 100%;
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            position: absolute;
+        }
+
+        .wrap {
+            width: 100px;
+            height: 360px;
+            background-color: #fdfdfd;
+            position: relative;
+            border-radius: 10px;
+            margin: 200px auto;
+            padding-top: 11px;
+            padding-bottom: 16px;
+            overflow: hidden;
+        }
+
+        .scroll-wrap {
+            width: 13px;
+            height: 363px;
+            background-color: #dedede;
+            position: absolute;
+            border: 1px solid #dedede;
+            top: 11px;
+            right: 7px;
+            border-radius: 10px;
+        }
+
+        .scroll {
+            width: 13px;
+            height: 30px;
+            background-color: #fcfcfc;
+            border-radius: 10px;
+            position: absolute;
+        }
+
+        li {
+            line-height: 36px;
+            text-indent: 21px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <ul class="list"></ul>
+        <div class="scroll-wrap">
+            <div class="scroll"></div>
+        </div>
+    </div>
+    <script src="mTween.js"></script>
+    <script>
+        // 数据内容
+        let arr = ['河北', '山西', '辽宁', '吉林', '黑龙江', '江苏', '浙江', '安徽', '福建', '江西','山东', '河南', '湖北', '湖南', '广东', '海南', '四川', '贵州', '云南', '陕西', '甘肃', '青海', '台湾',
+            '北京', '天津', '上海', '重庆'
+        ];
+
+        // CSS函数 获取设置样式值
+        function css(obj,attr,val){
+            if(arguments.length == 3){
+                obj.style[attr] = val +'px';
+            }else{
+                return parseInt(getComputedStyle(obj)[attr]);
+            }
+        }
+        // 第一步渲染数据
+        // 拿到list内容列表
+        let list = document.querySelector('.list');
+        // 左侧显示区
+        let wrap = document.querySelector('.wrap');
+        // 滚动条整体
+        let scrollWrap = document.querySelector('.scroll-wrap');
+        // 右侧滚动块
+        let scroll = document.querySelector('.scroll');
+
+        // 内容
+        let inner = '';
+        // 循环得到所有li
+        arr.forEach(item=>{
+            inner += `<li>
+                ${item}    
+            </li>`
+        })
+        // 内容给list
+        list.innerHTML = inner;
+
+        // 左侧 显示区高度 / 整体内容高度 = 右侧 滚动块高度 / 滚动条整体高度
+        // 右侧 滚动块高度 = 左侧 显示区高度 / 整体内容高度 * 滚动条整体高度
+
+        // 计算可视区高度与内容区高度比例
+        let scale =css(wrap,'height')/css(list,'height');
+        console.log(scale)
+        // 计算滚动块高度
+        let scrollBtnH = css(wrap,'height')/css(list,'height')*css(scrollWrap,'height')
+        //设置滚动块高度
+        css(scroll,'height',scrollBtnH);
+
+        // 滚动块最大拖拽高度 = 滚动条整体高度 - 滚动块高度
+        let maxT = css(scrollWrap,'height') - css(scroll,'height');
+
+        // 显示内容区可滚动的最大滚动高度 = 内容整体高度 - 显示区高度
+        let maxScreenT = css(list,'height') - css(wrap,'height');
+        // console.log(maxScreenT)
+        
+
+        // 给滚动块添加拖拽事件
+        scroll.addEventListener('mousedown',function(e){
+            // console.log(e.clientX);
+            // 鼠标按下的位置
+            let startY = e.clientY;
+            // 鼠标滚轮的位置
+            let posY = css(scroll,'top');
+            // console.log(posY)
+
+            function move(e){
+                // 移动的距离
+                let disY = e.clientY - startY;
+                // 移动的距离 加上 初始的位置
+                let y = disY+posY;
+                // 最大值
+                y = Math.max(y,0);
+                // 最小值
+                y = Math.min(maxT,y);
+                
+                // 拖拽改变滚动条位置
+                css(scroll,'top',y);
+
+                // 改变显示区内容高度
+                let scrollScale = y / maxT;
+                // console.log(scrollScale)
+
+                css(list,'top',-maxScreenT*scrollScale)
+                // 清除默认行为（保险写法）
+                e.preventDefault();
+            }
+
+            // 按下
+            document.addEventListener('mousemove',move)
+            document.addEventListener('mouseup',function(){
+                // 抬起清除
+                document.removeEventListener('mousemove',move)
+            },{
+                // 一次
+                once:true
+            })
+            // 清除默认行为，页面滚动行为
+            e.preventDefault();
+        })
+
+        
+        // 添加滚轮事件
+        mouseScroll(wrap,function(){
+            // 滚动块top值
+            let y = css(scroll,'top');
+            // 变化赋值，往下走
+            y+=10;
+            // 最小值
+            y = Math.min(y,maxT);
+            // 计算比例
+            // 当前滚动块top值 / 滚动块最大的top值（当滚动块在最底下时top最大） = 当前拖拽比例
+            let scale = y / maxT;
+            // 当前内容区top值 = 显示内容区可滚动的最大滚动高度（最大top值） * 拖拽比例
+            screenY = maxScreenT * scale;
+            // 往下滚动，内容往上走，给负值
+            css(list,'top',-screenY)
+            // 滚动块位置赋值
+            css(scroll,'top',y);
+        },function(){
+            // 滚动块top值
+            let y = css(scroll,'top');
+            // 变化赋值，往上走
+            y-=10;
+            // 最大值
+            y = Math.max(y,0);
+            let scale = y / maxT;
+            screenY = maxScreenT * scale;
+            css(list,'top',-screenY)
+            css(scroll,'top',y);
+        })
+
+        // 滚轮事件,元素，上，下
+        function mouseScroll(el,downFn,upFn){
+            // 鼠标滚轮 mousewheel
+            // （IE6, IE7, IE8, Opera 10+, Safari 5+）中，都提供了 “mousewheel”
+            el.addEventListener('mousewheel',function(e){
+                // console.log(e)
+                // wheelDelta 正是向上，负是向下
+                if(e.wheelDelta > 0){
+                    // console.log('向上')
+                    // 有这个函数，才执行这个函数，并且把this指向指到这个元素上
+                    upFn&&upFn.call(el);
+                }else{
+                    // console.log('向下')
+                    downFn&&downFn.call(el);
+                }
+                // 在这个元素上，阻止浏览器默认行为，页面滚动
+                e.preventDefault();
+            })
+
+            //  Firefox 3.5+ 中提供了另外一个等同的事件：”DOMMouseScroll”
+            el.addEventListener('DOMMouseScroll',function(e){
+                console.log(e)
+                // detail 正是向下，负是向上
+                if(e.detail > 0){
+                    downFn&&downFn.call(el);     
+                }else{
+                    upFn&&upFn.call(el); 
+                }
+                e.preventDefault();
+            })
+    }
+
+
+
+    </script>
+</body>
+
+</html>

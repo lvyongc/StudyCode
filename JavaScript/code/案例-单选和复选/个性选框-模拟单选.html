@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head lang="en">
+    <meta charset="UTF-8" />
+    <title></title>
+    <link rel="stylesheet" href="./radio.css">
+    <script type="text/miaov">
+      注意：
+          1. 单选默认样式太难看，用自定义好看的样式
+          2. 演示单选的效果，说明只能选中一个
+          3. 强调一下程序从上而下执行的顺序问题
+    </script>
+    <script>
+      /*
+            模拟单选框
+                1. 获取全部a元素
+                2. 给每一个a添加点击处理
+                    使用for做重复的事
+                3. 设置每一个a的className为'';
+                4. 点击a，给当前点击的a添加className为'checked';
+
+        */
+      window.onload = function() {
+        var as = document.getElementsByTagName("a");
+        //给每一个a添加事件处理
+        for (var i = 0; i < as.length; i++) {
+          as[i].onclick = function() {
+            //alert(123); 测试点击后执行了这个函数
+
+            /*
+                        点击a的时候，先去掉设置每一个a的className为''
+                            使用for做重复的事
+                    */
+
+            for (var i = 0; i < as.length; i++) {
+              as[i].className = "";
+            }
+            //点击a的时候，this就执行被点击的a，此时给a添加className为'checked'
+            this.className = "checked";
+          };
+        }
+      };
+    </script>
+  </head>
+  <body>
+    <div class="box">
+      <!-- <form action="">
+        <input type="radio" name="sex" />男 <input type="radio" name="sex" />女
+        <input type="radio" name="sex" />保密
+      </form> -->
+
+      <!-- <h1>模拟单选</h1> -->
+      <div class="option">
+        <a href="javascript:;" class="checked">男</a>
+        <a href="javascript:;">女</a>
+        <a href="javascript:;">保密</a>
+      </div>
+    </div>
+  </body>
+</html>

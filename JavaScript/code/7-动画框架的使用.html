@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #box {
+            position: absolute;
+            left: 0;
+            top: 100px;
+            width: 100px;
+            height: 100px;
+            background: red;
+        }
+    </style>
+</head>
+<body>
+<button id="run">跑</button>
+<button id="stop">停</button>    
+<div id="box"></div>
+<script src="mTween.js"></script>
+<script>
+(function(){
+    var run = document.querySelector("#run");
+    var stop = document.querySelector("#stop");
+    var box = document.querySelector("#box");
+    /*
+    - css(el,attr[,value]) css 函数 设置或获取样式
+      - 两个参数时是获取样式，三个参数时是设置样式
+      - css 方法主要是配合动画使用的，所以单位做了处理  
+      - 注意: 非数值类的样式也可以获取，但是不能用来动画
+      - 注意: transform 相关样式的处理问题
+
+    只要以下样式，可以用来进行动画  
+    "width",
+    "height",
+    "left",
+    "top",
+    "right",
+    "bottom",
+    "marginBottom",
+    "marginleft",
+    "marginRight",
+    "marginTop",
+    "paddingLeft",
+    "paddingRight",
+    "paddingTop",
+    "paddingBottom"
+    "opacity"
+
+    "rotate",
+    "rotateX",
+    "rotateY",
+    "rotateZ",
+    "translateX",
+    "translateY",
+    "translateZ",
+    "scale",
+    "scaleX",
+    "scaleY",
+    "skewX",
+    "skewY"
+
+    */
+    run.onclick = function(){
+        // css(el,attr[,value]) 
+        //console.log(css(box,"width"));
+        //css(box,"height",200)
+        css(box,"background","blue");
+    };
+})();    
+</script>    
+</body>
+</html>

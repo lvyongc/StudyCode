@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head lang="en">
+    <meta charset="UTF-8" />
+    <title></title>
+    <link rel="stylesheet" href="./radio.css">
+  </head>
+  <body>
+    <div class="box">
+      <div class="option">
+        <a href="javascript:;" class="checked">男</a>
+        <a href="javascript:;">女</a>
+        <a href="javascript:;">保密</a>
+      </div>
+    </div>
+    <script>
+      //单选
+      var btns = document.querySelector('.option').querySelectorAll('a');
+
+      for(var i=0; i<btns.length;i++){
+        btns[i].onclick = function(){
+         for(var i=0; i<btns.length;i++){
+           if(this == bnts[i]){
+             this.classList.add('checked');
+           }else{
+             this.classList.remove('checked');
+           }
+        }
+      }
+
+   </script>
+
+
+    <!-- <script>
+
+    //多选
+
+      var btns = document.querySelector('.option').querySelectorAll('a');
+
+      for(var i=0; i<btns.length;i++){
+        btns[i].onclick = function(){
+          // if(this.classList.contains('checked')){
+          //   this.classList.remove('checked')
+          // }else{
+          //   this.classList.add('checked')
+          // }
+          this.classList.toggle('checked');
+          }
+      }
+    </script> -->
+
+
+    <script>
+
+      //单选
+
+      // 点击本身a标签 将自己的class变成 checked
+      // 点击之后 先将其他按钮的class-checked 删除掉
+       var btns = document.querySelector('.option').querySelectorAll('a');
+
+       for(var i=0; i<btns.length;i++){
+         btns[i].onclick = function(){
+          //  删除所有按钮上的class-checked
+            for(var i=0;i<btns.length;i++){
+              btns[i].classList.remove('checked');
+            }
+
+            this.classList.add('checked');
+         }
+       }
+
+    </script>
+  </body>
+</html>

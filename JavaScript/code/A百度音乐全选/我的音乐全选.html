@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Document</title>
+  <link rel="stylesheet" href="./index.css" />
+</head>
+
+<body>
+  <section id="wrap">
+    <h2 class="title">百度音乐榜单</h2>
+    <ul id="list">
+      <li>
+          <input type="checkbox" />
+          <span>第一条信息</span>
+          <a href="javascript:;" class="collect">收藏</a>
+          <a href="javascript:;" class="cancelCollect">取消收藏</a>
+          <a href="javascript:;" class="remove">删除</a>
+        </li>
+        
+    </ul>
+    <footer class="footer">
+      <label><input type="checkbox" id="checkAll" />全选/全不选</label>
+      <a href="javascript:;" id="remove">删除</a>
+      <input type="text" id="newInfo" />
+      <a href="javascript:;" id="add">添加</a>
+    </footer>
+  </section>
+  <script>
+    {
+      let data = [
+        {
+          id: 0,
+          title: "残酷月光 - 费启鸣",
+          checked: true,
+          collect: true
+        }, {
+          id: 1,
+          title: "兄弟 - 艾热",
+          checked: true,
+          collect: false
+        }, {
+          id: 2,
+          title: "毕生 - 夏增祥",
+          checked: true,
+          collect: true
+        }, {
+          id: 3,
+          title: "公子向北去 - 李春花",
+          checked: false,
+          collect: false
+        }, {
+          id: 4,
+          title: "战场 - 沙漠五子",
+          checked: true,  // 选中 true    未选中  false
+          collect: false //是否收藏 true 收藏 false 没有收藏
+        }
+      ];
+        // ul列表
+        let list=document.querySelector('#list');
+        let checkAll=document.querySelector('#checkAll');
+        let removeBtn=document.querySelector('#remove');
+        let addBtn=document.querySelector('#add');
+        // 输入框
+        let newInfo=document.querySelector('#newInfo');
+
+        // 渲染数据
+        let render=()=>{
+            let html ='';
+            data.forEach(item=>{
+                html+=`
+                <li>
+                    <input type="checkbox" ${item.checked?'checked':''} />
+                    <span>${item.title}</span>
+                    ${
+                        !item.collect?
+                        '<a href="javascript:;" class="collect">收藏</a>':
+                        '<a href="javascript:;" class="cancelCollect">取消收藏</a>'
+                    }
+                    <a href="javascript:;" class="remove">删除</a>
+                </li>`
+            });
+
+            list.innerHTML=html;
+
+            // 全选 条件
+            checkAll.checked = data.every(item=>item.checked)&&data.length>0;
+            // 渲染后绑定事件
+            addEv()
+        }
+
+        // 点击事件
+        let addEv=()=>{
+          // 所有li
+            let aLi=list.querySelectorAll('li');
+
+            aLi.forEach((item,index)=>{
+                let collect=item.querySelector('.collect');  // 收藏
+                let cancelCollect=item.querySelector('.cancelCollect'); // 取消收藏
+                let remove=item.querySelector('.remove'); // 删除
+                let input=item.querySelector('input');  // 选中按钮
+
+                // 收藏
+                // 存在并且点击
+                collect&& (collect.onclick=()=>{
+                    // collect 是 有和没有2种结果
+                    data[index].collect=!data[index].collect;
+                    render();
+                })
+                // 取消收藏
+                cancelCollect&& (cancelCollect.onclick=()=>{
+                    data[index].collect=!data[index].collect;
+                    render();
+                })
+                // 删除
+                remove.onclick=()=>{
+                    data.splice(index,1);
+                    render();
+                }
+
+                // 找到对应的数据，改变 选中 的状态
+                input.onchange=()=>{
+                    // 等于 反值
+                    data[index].checked=!data[index].checked;
+                    // console.log(data[index].checked)
+                
+                    render();
+                }
+
+            })
+        }
+
+        // 全选
+        checkAll.onchange=function(){
+            // console.log(this.checked)
+            data.forEach(item=>{
+                item.checked=this.checked;
+            })
+            render();
+        }
+
+        // 删除
+        removeBtn.onclick=()=>{
+          // 过滤保留没有选中的数据
+            data=data.filter(item=>!item.checked);
+            render();
+        }
+
+        // 添加
+        addBtn.onclick=()=>{
+            let obj={}
+            obj.id=data.length;
+            obj.title=newInfo.value;
+            obj.checked=false;
+            obj.collect=false;
+
+            data.push(obj);
+            newInfo.value = '';
+            render();
+            
+        }
+        render();
+
+
+    }
+  </script>
+</body>
+
+</html>

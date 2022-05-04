@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>时钟</title>
+    <style>
+        ul{
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        #clock-wrap {
+            width: 120px;
+            height: 120px;
+            border: 2px solid #fff;
+            background: #eeeded;
+            border-radius: 50%;
+            box-shadow: 0 0 5px #000;
+            padding: 10px;
+            margin: 200px auto;
+        }
+
+        #clock {
+            width: 110px;
+            height: 110px;
+            background: url(./imgs/clock-bg.png) no-repeat center center;
+            border: 5px solid #e15671;
+            border-radius: 50%;
+        }
+
+        #box {
+            position: relative;
+        }
+
+        .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 3px;
+            background: #fff;
+            position: absolute;
+            left: 52px;
+            top: 52px;
+        }
+
+        .hour {
+            width: 7px;
+            height: 35px;
+            background-color: #fff;
+            border-radius: 3px;
+            position: absolute;
+            left: 51px;
+            top: 22px;
+            transform-origin: center 33px;
+        }
+
+        .min {
+            width: 4px;
+            height: 44px;
+            background: #fff;
+            border-radius: 3px;
+            position: absolute;
+            left: 52px;
+            top: 14px;
+            transform-origin: center 42px;
+        }
+
+        .sec {
+            width: 43px;
+            height: 44px;
+            background: url(./imgs/hand.png) no-repeat;
+            position: absolute;
+            left: 18px;
+            top: 16px;
+            transform-origin: 37px 39px;
+        }
+
+        #lattice-list {
+            position: relative;
+        }
+
+        .lattice {
+            width: 2px;
+            height: 6px;
+            background: #fff;
+            position: absolute;
+            left: 55px;
+            transform-origin: left 55px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="clock-wrap">
+        <div id="clock">
+            <ul id="lattice-list"></ul>
+            <div id="box">
+                <div class="dot"></div>
+                <div class="hour"></div>
+                <div class="min"></div>
+                <div class="sec"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        let clockTimer = null;
+        let hourEle = document.querySelector('.hour');
+        let minEle = document.querySelector('.min');
+        let secEle = document.querySelector('.sec');
+        // 生成表盘指针
+        ;
+        (function () {
+            let latticeList = document.getElementById('lattice-list');
+            let html = '';
+            for (let i = 0; i < 12; i++) {
+                html += `<li class="lattice" style="transform:rotate(${i*30}deg)"></li>`
+            }
+            latticeList.innerHTML = html;
+        })();
+        //表盘时间
+        function clock() {
+            let date = new Date();
+            let sec = date.getSeconds();
+            let min = date.getMinutes() + sec / 60;
+            let hour = date.getHours() + min / 60;
+
+            hourEle.style.transform = `rotate(${hour*30}deg)`;
+            minEle.style.transform = `rotate(${min*6}deg)`;
+            secEle.style.transform = `rotate(${sec*6+45}deg)`;
+        }
+        clock()
+        clockTimer = setInterval(() => {
+            clock();
+        }, 1000)
+    </script>
+</body>
+
+</html>

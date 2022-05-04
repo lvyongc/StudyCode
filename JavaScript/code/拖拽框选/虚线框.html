@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .frame{
+            border:2px dotted #333;
+            position: absolute;
+            top:0;
+            left:0;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        function css(obj,attr,val){
+            if(arguments.length == 2){
+                return parseFloat(getComputedStyle(obj)[attr]);
+            }else{
+                obj.style[attr] = val + 'px';
+            }
+        }
+
+        document.addEventListener('mousedown',function(e){
+            // 鼠标位置
+            var start = {
+                x:e.clientX,
+                y:e.clientY
+            }
+
+            // 创建一个虚线框
+            var box = document.createElement('div');
+            box.classList.add('frame');
+            document.body.appendChild(box);
+
+            // 设置元素的位置
+            css(box,'left',start.x)
+            css(box,'top',start.y)
+
+            document.addEventListener('mousemove',move)
+
+            function move(e){
+                // 移动距离
+                var dis = {
+                    // 设置正值，绝对值
+                    x:Math.abs(e.clientX - start.x),
+                    y:Math.abs(e.clientY - start.y),
+                }
+
+                // 设置
+                css(box,'width',dis.x)
+                css(box,'height',dis.y)
+
+                // top、left  只听最小的值，最小值是 left top
+                // 设置正值
+                css(box,'left',Math.min(start.x,e.clientX))
+                css(box,'top',Math.min(start.y,e.clientY))
+            }
+
+            // 清除
+            document.addEventListener('mouseup',function(){
+                document.removeEventListener('mousemove',move)
+
+                // 删除虚线框
+                box.remove();
+            },{
+                once:true
+            })
+
+        })
+    </script>
+</body>
+</html>

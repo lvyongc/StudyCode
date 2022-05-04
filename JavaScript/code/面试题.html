@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    let data = [
+        {"parent_id": null, "id": 'a', 'value': 'a'},
+        {"parent_id": 'a', "id": 'c', 'value': 'c'},
+        {"parent_id": 'd', "id": 'f', 'value': 'f'},
+        {"parent_id": 'c', "id": 'e', 'value': 'e'},
+        {"parent_id": 'b', "id": 'd', 'value': 'd'},
+        {"parent_id": 'a', "id": 'b', 'value': 'b'},
+    ];
+    // 转换为
+
+    let tree = {
+        'a': {
+            value: 'xxx',
+            children: {
+                'b': {
+                    value: 'xxx',
+                    children: {
+                        'd': {
+                            value: 'xxx',
+                            children: {
+                                'f': {
+                                    value: 'xxx'
+                                }
+                            }
+                        }
+                    }
+                },
+                'c': {
+                    value: 'xxx',
+                    children: {
+                        'e': {
+                            value: 'xxx'
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+    function transformToTree(data) {
+        let result = {};
+        let newData;
+        data.sort((a, b) => a.id.codePointAt() - b.id.codePointAt());
+        newData = data.filter(item => !item.parent_id);
+        newData.forEach(item => {
+            result[item.id] = {
+                value: item.value
+            };
+        });
+        function loop(result) {
+            for (const key in result) {
+                let newData = data.filter(item => item.parent_id === key);
+                if (newData.length) {
+                    newData.forEach(item => {
+                        result[key].children = result[key].children || {};
+                        result[key].children[item.id] = {
+                            value: item.value
+                        };
+                        loop(result[key].children);
+                    });
+                }
+            }
+        }
+        loop(result);
+        return result;
+    }
+
+    console.log(transformToTree(data));
+</script>
+</body>
+</html>

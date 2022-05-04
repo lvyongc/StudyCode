@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Document</title>
+<style>
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+} 
+img {
+    vertical-align: top;
+}
+/* body {
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+} */
+#wrap {
+    margin: 40px auto;
+    position: relative;
+    width: 600px;
+    height: 400px;
+    border: 2px solid #000;
+    overflow: hidden;
+}    
+#pics {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: flex;
+    height: 400px;
+    z-index: 1;
+}
+#pics li{
+    width: 600px;
+    height: 400px;
+    overflow: hidden;
+}
+#pics img {
+    width: 600px;
+    height: 400px;
+}
+/* .btn {
+    position: absolute;
+    top: 170px;
+    z-index: 2;
+    width: 60px;
+    font: 40px/60px "宋体";
+    text-align: center;
+    background: rgba(255, 255, 255, .6);
+    text-decoration: none;
+    color: #000;
+} */
+/* .btn:hover {
+    background: #fff;
+}
+.prev {
+    left: 0;
+}
+.next {
+    right: 0;
+}
+#navs {
+    position: absolute;
+    left: 0;
+    bottom: 10px;
+    z-index: 3;
+    width: 100%;
+    text-align: center;
+}
+#navs a {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background: #fff;
+}
+#navs .active {
+    background: #f60;
+} */
+</style>
+<!-- <script src="move.js"></script> -->
+<!-- <script src="https://code.createjs.com/1.0.0/tweenjs.min.js"> </script> -->
+</head>
+<body>
+<div id="wrap">
+    <ul id="pics">
+        <li>
+            <img src="img2/img (1).jpg" />
+        </li>
+        <li>
+            <img src="img2/img (2).jpg" />
+        </li>
+        <li>
+            <img src="img2/img (3).jpg" />
+        </li>
+        <li>
+            <img src="img2/img (4).jpg" />
+        </li>
+        <li>
+            <img src="img2/img (5).jpg" />
+        </li>
+        <li>
+            <img src="img2/img (1).jpg" />
+        </li>
+    </ul>
+    <a href="javascript:;" class="btn prev"><</a>
+    <a href="javascript:;" class="btn next">></a>
+    <nav id="navs">
+        <a class="active"></a>
+        <a></a>
+        <a></a>
+        <a></a>
+        <a></a>
+    </nav>
+</div>
+<!-- <script>
+    var pics = document.querySelector('#pics');
+    var lis = pics.querySelectorAll('li');
+    var navs = document.querySelector('#navs');
+    var prev = document.querySelector('.prev');
+    var next = document.querySelector('.next');
+    var iNow = 0;
+
+    next.addEventListener('click',function(){
+        // pics.
+        iNow++;
+        if(iNow==lis.length){
+            iNow = 1;
+            css(pics,'left',0);
+        }
+        fn1()
+    })
+
+    prev.addEventListener('click',function(){
+        if(iNow==0){
+            iNow = lis.length-1;
+            css(pics,'left',iNow*-600);
+        }
+        iNow--;
+
+        fn1()
+    })
+
+    function fn1(){
+        moveFn({
+            el:pics,
+            attrs:{
+                left:-600*iNow
+            }
+        })
+    }
+
+</script> -->
+</body>
+</html>

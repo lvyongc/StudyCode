@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        .wrap{
+            width: 700px;
+            height: 500px;
+            background: url(img/bg.jpg) no-repeat;
+            background-size: cover;
+            margin: 150px auto;
+            text-align: center;
+        }
+        textarea{
+            border: 2px solid #534590;
+            width: 360px;
+            height: 130px;
+            background: #fff;
+            border-radius: 8px;
+            resize: none;
+            margin-top: 118px;
+            padding: 5%;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        ul{
+            list-style: none;
+        }
+        button{
+            display: block;
+            width: 100px;
+            height: 30px;
+            border: 2px solid #fff;
+            background: #14afd0;
+            font-size: 14px;
+            line-height: 30px;
+            font-family: "微软雅黑";
+            border-radius: 12px;
+            color: #fff;
+            margin-left: 430px;
+
+        }
+        #list{
+            width: 360px;
+            margin: 17px 0 0 170px;
+        }
+        #list li{
+            height: 40px;
+            margin-bottom: 12px;
+            background: #554892;
+            border-radius: 12px;
+            color: #fff;
+            padding-left: 20px;
+            box-sizing: border-box;
+            line-height: 40px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <textarea id="text">我这内容</textarea>
+    <button id="btn">提交</button>
+    <ul id="list">
+        
+    </ul>
+</div>
+<script>
+    var text=document.querySelector('#text');
+    var btn=document.querySelector('#btn');
+    var list=document.querySelector('#list');
+    btn.onclick=function(){
+        var val = text.value;
+        console.log(val)
+        list.innerHTML += '<li>' + val + '</li>'
+    }
+</script>
+
+
+
+
+
+
+
+<!-- <script>
+
+/*
+    0：点击btn
+    1：获取text的内容
+    2：在list中添加一个li，li的内容是我们获取到的 text 的内容
+*/
+// 1. 获取元素
+var text = document.querySelector("#text");
+var btn = document.querySelector("#btn");
+var list = document.querySelector("#list");
+btn.onclick = function(){
+    // 获取获取text的内容 -- 注意 表单元素要获取内容的话：需要获取 value
+    // console.log(text.value);
+
+
+    // 普通元素获取内容的话，需要获取 innerHTML 属性
+    console.log(list.innerHTML);
+    // 直接操作innerHTML 会把 元素本身的内容都覆盖掉
+    list.innerHTML = "<li>天气不错2</li><li>天气不错3</li>";
+};
+</script> -->
+</body>
+</html>

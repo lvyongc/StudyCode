@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//h2D XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/h2D/xhtml1-transitional.h2d">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>超酷数码钟表 - 妙味课堂 - www.miaov.com</title>
+<link href="miaov_style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+<div id="clock" class="date">
+    <h2><img src="images/title.png" /></h2>
+    <div class="year">
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img src="images/year.png" alt="year" longdesc="http://www.miaov.com" />
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img src="images/month.png" alt="month" longdesc="http://www.miaov.com" />
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img src="images/seven.png" alt="seven" longdesc="http://www.miaov.com" />
+    </div>
+    <div class="time">
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img src="images/sign.png" alt="sign" longdesc="http://www.miaov.com" />
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img src="images/sign.png" alt="sign" longdesc="http://www.miaov.com" />
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img class="num" src="images/0.png" alt="0" longdesc="http://www.miaov.com" />
+        <img class="pos2" src="images/week.png" alt="week" longdesc="http://www.miaov.com" />
+        <img class="num2" src="images/one.png" alt="1" longdesc="http://www.miaov.com" />
+    </div>
+    <div class="url" title="妙味课堂-超酷时钟"><a href="http://www.miaov.com/"><img src="images/miaov.png" alt="妙味课堂" longdesc="http://www.miaov.com" /></a></div>
+</div>
+<script>
+(function(){
+    var num = document.querySelectorAll(".num");
+    var nub2 = document.querySelector(".num2");
+    var week = [
+        "images/seven.png",
+        "images/one.png",
+        "images/two.png",
+        "images/three.png",
+        "images/four.png",
+        "images/five.png",
+        "images/six.png"
+    ];
+    /*
+        目前有14张图，代表了年月日时分秒:  0000年00月00日00时00分00秒
+    */
+    setInterval(setTime,1000); // setInterval 第一次执行在间隔之后
+    setTime();
+    function setTime(){
+        var date = new Date();
+        var year = date.getFullYear();
+        var month = toDB(date.getMonth() + 1);
+        var date2 = toDB(date.getDate()); 
+        var hours = toDB(date.getHours()); 
+        var minutes = toDB(date.getMinutes());
+        var seconds = toDB(date.getSeconds());
+        var day = date.getDay();
+        var time = year + month + date2 + hours + minutes + seconds; //将时间拼接成 14 位字符串 这样字符串的每一位 刚好对应一张图片
+        for(var i = 0; i <num.length; i++ ){
+            num[i].src = "images/" + time[i] + ".png";
+        }
+        nub2.src = week[day];
+    }
+    // toDB 如果 数字一位就在前边补个 0 
+    function toDB(nub){
+        return nub < 10? "0" + nub: "" + nub;
+    }
+})();
+</script>
+</body>
+</html>

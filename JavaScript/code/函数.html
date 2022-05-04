@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #box{
+            width: 100px;
+            height: 100px;
+            background: red;
+        }
+    </style>
+</head>
+<body>
+    <button id="btn1">按钮</button>
+    <button id="btn2">按钮</button>
+    <div id="box"></div>
+   
+    <script>
+        function(){
+            //匿名函数
+        }
+        function fn(){
+            //有名函数
+            alert(123)
+        }
+        fn()    //函数调用
+
+        var box = document.getElementById('box');
+        box.onclick = function(){
+            alert(222)
+            //匿名函数的事件调用
+        }
+
+        var box = document.getElementById('box');
+        var btn2 = document.getElementById('btn2');
+        var btn1 = document.getElementById('btn1');
+        btn1.onclick=fn;
+        btn2.onclick=fn;
+        function fn(){
+            box.style.width = '1000px';
+        }
+    </script>
+</body>
+</html>

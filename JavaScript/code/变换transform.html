@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg)
+            }
+            to {
+                transform: rotate(360deg)
+            }
+        }
+        #box {
+            margin: 100px auto;
+            width: 200px;
+            height: 200px;
+            padding: 200px;
+            border: 2px solid #000;
+        }
+        #div {
+            transition: 3s;
+            width: 200px;
+            height: 200px;
+            background: red;
+            font: 140px/200px "宋体";
+            color: #fff;
+            text-align: center;
+        }
+        #box:hover #div {
+            transform: translate(100px,100px);
+            /* transform: rotate(-40deg); */
+            /* transform:skewX(60deg); */
+            /* transform:scale(2); */
+        }
+    /*
+        transform 变换
+            1. 旋转
+                rotate() 单位: deg
+            2. 斜切  单位:deg
+                skew(x,y)
+                skewX()
+                skewY()
+            3. 缩放 (倍数)
+                scale() x y 一起缩放 
+                scaleX() 
+                scaleY()
+            4. 位移
+                translate(x,y)
+                translateX()
+                translateY()
+    */    
+    </style>
+</head>
+<body>
+    <div id="box">
+        <div id="div">上</div>
+
+</body>
+</html>

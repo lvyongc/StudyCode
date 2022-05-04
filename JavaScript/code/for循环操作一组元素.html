@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<div id="box">
+    <button class="btn">1</button>
+    <button class="btn">2</button>
+    <button class="btn">3</button>
+    <button class="btn">4</button>
+    <button class="btn">5</button>
+</div>
+
+<script>
+var box = document.querySelector("#box");
+var btns = box.querySelectorAll("button");
+for(var i = 0; i< btns.length;i++){
+    btns[i].style.background = "red";
+}
+</script>    
+</body>
+</html>

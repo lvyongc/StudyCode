@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #box{
+            width: 100px;
+            height: 100px;
+            background-color: aqua;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <div id="box" class="q1" style="width:100px">
+        你好
+    </div>
+    <script>
+        var box =document.getElementById('box');
+        console.log(box.style.width);
+        //style 获取的是行间样式
+        console.log(box.className)
+    </script>
+</body>
+</html>

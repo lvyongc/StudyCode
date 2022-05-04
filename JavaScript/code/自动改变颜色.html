@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #box{
+            width: 200px;
+            height: 200px;
+            background-color: aqua;
+        }
+    </style>
+</head>
+<body>
+    <div id="box"></div>
+    <button>改变</button>
+    <button>停止</button>
+    <script>
+        (function(){
+            var colors = ['red','blue','black','yellow','pink','green'];
+            var btn = document.querySelectorAll('button');
+            var box = document.getElementById('box');
+            var now = 0;
+            var timer = 0;
+            btn[0].onclick = function(){
+                // clearInterval(timer);       //直接关掉
+                if(timer){
+                    return;             //判断是否开启，开启不执行后面代码，0是假
+                }
+                timer =  setInterval(function(){
+                    now++;
+                console.log(colors[now%colors.length]);
+                box.style.background = colors[now%colors.length];
+                },500); 
+            }
+            btn[1].onclick = function(){
+                clearInterval(timer);
+                timer = 0;
+            }
+        })()
+    </script>
+</body>
+</html>

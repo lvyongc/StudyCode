@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+    <link rel="stylesheet" href="./index.css" />
+    
+  </head>
+  <body>
+    <div class="box">
+      <div class="container">
+        <ul id="list">
+          <li>
+            <div class="list-left">
+              <input type="button" class="minus" value="-" />
+              <span class="n">0</span>
+              <input type="button" class="plus" value="+" />
+            </div>
+            <div class="list-right">
+              <span>单价：</span>
+              <em class="price">12.5元</em>
+              <span>小计：</span>
+              <em class="count">0元</em>
+            </div>
+          </li>
+          <li>
+            <div class="list-left">
+              <input type="button" class="minus" value="-" />
+              <span class="n">0</span>
+              <input type="button" class="plus" value="+" />
+            </div>
+            <div class="list-right">
+              <span>单价：</span>
+              <em class="price">13.5元</em>
+              <span>小计：</span>
+              <em class="count">0元</em>
+            </div>
+          </li>
+          <li>
+            <div class="list-left">
+              <input type="button" class="minus" value="-" />
+              <span class="n">0</span>
+              <input type="button" class="plus" value="+" />
+            </div>
+            <div class="list-right">
+              <span>单价：</span>
+              <em class="price">14.5元</em>
+              <span>小计：</span>
+              <em class="count">0元</em>
+            </div>
+          </li>
+          <li>
+            <div class="list-left">
+              <input type="button" class="minus" value="-" />
+              <span class="n">0</span>
+              <input type="button" class="plus" value="+" />
+            </div>
+            <div class="list-right">
+              <span>单价：</span>
+              <em class="price">15.5元</em>
+              <span>小计：</span>
+              <em class="count">0元</em>
+            </div>
+          </li>
+          <li>
+            <div class="list-left">
+              <input type="button" class="minus" value="-" />
+              <span class="n">0</span>
+              <input type="button" class="plus" value="+" />
+            </div>
+            <div class="list-right">
+              <span>单价：</span>
+              <em class="price">16.5元</em>
+              <span>小计：</span>
+              <em class="count">0元</em>
+            </div>
+          </li>
+        </ul>
+        <p>商品合计共：<strong>0</strong>件，共花费了：<strong>0</strong>元</p>
+        <p>其中最贵的已选商品单价是：<strong>0</strong>元</p>
+      </div>
+    </div>
+    <script>
+      // 1.获取当前有几件商品 然后++
+      // 2.根据件数 和计算总价 单价 
+      // 3.总计：
+      //   1.获取所有商品的件数，如果件数大于 0 就计入总件数
+      //   2.把所有商品的价格相加
+      //   3.计算最贵单价
+      (function(){
+        var list = document.querySelectorAll('#list li');
+        var inners = document.querySelectorAll('p')
+        list.forEach(function(item){
+          // console.log(item);  所有li
+          var minus = item.querySelector('.minus');
+          var plus = item.querySelector('.plus');
+          var n = item.querySelector('.n');
+          // 记录商品件数
+          var nub = Number(n.innerHTML);
+          // 单价
+          var price = parseFloat(item.querySelector('.price').innerHTML);
+          // 单价计算
+          var count = item.querySelector('.count');
+          minus.onclick = function(){
+            if(nub<=0){
+              return;
+            }else{
+              nub--;
+            }
+            reduce();
+          }
+          plus.onclick = function(){
+              nub++; 
+              reduce();
+          }
+          // 根据商品件数计算
+          // reduce 在计算遇到空数组会报错，判断大于0 或创建数组时添加0
+          function reduce(){
+            n.innerHTML = nub;
+            count.innerHTML = nub*price + '元';
+            // 不管商品件数增加或减少这里都需要汇总
+            total();
+          }
+        })
+        // 汇总
+        function total(){
+          // 每件商品件数
+          var count = [];
+          // 每件商品的单价
+          var prices = [];
+          // 每件商品的总价格
+          var totalPrices = [];
+          // item 是每一项
+          list.forEach(function(item){
+            var n = item.querySelector('.n');
+            // 每件商品的件数
+            var nub = Number(n.innerHTML);
+            if(nub > 0){
+              var price = parseFloat(item.querySelector('.price').innerHTML);
+              count.push(nub);
+              prices.push(price);
+              totalPrices.push(nub*price);
+            }
+          });
+          // 购买1件以上的商品的，件数，单价，总价
+          console.log(count,prices,totalPrices);
+          // 汇总总件数
+          inners[0].innerHTML = '商品合计共：<strong>'+ 
+            count.reduce(function(n1,n2){
+              return n1 + n2;
+            },0)
+            +'</strong>件，共花费了：<strong>'+
+            // 总价格
+            totalPrices.reduce(function(n1,n2){
+              return n1 +n2;
+            },0)
+              +'</strong>元';
+            // 最贵单价
+          inners[1].innerHTML = '其中最贵的已选商品单价是：<strong>'+
+            prices.reduce(function(n1,n2){
+              return Math.max(n1,n2);
+            },0)
+            +'</strong>元';
+        }
+      })();
+    </script>
+  </body>
+</html>

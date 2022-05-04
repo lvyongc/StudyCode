@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        /* 点的动画 */
+        @keyframes dot {
+            0% {
+                opacity: 0;
+            }
+            20% {
+                opacity: 1;
+            }
+            40% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+        #wrap {
+           margin: 100px auto;
+           width: 700px; 
+           display: flex;
+        }
+        .num {
+            margin: 0 10px;
+            width: 80px;
+            height: 120px;
+            overflow: hidden;
+        }
+        .num-inner div {
+            width: 78px;
+            height: 118px;
+            font: 50px/118px "宋体";
+            color: #fff;
+            background: #000;
+            border: 1px solid #fff;
+            text-align: center;
+            border-radius: 20px;
+        }
+        /* 调用点的动画 */
+        .dot {
+            font: bold 50px/120px "楷体";
+            animation: 1s dot linear infinite;
+        }
+    </style>
+</head>
+<body>
+    <div id="wrap">
+        <div class="num">
+            <div class="num-inner">
+                <div>0</div>
+                <div>0</div>
+            </div>
+        </div>
+        <div class="num">
+            <div class="num-inner">
+                <div>0</div>
+                <div>0</div>
+            </div>
+        </div>
+        <div class="dot">:</div>
+        <div class="num">
+            <div class="num-inner">
+                <div>0</div>
+                <div>0</div>
+            </div>
+        </div>
+        <div class="num">
+            <div class="num-inner">
+                <div>0</div>
+                <div>0</div>
+            </div>
+        </div>
+        <div class="dot">:</div>
+        <div class="num">
+            <div class="num-inner">
+                <div>0</div>
+                <div>0</div>
+            </div>
+        </div>
+        <div class="num">
+            <div class="num-inner">
+                <div>0</div>
+                <div>0</div>
+            </div>
+        </div>
+    </div>
+<script src="mTween.js"></script>
+<script>
+(function(){
+    // 所有数字
+    var nums = document.querySelectorAll('.num-inner');
+    // 开始的时间
+    var nowTime = '000000';
+
+    function toTime(){
+        // 获取时间
+        var date = new Date;
+        var hour = toDB(date.getHours());
+        var minute = toDB(date.getMinutes());
+        var second = toDB(date.getSeconds());
+        // 要显示的时间
+        var nextTime = hour + minute + second;
+        // 父级高度
+        var numH = css(nums[0],"height");
+        // console.log(hour,minute,second)
+        // console.log(time)
+        // 每一张图
+        nums.forEach(function(item,index){
+            // console.log(item,index)
+            // 数字
+            var divs = item.querySelectorAll('div');
+            // 初始值，每次完成归零
+            css(item,'translateY',0);
+            // 当前显示的
+            divs[0].innerHTML = nowTime[index];
+            // 接下来要显示的
+            divs[1].innerHTML = nextTime[index];
+            // 当前时间 等于 下面要显示的时间，就不用执行动画
+            if(nowTime[index] === nextTime[index]){
+            return
+            }
+            // 动画
+            mTween({
+                el:item,
+                attr:{
+                    // 父级高度240，有2个子级，每个子级120，向上移动是负值
+                    // 从0开始移动到-120
+                    translateY: - numH/2
+                }
+            })
+        });
+        // 完成一次后的最终时间nextTime是下一次开始的时间
+        nowTime = nextTime
+    };
+    // 定时器1秒后才执行，上来是0，先手动执行一次
+    toTime();
+    setInterval(toTime,1000);
+    // 补零
+    function toDB(nub){
+        return nub < 10?'0' + nub:''+nub;
+    }
+})();
+
+
+
+
+//老师的：  
+/*(function(){
+    var nums = document.querySelectorAll(".num-inner");
+    var nowTime = '000000';
+    var numH = css(nums[0],"height");
+    toTime();
+    setInterval(toTime,1000);
+    function toTime(){
+        var date = new Date();
+        var hour = toDB(date.getHours());
+        var minute = toDB(date.getMinutes());
+        var second = toDB(date.getSeconds());
+        var nextTime = hour +  minute + second; //要立马显示的时间
+        nums.forEach(function(item,index){
+            var divs = item.querySelectorAll("div");
+           // console.log(nowTime[index],nextTime[index]);
+            if(nowTime[index] === nextTime[index]){
+                return ;
+            }
+            divs[0].innerHTML = nowTime[index]; 
+            divs[1].innerHTML = nextTime[index];
+            css(item,"translateY",0);//归 0 
+            mTween({
+                el: item,
+                attr: {
+                    translateY: -numH/2 //向上移动 父级高度的一半
+                } 
+            });
+        });
+        nowTime = nextTime;
+    }
+    // 补零
+    function toDB(nub){
+        return nub < 10?"0" + nub:"" + nub;
+    }*/
+</script>    
+</body>
+</html>

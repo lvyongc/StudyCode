@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+         (function(){
+             var arr = ['一','二','五','三','四'];
+             var index = {
+                 一:1,
+                 二:2,
+                 三:3,
+                 四:4,
+                 五:5
+             }
+             arr.sort(function(n1,n2){
+                return index[n1] - index[n2];
+             })
+             console.log(arr);
+         })();
+    </script>
+   
+</body>
+</html>

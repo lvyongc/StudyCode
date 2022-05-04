@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <!--启用最新的IE引擎进行页面的渲染-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--设置移动设备时候需要的视口-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>Bootstrap 101 Template</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+    <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        .container{
+            background: pink;
+        }
+        div[class |="col"]{
+            height: 80px;
+            border:1px solid #000;
+            font-size: 30px;
+            text-align: center;
+            line-height: 80px;
+        }
+        .container-fluid{
+            height: 500px;
+            background: orange;
+        }
+    </style>
+</head>
+<body>
+<!--固定宽度布局容器：固定宽度再中间显示-->
+<div class="container ">
+    <!--<h1>你好，世界！</h1>-->
+    <div class="row">
+        <!--<div class="col-md-1 col-sm-3 col-sm-offset-3">1</div>-->
+        <div class="col-md-1 col-sm-3 col-sm-push-6">1</div>
+        <div class="col-md-1 col-sm-3">2</div>
+        <div class="col-md-1 col-sm-3 col-sm-pull-6">3</div>
+        <div class="col-md-1 col-sm-3">.col-md-1</div>
+        <div class="col-md-1 col-sm-3">.col-md-1</div>
+        <div class="col-md-1 col-sm-3">.col-md-1</div>
+        <div class="col-md-1 col-sm-3">.col-md-1</div>
+        <div class="col-md-1 col-sm-3">.col-md-1</div>
+        <div class="col-md-1 col-sm-3">.col-md-1</div>
+        <div class="col-md-1 col-sm-3">.col-md-1</div>
+        <div class="col-md-1 col-sm-3">.col-md-1</div>
+        <div class="col-md-1 col-sm-3">.col-md-1</div>
+    </div>
+    <div class="row">
+        <div class="col-md-8">.col-md-8</div>
+        <div class="col-md-4">.col-md-4</div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">.col-md-4</div>
+        <div class="col-md-4">.col-md-4</div>
+        <div class="col-md-4">.col-md-4</div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">.col-md-6</div>
+        <div class="col-md-6">.col-md-6</div>
+    </div>
+</div>
+<!--流体布局容器 ： 100%-->
+<div class="container-fluid">
+    <!--<h1>你好，世界！</h1>-->
+    <div class="col-md-4">我们不一样</div>
+    <div class="col-md-4">我们不一样</div>
+    <div class="col-md-4">我们不一样</div>
+</div>
+<!--
+    bootstrap：
+        1> 把整个页面分成了12个格子
+        2> 列必须在行内，行必须在布局容器内
+        3> 通过xs、sm、md、lg去控制列的位置
+
+
+-->
+</body>
+</html>

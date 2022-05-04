@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link href="css/bootstrap.css" rel="stylesheet" />
+    <style>
+        .panel {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container" id="view">
+    
+</div>
+<script>
+    {
+        let view = document.querySelector('#view');
+
+        function render(){
+            let hash = window.location.hash;
+            console.log(hash)
+            switch(hash){
+                case '':
+                    view.innerHTML=indexRender();
+                break;
+                case '#/course':
+                    view.innerHTML=courseRender();
+                break;
+                case '#/about':
+                    view.innerHTML=aboutRender();
+                break;
+                case '#/join':
+                    view.innerHTML=joinRender();
+                break;
+                default:
+                    view.innerHTML = '<div>404</div>'
+            }
+        }
+
+        render()
+        window.onhashchange =render;
+
+    }
+
+    function indexRender(){
+        return `
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#">首页</a></li>
+            <li><a href="#/course">课程页</a></li>
+            <li><a href="#/about">关于我们</a></li>
+            <li><a href="#/join">加入我们</a></li>
+        </ul>
+        <div class="panel panel-default">
+            <div class="panel-heading">这里是首页视图</div>
+            <div class="panel-body">这里是首页视图相关链的各种内容</div>
+        </div>
+        `
+    }
+
+    function courseRender(){
+        return `
+        <ul class="nav nav-tabs">
+            <li><a href="#">首页</a></li>
+            <li class="active"><a href="#/course">课程页</a></li>
+            <li><a href="#/about">关于我们</a></li>
+            <li><a href="#/join">加入我们</a></li>
+        </ul>
+        <div class="panel panel-default">
+            <div class="panel-heading">课程爷</div>
+            <div class="panel-body">这里是首页视图相关链的各种内容</div>
+        </div>
+        `
+    }
+
+</script>
+</body>
+</html>

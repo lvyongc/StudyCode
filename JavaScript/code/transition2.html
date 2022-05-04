@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #box{
+            width: 100px;
+            height: 100px;
+            background:aqua;
+            transition: 2s;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="box"></div>
+    <button id="btn">按钮</button>
+    <script>
+        btn.onclick = function(){
+            box.style.display = 'block';
+            setTimeout(function (){
+                box.style.width = '500px';
+            },1000);
+            //添加事件监听：
+            box.addEventListener('transitionend',function (){
+                alert('完成')
+                // transitionend 事件，监听元素的 transition 动画执行完成
+                // WebKitTransitionEnd 兼容低版本
+
+            })
+            //取消事件监听：
+            //box.addEventListener('事件名(不加on)',fn) 不能用匿名函数
+        };
+    </script>
+</body>
+</html>

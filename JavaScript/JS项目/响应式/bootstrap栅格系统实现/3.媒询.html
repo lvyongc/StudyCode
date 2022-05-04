@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title></title>
+    <style>
+        /*@media screen  {*/
+            /*#box{*/
+                /*background: pink;*/
+            /*}*/
+        /*}*/
+        #box{
+            width: 200px;
+            height: 200px;
+            background: #000;
+        }
+        /*min-width：最小*/
+        /*按照我们写css的标准：同一个样式写在后面的替换掉前面的*/
+        @media screen and (min-width:800px) {
+            /*这里的样式在宽度>=800的情况下会被解析*/
+            #box{
+                background: pink;
+            }
+        }
+        /*max-width 最大宽度*/
+        @media all and (max-width: 1200px) {
+            #box{
+                background: blue;
+            }
+        }
+        /*@media all  {*/
+            /*#box{*/
+                /*background: orange;*/
+            /*}*/
+        /*}*/
+        /*@media handheld  {*/
+            /*#box{*/
+                /*background: blue;*/
+            /*}*/
+        /*}*/
+    </style>
+</head>
+<body>
+<!--
+
+    媒询：
+        - css3
+        - 根据当前媒体设备（媒体特征），显示媒询内的对应样式
+
+    媒询设备
+        - all 所有类型的设备
+        - screen 彩屏设备
+    特征：
+        例如：人 =》 眼睛很大 睫毛很长 个字很高 皮肤很白
+
+        width
+        device-width
+        ...
+    关键词
+        - only 只有
+        - not 除...之外
+        - and 用于连接设备和设备特征
+
+
+-->
+<div id="box"></div>
+</body>
+</html>

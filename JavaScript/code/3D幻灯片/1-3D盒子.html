@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #box {
+            position: relative;
+            margin: 100px auto;
+            border: 1px solid #000;
+            width: 100px;
+            height: 100px;
+            padding: 100px;
+        }
+        #div {
+            position: absolute;
+            left: 100px;
+            top: 100px;
+            width: 100px;
+            height: 100px;
+            background: red;
+            transition: 5s;
+            transform: rotate(0) translateX(100px);
+        }
+        #div2 {
+            width: 100px;
+            height: 100px;
+            background: green;
+            border-radius: 50%;
+        }
+        #box:hover #div{
+            transform: rotate(360deg) translateX(100px);
+        }
+        /* 元素 translate 移动之后，并不修改元素本身的变换源点，变换源点不变 */
+    </style>
+</head>
+<body>
+<div id="box">
+    <div id="div"></div>
+    <div id="div2"></div>
+</div>    
+</body>
+</html>

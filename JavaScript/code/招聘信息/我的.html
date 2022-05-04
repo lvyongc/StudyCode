@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>招聘信息</title>
+    <link href="css/bootstrap.css" rel="stylesheet" />
+    <style>
+        #root,
+        #view {
+            padding-top: 10px;
+        }
+        .list-group-item-text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+
+<body>
+<div id="root" class="container">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#/sh/0">社会招聘</a></li>
+        <li><a href="#/xy/0">校园招聘</a></li>
+    </ul>
+    <div id="view">
+        <!-- <ul class="list-group">
+            <!-- <li class="list-group-item">
+                <a href="#/sh/details/1">
+                    <h4 class="list-group-item-heading">职位需求：前端开发工程师需求人数：2名</h4>
+                    <p class="list-group-item-text">岗位要求：1)helpdesk支持；2)熟悉计算机软、硬件及网络维护；3岗位要求：1)helpdesk支持；2)熟悉计算机软、硬件及网络维护；3岗位要求：1)helpdesk支持；2)熟悉计算机软、硬件及网络维护；3岗位要求：1)helpdesk支持；2)熟悉计算机软、硬件及网络维护；3</p>
+                </a>
+            </li>
+            <li class="list-group-item">
+
+            </li>
+            <li class="list-group-item">
+
+            </li>
+            <li class="list-group-item">
+
+            </li>
+            <li class="list-group-item">
+
+            </li> -->
+        <!-- </ul> 
+        <ul class="pagination">
+            <!-- <li class="active"><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li> -->
+        <!-- </ul>       -->
+    </div>
+</div>    
+<script src="js/data.js"></script>
+<script>
+{
+    // 获取li
+    var navTabsLi = document.querySelectorAll('.nav-tabs li');
+    // 获取内容
+    var view = document.querySelector("#view");
+    
+
+    // 创建分页,now是当前第几页
+    function createPageUl(type,now){
+        // 计算页数，先算共有几条数据，一页5个，除5，得到几页，向上取整
+        var allPageNum = Math.ceil(data[type].length/5);
+        // 获取到 type: "sh" 
+        var listType = data[type][0].type;
+        // ul开始
+        var pageUl = '<ul class="pagination">';
+        // 有几页，有几个li,在ul中
+        for(var i = 0; i < allPageNum;i++){
+            // #/sh/1  i 改变会触发onhashchange
+            pageUl += `<li class="${now==i&&'active'}"><a href="#/${listType}/${i}">${i+1}</a></li>`;
+        }
+        // ul 结束
+        pageUl += '</ul>';
+        // 添加到页面
+        view.innerHTML += pageUl;
+    }
+
+    // 创建ul信息模板
+    function createUl(type,page){
+        // 每页5条
+        var len = 5;
+        // page是当前页数
+        var page = parseInt(page) || 0;
+        // 起始下标   0
+        var start = page*len;
+        // 结束下标   5  ，page+1是字符串
+        var end = (page+1)*len;
+        // 过滤数据
+        var newData = data[type].filter((item,index)=>{
+            // 0 5
+            return index >= start && index < end;
+        })
+
+
+        // 声明一个用来保存ul的变量
+        var listHtml = "";
+        // ul开始
+        listHtml = '<ul class="list-group">';
+        // 循环添加li到ul中
+        newData.forEach((item,index)=>{
+                listHtml += `<li class="list-group-item">
+                        <a href="#/${item.type}/details/${item.id}">
+                            <h4 class="list-group-item-heading">职位需求：${item.job}需求人数：${item.nub}名</h4>
+                            <p class="list-group-item-text">${item.ask}</p>
+                        </a>
+                    </li>`
+            });
+
+        // ul结束
+        listHtml +='</ul>';
+        // 把内容插入到页面
+        view.innerHTML = listHtml;
+    }
+
+    // 页面一进来执行一次
+    loadData();
+
+    // 详情页
+    // props 是传进来的参数，有2个参数
+    function detailRender(props){
+        // 解构赋值，把detailRender里type的值给到type，id的值给到id
+        // 把detailRender解构赋值，detailRender里面的值一次给到前面的type,id
+        /*
+            detailRender({
+                    type:'campus',
+                    id:hash[2]
+                });
+        */ 
+        var {type,id}=props;
+        // 传入的id是当前id就是要找的数据
+        // filter 获取的是一组数据
+        var nowData = data[type].filter(item=>item.id==id)[0];
+        // 详情页内容
+        var inner = `
+            <div class="panel panel-default">
+                <div class="panel-heading">招聘岗位：${nowData.job}</div>
+                <div class="panel-body">
+                    <p>${nowData.ask}</p>
+                    <p>招聘人数：${nowData.nub}人</p>
+                    <p>发布时间：${nowData.data}</p>
+                </div>
+            </div>
+        `;
+        // 当前内容替换成详情页内容
+        view.innerHTML = inner;
+    }
+
+    // 当hash发生变化时
+    window.onhashchange = loadData;
+
+    function loadData(){
+        // 获取hash，一开始没有hash 给一个hash初始值
+        var hash = location.hash || '#/sh/0';
+        console.log(hash)
+
+        // hash 是 #/sh/1
+        // 先删除hash的前2个:#和/ 
+        // split 用 / 分割成新数组 sh 和 1  数组的第0个是招聘，第1个是页数
+        hash = hash.substring(2).split('/');
+
+        // 按钮样式切换
+        if(hash[0] == "sh"){
+            navTabsLi[0].classList.add("active");
+            navTabsLi[1].classList.remove("active");
+            
+
+            // 判断是否进入详情页面
+            if(hash[1] == "details"){
+                // 是走详情页
+                // 找到id渲染对应的数据
+                detailRender({
+                    type:'society',
+                    id:hash[2]
+                });
+            }else{
+                // 社会招聘
+                createUl("society",hash[1]);
+                // 计算页数
+                createPageUl("society",hash[1]);
+            }
+
+        }else if(hash[0] == "xy"){
+            navTabsLi[1].classList.add("active");
+            navTabsLi[0].classList.remove("active");
+
+            // 判断是否进入详情页面
+            if(hash[1] == "details"){
+                // 是走详情页
+                // 找到id渲染对应的数据
+                detailRender({
+                    type:'campus',
+                    id:hash[2]
+                });
+            }else{
+                // 校园招聘
+                createUl("campus",hash[1]);
+                // 计算页数
+                createPageUl("campus",hash[1]);
+            }
+        }
+    }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        div{
+            width: 200px;
+            height: 200px;
+            background: red;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <div></div>
+    <script>
+        // mousedown
+        // mousemove
+        // mouseup 
+
+        var div = document.querySelector('div');
+
+        div.addEventListener('mousedown',function(e){
+            // 记录鼠标按下时起始位置
+            var startX = e.clientX; 
+            var startY = e.clientY;
+
+            // 记录元素本身位置（距离定位父级位置）
+            var oldLeft = div.offsetLeft;
+            var oldTop = div.offsetTop;
+
+            // document不让拖拽离开div，快速拖拽离开div就失效
+            document.addEventListener('mousemove',move)
+            function move(e){
+                // 移动后的位置
+                var endX = e.clientX;
+                var endY = e.clientY;
+
+
+                // 应该加上或减去的位置
+                var disX = endX-startX;
+                var disY = endY-startY;
+
+                
+                // 最大值 页面宽度减去div宽度
+                var maxL = document.documentElement.clientWidth  - div.offsetWidth;
+                var maxT = document.documentElement.clientHeight  - div.offsetHeight;
+
+                // 新位置
+                var l = oldLeft + disX;
+                var t = oldTop + disY
+
+                // 限制范围
+                if(l<0){
+                    l = 0;
+                }
+                if(t<0){
+                    t = 0;
+                }
+                if(maxL<l){
+                    l = maxL;
+                }
+                if(maxT<t){
+                    t = maxT;
+                }
+
+                console.log(endX-startX);
+                // console.log(endY-startY);
+
+                // 赋值新位置
+                div.style.left = l + 'px';
+                div.style.top = t + 'px';
+            }
+
+            // 抬起
+            div.addEventListener('mouseup',function(){
+                // 清除给document避免离开div失效
+                document.removeEventListener('mousemove',move)
+            },{
+                // 一次性事件，按下抬起，按下抬起，按下抬起
+                once:true
+            })
+
+
+        })
+
+    </script>
+</body>
+</html>

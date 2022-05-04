@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="box">
+        <button class="btn">1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>4</button>
+        <button>5</button>
+    </div>
+    <script>
+        var box = document.getElementById('box');
+        // var btns = box.getElementsByTagName('button');
+        // var btns = box.getElementsByClassName('btn');
+        var btns = box.querySelectorAll('button');
+        console.log(btns)
+    </script>
+</body>
+</html>

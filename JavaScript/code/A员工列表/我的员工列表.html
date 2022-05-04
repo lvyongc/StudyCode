@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>员工列表</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body a {
+            text-decoration: none;
+            color: #0d3a4b;
+        }
+
+        .active {
+            color: #ffffff;
+        }
+
+        .wrap {
+            width: 700px;
+            height: 500px;
+            background-image: url(./images/bg.png);
+            background-repeat: no-repeat;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .wrap #table {
+            width: 460px;
+            border-radius: 12px;
+            position: absolute;
+            left: 50%;
+            top: 160px;
+            transform: translateX(-50%);
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .wrap #table thead {
+            width: 100%;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            color: #fff;
+            background: #4cbfe5;
+        }
+
+        .wrap #table thead a {
+            color: #fff;
+        }
+
+        .wrap #table tbody {
+            color: #19c2ff;
+        }
+
+        .wrap #table tbody a {
+            color: #19c2ff;
+        }
+
+        .wrap #table tbody tr {
+            background: #fff;
+        }
+
+        .ctrl {
+            position: absolute;
+            left: 200px;
+            top: 100px;
+        }
+
+        .ctrl div {
+            width: 300px;
+            line-height: 30px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="ctrl">
+            <div class="age_sort nu">
+                <a href="javascript:;">年龄从小到大</a>
+                <a href="javascript:;">年龄从大到小</a>
+                <a href="javascript:;" class="active">默认排序</a>
+            </div>
+            <div class="gender_show">
+                <a href="javascript:;">只显示男性</a>
+                <a href="javascript:;">只显示女性</a>
+                <a href="javascript:;" class="active">默认</a>
+            </div>
+        </div>
+        <table id="table">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>姓名</th>
+                    <th>年龄</th>
+                    <th>性别</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>0</th>
+                    <th>小明</th>
+                    <th>24</th>
+                    <th>男</th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        // 对象数组；
+        // xml 和 json ：主流数据传输格式；
+        // 数据驱动；数据优先；
+        // 数据持久化；（浏览器储存、后端服务器储存）
+        
+        // 数据驱动视图；数据优先；先处理数据-->渲染视图；
+        // 不要去操作视图，而是操作数据，然后通过数据在渲染视图 
+        //    !! 不要直接修改页面内容，而是修改数据，修改完数据之后，通过数据去同步我们的页面
+        // 功能抽离, 把每一块的功能单独的抽离处理，封装成单独的一个处理函数
+
+        // 数据
+        let data = [
+            {
+                id: 0,
+                name: '小明',
+                age: 24,
+                gender: '男'
+            },
+            {
+                id: 1,
+                name: '小芳',
+                age: 30,
+                gender: '女'
+            },
+            {
+                id: 2,
+                name: '小美',
+                age: 31,
+                gender: '女'
+            },
+            {
+                id: 3,
+                name: '小刚',
+                age: 21,
+                gender: '男'
+            },
+            {
+                id: 4,
+                name: '小琪',
+                age: 18,
+                gender: '女'
+            }
+        ];
+
+        // 年龄排序默认索引2
+        let ageIndex = 2;
+        // 性别筛选默认第2个，记录当前是什么筛选状态 0: 只显示男性  1： 只显示女性， 2：默认全部显示
+        let genderIndex = 2;
+
+        // 渲染数据 --> 数据驱动视图（数据改变视图）
+        function render(data){
+            document.querySelector("tbody").innerHTML = '';
+            data.forEach((k,v)=>{
+                // 创建 tr
+                let trEle = document.createElement("tr");
+                trEle.innerHTML = `
+                    <th>${k.id}</th>
+                    <th>${k.name}</th>
+                    <th>${k.age}</th>
+                    <th>${k.gender}</th>
+                `;
+                document.querySelector("tbody").appendChild(trEle);
+            })
+        };
+
+        // 年龄排序
+        let ageSort = [
+            // 年龄由小到大
+            sort1 = (data)=> data.sort((n1,n2)=>n1.age - n2.age),
+            // 年龄由大到小
+            sort2 = (data)=> data.sort((n1,n2)=>n2.age - n1.age),
+            // 默认排序
+            sort1 = (data)=> data
+        ];
+        // console.log(ageSort[1](data))
+
+        // 性别筛选
+        let genderSort = [
+            (data)=>data.filter(item=>item.gender==="男"),
+            (data)=>data.filter(item=>item.gender==="女"),
+            (data)=>data
+        ];
+        // console.log(genderSort[1](data))
+
+        // 年龄的
+        let ageEleS = document.querySelectorAll(".age_sort a");
+        // 性别的
+        let genderEleS = document.querySelectorAll(".gender_show a");
+
+        // 绑定点击事件
+        function addEvent(ageEleS,type){
+            // console.log(ageEleS) 类数组
+            // [...ageEleS] 转数组
+            Array.from(ageEleS).forEach((k,v)=>{
+                k.onclick = function(){
+                    // console.log(v)
+
+                    // 点击状态
+                    ageEleS.forEach((item,key)=>{
+                        item.classList.remove("active");
+                        if(key == v){
+                            item.classList.add("active");
+                        }
+                    })
+
+                    // let 声明有作用域，放在外面才能拿到newData
+                    let newData;
+                    if(type === "age"){
+                        // 对应的排序  先处理数据-->渲染视图
+                        newData = ageSort[v](JSON.parse((JSON.stringify(data))));
+                        // JSON.stringify 转换成JSON字符串
+                        // JSON.parse  字符串转成对象
+                        // 解除引用，复杂类型在赋值时会传址，传递数据在内存中储存的地址，改变一个时，会改变地址，所有的都会改变，所以要解除引用，避免改变原数据的数据内容
+                        //使用JSON.stringify()与JSON.parse()来实现深拷贝，在内存中重新开辟一个新地址，避免在操作数据中出现相互引用的问题,使用这个方法数据中不能有undefined、函数，有的话要使用递归实现深拷贝
+                        // 不解除引用的话，下一个排序会根据年龄排序后进行排序，而不是根据原数据排序
+
+                        // 同时筛选性别，排序规则是下面的genderIndex = v，并且重新给到newData
+                        // 在性别筛选的基础上进行年龄排序
+                        newData = genderSort[genderIndex](newData);
+                        // 这里赋值是为了给下面使用，记录这次是哪个排序，下面筛选的时候也要进行这个排序
+                        ageIndex = v;
+                    } else {
+                        // 性别筛选
+                        newData = genderSort[v](JSON.parse((JSON.stringify(data))));
+                        // 同时年龄排序，排序规则是上面的ageIndex = v，并且重新给到newData
+                        // 在年龄排序的基础上进行性别筛选
+                        newData = ageSort[ageIndex](newData);
+                        genderIndex = v;
+                    }
+                    render(newData);
+                };
+            });
+        };
+
+        render(data);
+        addEvent(ageEleS,"age");
+        addEvent(genderEleS,"gender");
+
+    </script>
+</body>
+
+</html>

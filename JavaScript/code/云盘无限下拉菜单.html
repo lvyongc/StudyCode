@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="data.js"></script>
+    <style>
+        .menu ul{
+            display: none;
+        }
+
+        .menu > ul,.menu .show{
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="menu">
+        <!-- <ul>
+            <li>
+                <h3>云盘</h3>
+                <ul>
+                    <li>
+                        <h3>我的文档</h3>
+                        <ul>
+                            <li>
+                                <h3>三级目录</h3>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <h3>我的音乐</h3>
+                        <ul>
+                            <li>
+                                <h3>三级目录</h3>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul> -->
+    </div>
+
+    <script>
+        // console.log(data); 先把第一层找到
+
+        // 通过id获取子级数据
+        function getChildData(pid){
+            // 找到pid是id的数据
+            return data.filter(item=>item.pid==pid);
+        }
+
+        // menu是内容的父级
+        var menu = document.querySelector('.menu')
+
+        // console.log(getChildData(1))
+
+        // 递归 - 函数自己调用自己
+
+        // 添加生成的ul
+        function addUl(pid){ // -1
+            // 创建ul开始
+            var html = '<ul>'
+            // 循环生成li的内容
+            getChildData(pid).forEach(item => {
+                html+=`
+                <li>
+                    <h3>${item.title}</h3>
+                    ${getChildData(item.id)&&addUl(item.id)}
+                </li>
+                `; // 是否存在子级，存在生成内容 ，pid传进来是 -1 ，getChildData(item.id) 传进来的 item.id(-1的id是0) ，因为，getChildData函数返回的是id = pid 的数据 ，找到pid=0的数据 ，pid 是0 的是我的文档，我的音乐，再重新执行，是0 的id是1和2，找到pid=1，pid=2的数据，pid=1的是js书，pid=2是歌手，2的id是3，找到pid=3的数据，3的是歌名，最后循环生成了所有的内容，每循环一次都是一层子级
+            });
+            // 创建ul结束
+            html+='</ul>';
+            // 返回整个内容
+            return html;
+        }
+
+        // 返回的内容给到父级
+        menu.innerHTML = addUl(-1);
+
+        //给h3添加点击事件
+        menu.addEventListener('click',function(e){
+            // 事件源
+            var btn = e.target;
+            if(btn.tagName == 'H3'){
+                // 获取下一个兄弟元素ul
+                var nextUl = btn.nextElementSibling;
+                // console.log(nextUl);
+                // 切换class
+                nextUl.classList.toggle('show');
+            }
+        })
+
+
+
+
+    </script>
+</body>
+</html>

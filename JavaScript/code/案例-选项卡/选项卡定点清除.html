@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .option .active {
+            background: red;       
+        }
+        .inner div {
+            font-size: 100px;
+            display: none;
+        }
+        .inner .show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<div id="tab">
+    <div class="option">
+        <button class="active">选项1</button>
+        <button>选项2</button>
+        <button>选项3</button>
+    </div>
+    <div class="inner">
+        <div class="show">内容1</div>
+        <div>内容2</div>
+        <div>内容3</div>
+    </div>
+</div>  
+<script>
+var btns = document.querySelectorAll(".option button");
+var inners = document.querySelectorAll(".inner div");
+var now = 0;// 记录选中的是第几个
+for(var i = 0; i < btns.length; i++){
+    btns[i].index = i; //索引值 记录当前这个元素是这组中的第几个
+    btns[i].onmouseover = fn;
+}
+/*
+定点清除
+    1. 声明变量 记录 当前选中的是哪一个
+    在事件中
+        1. 先清除上一次选中的
+        2. 给当前加上
+        3. 同步记录
+*/
+function fn(){
+    // 先清除上次选中
+    btns[now].classList.remove("active");
+    inners[now].classList.remove("show");
+    
+    // 给当前操作加上选中
+    this.classList.add("active");
+    inners[this.index].classList.add("show");
+
+    // 记录一下选中的是第几个
+    now = this.index;// 现在 选中项已经切换了所以同步一下 now 的记录
+}
+</script>  
+</body>
+</html>
