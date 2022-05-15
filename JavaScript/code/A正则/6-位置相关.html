@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>正则表达式</title>
+</head>
+<body>
+    <h1>正则表达式</h1>
+</body>
+<script>
+// 位置相关；
+// ^ $ \b \B;
+// ^  开始的第一个字符，没有字符就是最开始的位置 
+// $  最后一个字符，没有字符就是最后加一个
+// let str = "abedef";
+// let reg =/^\w/g;
+// let res =  str.replace(reg,"*");
+// console.log(res); 第一个替换成*
+
+
+// let str = "abedef";
+// let reg =/\w$/g;
+// let res =  str.replace(reg,"*");
+// console.log(res);
+
+// \b ：边界符；
+// 边界： 非\w 的 都是边界；
+// let str = "this is a book";
+// let reg = /\bis\b/g;
+// let res =  str.match(reg);
+// console.log(res);
+
+// \B 非边界；
+let str = "this is a book";
+// 左边右边界，右边没有边界     {2} 2个字母的
+let reg = /\B\w{2}\b/g;
+let res =  str.match(reg);
+console.log(res);
+</script>
+</html>

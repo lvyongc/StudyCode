@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>正则的匹配方法</title>
+</head>
+<body>
+    <h1>正则的匹配方法</h1>
+</body>
+<script>
+//一、 正则对象底下方法：
+// 1.test ：true false
+// 2.exec ：只执行一个结果
+// 
+// let str = "abc123fda1234";
+// let reg = /\d+/g;
+
+// console.log( reg.exec(str) )
+// lastIndex 下一次的索引值，从哪个索引开始匹配
+// console.log(reg.lastIndex);
+// console.log( reg.exec(str) )
+// console.log( reg.exec(str) )
+
+// 二、字符串方法；1.split 分割 2.search 查找; 3.match 匹配;4.replace 替换;
+
+// let str = "abc123fda1234rt";
+// 用 1 分割
+// // let arr =  str.split(1);
+// 用数字分割
+// let arr =  str.split(/\d+/);
+
+// console.log(arr);
+
+// let str = "abcdefghiejk";
+// // let reg = /e/g;  4
+// let reg = /z/;      -1
+// search 返还查找到的一个的索引值，找不到返还 -1 
+// console.log( str.search(reg) );
+
+// let str = "abc11defghiej222k";
+// let reg = /\d+/g;
+// console.log( str.match(reg) ); 得到数组
+
+
+let str = "abc11defghiej222k";
+let reg = /\d/g;
+// replace 替换什么，替换成什么
+// console.log( str.replace(reg,"*") );
+
+let res =  str.replace(reg,function(arg){
+    // 匹配到的字符串
+    console.log(arg)
+    // 返还 * 
+    return "*"
+})
+// 用于敏感词过滤
+console.log(res);
+
+</script>
+</html>

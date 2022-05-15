@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>正则表达式</title>
+</head>
+<body>
+    <h1>正则表达式</h1>
+</body>
+<script>
+// () [] {};
+// ():分组；
+// let str = "abababfdsafds";
+// ab 出现3次
+// let reg = /(ab){3}/g;
+// console.log(reg.test(str));
+
+// ():提取值；
+// let str = "2020-01-02";
+// let reg = /(\d{4})-(\d{2})-(\d{2})/;
+// // console.log( str.match(reg) );
+// str.match(reg)
+// RegExp.$1 第一个分组的值，第几个分组的值
+// console.log(RegExp.$1)
+// console.log(RegExp.$2)
+// console.log(RegExp.$3)
+
+// ():替换；
+// let str = "2020-01-02"; // 01/02/2020
+// let reg = /(\d{4})-(\d{2})-(\d{2})/;
+// // let res =  str.replace(reg,"$2/$3/$1");
+// 第一个是原本匹配的值，第二个参数是对应的分组
+// let res =  str.replace(reg,function(arg,year,mouth,date){
+//     return mouth +"/" + date + "/" +year;
+// });
+// console.log(res)
+
+
+// ():反向引用；
+// let className = "news-container-nav"; //news_container_nav
+// (-|_)  ：  -或者_
+// (\n)   :   反向引用，用前面第几个分组的匹配结果
+// (\1)   ：  用前面第一个分组的匹配结果，前面的是-或者_，实际是-，那只能是-，不能是_
+// let reg = /\w{4}(-|_)\w{9}(\1)\w{3}/;
+// let res =  reg.test(className);
+// console.log(res);
+
+
+// []:字符集合；
+// let str = "My name is LiL1ei";
+
+// [Ll] 大写L 或者 小写l
+// // let reg = /Li[Ll]ei/g;
+
+// 匹配一段内容，包含a和z
+// // 字母之间  可以这样 [a-z] [A-Z]; 不能这样,因为ASCII顺序不对 [a-Z] 
+// // let reg = /[0-9]/g; 0-9之间的都可以
+// // console.log( reg.test(str));
+
+// [^0-9] 中括号中的 ^ 代表 否，代表取反
+// let reg = /[^0-9]/g;
+// console.log( reg.test(str));
+
+// \d = [0-9]; \w = [a-zA-Z0-9_];
+
+
+</script>
+</html>
