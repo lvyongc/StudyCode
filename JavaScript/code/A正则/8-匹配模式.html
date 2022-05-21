@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>正则表达式</title>
+</head>
+<body>
+    <h1>正则表达式</h1>
+</body>
+<script>
+// 匹配模式
+// g i m s u y;
+
+// g：全局匹配；
+// let str = "abc123fdaf123fdasf";
+// let reg  = /\d+/g;
+// let res =  str.match(reg);
+// console.log(res);
+
+// i ：忽略大小写
+// let str = "abcABc";
+// let reg = /ABC/gi;
+// console.log( reg.test(str));
+
+
+// m ：多行模式；匹配多行
+// let str = `abc
+// efg
+// hij`;
+// let reg = /^\w/gm;
+// let res =  str.replace(reg,"*");
+// console.log(res);
+
+// s : 让"." 匹配到换行；
+// let str = `abc
+// efg`;
+// a 开头的，中间是任意字符0到多个，结尾是 g 
+// .中间不能是 换行 空格
+// .* 中间不能是 换行 空格 ,字符数字_任意个
+// let reg = /^a.*g$/gs;
+// console.log( reg.test(str));
+
+// u:匹配unicode编码；
+// let str = "a";
+// {61} 表示unicode编码
+// let reg = /\u{61}/gu;
+// console.log(reg.test(str));
+
+// // y:粘性模式；
+// let str = "12345fdafdsa4324";
+// let reg = /\d/gy; // 加y后匹配的是连续的,遇到不是连续的就不匹配了，这里只匹配到5
+// console.log( reg.exec(str));
+// console.log( reg.exec(str));
+// console.log( reg.exec(str));
+// console.log( reg.exec(str));
+// console.log( reg.exec(str));
+// console.log( reg.exec(str));
+
+</script>
+</html>

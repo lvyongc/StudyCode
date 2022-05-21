@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+// 命名分组：?<名字>
+// let str = "2020-01-06";
+// let reg = /(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})/;
+// console.log( str.match(reg));
+
+
+// 零宽断言；匹配的时候用，替换的时候不用
+// 正向零宽断言；匹配后面的
+// let str = "iphone3iphone4iphone5iphonenumber";
+// // 肯定
+// // let reg = /iphone(?=\d)/g;  iphone是数字
+// // 否定
+// let reg = /iphone(?!\d)/g;
+// let res = str.replace(reg,"苹果"); 只替换iphone，不替换（）里的数字
+// console.log(res);
+
+// 负向零宽断言，匹配前面的；和正向的顺序是相反的
+let str = '10px20px30pxipx';
+// 肯定
+// let reg = /(?<=\d+)px/g; 
+// 否定
+let reg = /(?<!\d+)px/g;
+let res =  str.replace(reg,"像素");
+console.log(res);
+
+</script>
+</html>
