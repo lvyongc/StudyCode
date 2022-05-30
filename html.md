@@ -86,6 +86,8 @@ https://developer.mozilla.org/zh-CN/docs/Learn
   - 本地地址
     - 绝对路径，不常用，以电脑根目录盘符开始
     - 相对路径，常用，./ ../ 
+- 强制使用第三方图片
+  - `referrerpolicy="no-referrer" `
 
 ###  a元素(anchor)
 
