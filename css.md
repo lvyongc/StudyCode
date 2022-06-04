@@ -880,9 +880,7 @@ text-shadow: 5px 5px 5px #f00,
 
 ### 省略号
 
-这里继续，101，重新整理
-
-- 一行显示省略号。默认P元素宽度是auto，如果设置nowrap，宽度会自动增加
+- 一行显示省略号。
   - 给P的父级添加固定宽度
 
 ```CSS
@@ -901,6 +899,7 @@ text-shadow: 5px 5px 5px #f00,
 
 ```CSS
 	  overflow: hidden;
+ 	 /* 文本显示省略号 */
       text-overflow: ellipsis;
       display: -webkit-box;
 	  /* 保留2行 */
@@ -936,6 +935,9 @@ text-shadow: 5px 5px 5px #f00,
 
 
 ### background-position 
+
+- banner 响应式时永远显示中心区域
+  - `background-position: center `
 
 ![background-position](C:\Users\admin\Desktop\系统笔记\img_css\background-position.png)
 
@@ -989,11 +991,438 @@ text-shadow: 5px 5px 5px #f00,
 
 ------
 
+### 水平居中总结
+
+- 内联元素
+  - 父级，text-akign:center
+  - 让内容水平居中
+- 块元素
+  - 居中元素本身
+  - margin:0 aotu
+
+### CSS编写样式建议
+
+- 1-先完成结构
+  - 2-重置样式(body/a/ul)
+- 3-先整体, 后局部
+  - 3.1-顺序: 按照从外往里. 从上往下
+- 4-去除重复的代码(css)
+  - 4.1-将重复的逻辑放到一个单独的class中(.icon)
+- 5-不同的代码抽到不同的class(.new .hot)
+  - 5.1-通过累加class，改变样式
+- 补充
+  - .icon.new（中间没有空格）
+  - 找到同时有.icon.new两个class的元素
+
+```css
+   /* 内容相关 */
+    ul > li .content {
+      display: inline;
+    }
+
+    /* 图标相关的 */
+    ul > li .icon {
+      position: relative;
+      top: 2px;
+      left: 4px;
+
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      background-image: url(../images/new_icon.svg);
+    }
+
+    ul > li .new {
+      background-image: url(../images/new_icon.svg);
+    }
+
+    ul > li .hot {
+      background-image: url(../images/hot_icon.svg);
+    }
+```
+
 ## CSS表格
 
 ### 表格常见的元素 
 
+- 使用 css 来定制 表格的样式
+
 ![表格常见的元素](C:\Users\admin\Desktop\系统笔记\img_css\表格常见的元素.png)
+
+------
+
+### 表格的边框是分开的还是合并的 
+
+- collapse
+
+```css
+table {
+      border-collapse: collapse;
+      text-align: center;
+    }
+/* 边框 */
+td {
+      border: 1px solid red;
+      width: 100px;
+      height: 30px;
+    }
+```
+
+------
+
+### 表格的其他元素 
+
+![表格的其他元素](C:\Users\admin\Desktop\系统笔记\img_css\表格的其他元素.png)
+
+------
+
+### 单元格合并
+
+![单元格合并](C:\Users\admin\Desktop\系统笔记\img_css\单元格合并.png)
+
+------
+
+## 常见的表单元素 
+
+![常见的表单元素](C:\Users\admin\Desktop\系统笔记\img_css\常见的表单元素.png)
+
+------
+
+### input元素的使用 
+
+![input元素的使用](C:\Users\admin\Desktop\系统笔记\img_css\input元素的使用.png)
+
+------
+
+### 布尔属性 
+
+![布尔属性](C:\Users\admin\Desktop\系统笔记\img_css\布尔属性.png)
+
+------
+
+### 表单按钮 
+
+![表单按钮](C:\Users\admin\Desktop\系统笔记\img_css\表单按钮.png)
+
+- 当input设置了type时，并且在form中，不同的type会有不同的作用
+  - reset 会清空 text
+
+```html
+<!-- 用input来实现按钮的效果 -->
+  <form action="">
+    <input type="text">
+    <input type="date">
+
+    <div>
+      <input type="button" value="普通按钮">
+      <button>普通按钮</button>
+    </div>
+    <!-- reset可以对form中的其他表单元素进行重置 -->
+    <div>
+      <input type="reset" value="重置按钮">
+      <button type="reset">重置按钮</button>
+    </div>
+    <!-- submit可以对form中的其他表单元素进行提交(将数据提交给服务器) -->
+    <div>
+      <input type="submit" value="提交按钮">
+      <button type="submit">提交按钮</button>
+    </div>
+  </form>
+```
+
+------
+
+### input和label 
+
+- inout作为子级且id和label的for，相同，取得关联
+
+```html
+<div>
+    <label for="username">
+      用户: 
+      <input id="username" type="text">
+    </label>
+  </div>
+  <div>
+    <label for="password">
+      密码: 
+      <input id="password" type="password">
+    </label>
+  </div>
+```
+
+![input和label](C:\Users\admin\Desktop\系统笔记\img_css\input和label.png)
+
+------
+
+### radio 
+
+- name 和 value 用于向服务器传值
+- name的值sex，会作为 key
+- value的值male，会作为 value
+- sex=male
+
+```html
+<!-- url: http://www.baidu.com/s?sex=male -->
+  
+  <!-- 在类型为radio的input中, 如果name一样, 那么两个radio就会互斥 -->
+  <form action="/abc">
+    <label for="male">
+      <input id="male" type="radio" name="sex" value="male">男
+    </label>
+    <label for="female">
+      <input id="female" type="radio" name="sex" value="female">女
+    </label>
+
+    <button type="submit">提交按钮</button>
+  </form>
+```
+
+![radio](C:\Users\admin\Desktop\系统笔记\img_css\radio.png)
+
+------
+
+### checkbox 
+
+![checkbox](C:\Users\admin\Desktop\系统笔记\img_css\checkbox.png)
+
+------
+
+### textarea 
+
+- name,value 用于提交作为key,value
+- id,用于关联lable
+
+![textarea](C:\Users\admin\Desktop\系统笔记\img_css\textarea.png)
+
+------
+
+### select和option 
+
+- select的name用于提交作为key
+- id,用于关联lable
+- option的value 用于提交作为 value
+- selected 是默认选中
+
+```html
+<select name="fruits" id="" multiple size="2">
+    <option value="apple" selected>苹果</option>
+    <option value="banana">香蕉</option>
+    <option value="orange">橘子</option>
+  </select>
+```
+
+![select和option](C:\Users\admin\Desktop\系统笔记\img_css\select和option.png)
+
+------
+
+### form常见的属性 
+
+- 搜集 form 表单中所有的name和value，加入baidu.com/abc后作为参数
+
+```html
+  <form action="http://baidu.com/abc" method="post" target="_blank">
+    <div>
+      <label for="username">
+        用户: <input id="username" type="text" name="username">
+      </label>
+    </div>
+    <div>
+      <label for="password">
+        密码: <input id="password" type="password" name="password">
+      </label>
+    </div>
+
+    <!-- 性别 -->
+    <div>
+      性别: 
+      <label for="male">
+        <input id="male" type="radio" name="sex" value="male">男
+      </label>
+      <label for="female">
+        <input id="female" type="radio" name="sex" value="female">女
+      </label>
+    </div>
+
+    <!-- 爱好 -->
+    <div>
+      爱好:
+      <label for="basketball">
+        <input id="basketball" type="checkbox" name="hobby" checked value="basketball">篮球
+      </label>
+      <label for="football">
+        <input id="football" type="checkbox" name="hobby" value="football">足球
+      </label>
+    </div>
+
+    <!-- 提交按钮 -->
+    <button type="reset">重置内容</button>
+    <button type="submit">提交内容</button>
+  </form>
+```
+
+![form常见的属性](C:\Users\admin\Desktop\系统笔记\img_css\form常见的属性.png)
+
+------
+
+### nth-child 结构伪类选择器
+
+- 参数 n 
+- table tr:nth-child(-n + 2)
+  - table 下 前2个 tr
+  - -n+几就是前几个
+  - n 代表 0 ~ 整数，0 1 2 3 4 5 。。。
+  - n 为0和负数时，无效
+  - -0+2=2 第二个
+  - -1+2=1 第一个
+  - -2+2=0 无效
+  - -3+2=-1 无效
+
+```css
+	/* n的取值: 0和整数  */
+    /* 0, 1, 2, 3, 4, 5, 6......... */
+    table tr:nth-child(-n + 2) {
+      font-weight: 700;
+      font-size: 20px;
+    }
+```
+
+### 属性选择器的使用
+
+- 选中 table下的 tr 下的 td 的属性是 rowspan 的 td
+
+```css
+/* 属性选择器 */
+    table tr td[rowspan] {
+      font-weight: 700;
+      font-size: 18px;
+    }
+```
+
+- 属性
+  - 这里的colspan 是属性
+
+`<td colspan="6">课程表</td> `
+
+## 识emmet语法 
+
+- vscode 内置了 emmet 语言
+
+![识emmet语法](C:\Users\admin\Desktop\系统笔记\img_css\识emmet语法.png)
+
+------
+
+### （>子代）和（+兄弟） 
+
+- 图2：
+  - 2个兄弟关系的div
+    - 第一个是空div
+    - 第二个div，有一个子级p
+      - p有一个子级span
+      - span和i是兄弟，所以i也是p的子级
+
+![子代兄弟](C:\Users\admin\Desktop\系统笔记\img_css\子代兄弟.png)
+
+------
+
+### （*多个）和（^上一级 ）
+
+- *后的数字，是生成几个
+- 图2：
+  - span^h1 
+  - span的上一级，添加一个兄弟h1
+
+![多个上一级](C:\Users\admin\Desktop\系统笔记\img_css\多个上一级.png)
+
+------
+
+### （）（分组） 
+
+- footer和括号内的为兄弟
+
+![分组](C:\Users\admin\Desktop\系统笔记\img_css\分组.png)
+
+------
+
+### 属性(id属性、class属性、普通属性) {}（内容） 
+
+- 直接添加属性内容
+- div的id是header
+- 兄弟div的id是main，且子级class是container（不写标签默认是div）
+- container的子级是a添加了href属性，值为空
+
+![属性](C:\Users\admin\Desktop\系统笔记\img_css\属性.png)
+
+- a 的 [] 是添加属性和属性值
+- {} 是添加内容
+
+------
+
+### $（数字） 
+
+- `ul>li{内容$}*5`
+- ul有5个li子级，内容就是内容，且$加上了序号
+  - $可以多个
+
+```html
+<ul>
+    <li>列表内容1</li>
+    <li>列表内容2</li>
+    <li>列表内容3</li>
+    <li>列表内容4</li>
+    <li>列表内容5</li>
+  </ul>
+```
+
+------
+
+### 隐式标签 
+
+- `.box`
+  - 默认生成 `<div class="box"></div> `
+
+![隐式标签](C:\Users\admin\Desktop\系统笔记\img_css\隐式标签.png)
+
+- ul 下的标签是隐式标签 li，不用单独写
+
+------
+
+### CSS Emmet 
+
+- 样式快捷写法
+- `bd`
+  - `border: 1px solid #000; `
+- `bd1#cs`
+  - c是颜色，s是solid
+  - `border: 1px #ccc solid;`
+- `dib`
+  - `display: block;`
+
+![CSS Emmet](C:\Users\admin\Desktop\系统笔记\img_css\CSS Emmet.png)
+
+------
+
+### 结构伪类 - :nth-child 
+
+![结构伪类nth-child](C:\Users\admin\Desktop\系统笔记\img_css\结构伪类nth-child.png)
+
+------
+
+### 结构伪类 - :nth-last-child( ) 
+
+![结构伪类nth-last-child](C:\Users\admin\Desktop\系统笔记\img_css\结构伪类nth-last-child.png)
+
+------
+
+### 结构伪类 - :nth-of-type( )、:nth-last-of-type( ) 
+
+![结构伪类](C:\Users\admin\Desktop\系统笔记\img_css\结构伪类.png)
+
+------
+
+### 否定伪类（negation pseudo-class） 
+
+![否定伪类](C:\Users\admin\Desktop\系统笔记\img_css\否定伪类.png)
 
 ------
 
