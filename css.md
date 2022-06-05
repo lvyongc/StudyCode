@@ -1404,6 +1404,8 @@ td {
 
 ### 结构伪类 - :nth-child 
 
+- 无类型限制
+
 ![结构伪类nth-child](C:\Users\admin\Desktop\系统笔记\img_css\结构伪类nth-child.png)
 
 ------
@@ -1416,6 +1418,8 @@ td {
 
 ### 结构伪类 - :nth-of-type( )、:nth-last-of-type( ) 
 
+- 有类型限制
+
 ![结构伪类](C:\Users\admin\Desktop\系统笔记\img_css\结构伪类.png)
 
 ------
@@ -1423,6 +1427,336 @@ td {
 ### 否定伪类（negation pseudo-class） 
 
 ![否定伪类](C:\Users\admin\Desktop\系统笔记\img_css\否定伪类.png)
+
+------
+
+## 额外补充
+
+### border图形
+
+- https://css-tricks.com/the-shapes-of-css/#top-of-site
+
+```css
+.box {
+      width: 100px;
+      height: 100px;
+      /* 边框占据所有，且内容为透明 */
+      border: 50px solid transparent;
+      /* 上三角形添加颜色 */
+      border-top-color: orange;
+      /* 让边框属于100px中 */
+      box-sizing: border-box;
+      /* 旋转中心基于三角形的中心点，水平center，垂直是盒子的中心50%，三角形中心50的50，就是25% */
+      transform-origin: center 25%;
+      /* 旋转180度，不旋转就是向下的三角形 */
+      transform: rotate(180deg); 
+    }
+```
+
+### 网络字体
+
+- Web Fonts即 
+  - 自定义字体
+    - 拿到、下载字体
+    - 在css中使用字体
+    - 把字体部署在静态服务器
+
+#### Web fonts的工作原理 ![Web fonts的工作原理](C:\Users\admin\Desktop\系统笔记\img_css\Web fonts的工作原理.png)
+
+------
+
+#### 使用Web Fonts 
+
+- 下载免费的、收费的
+
+  - 或者使用设计师设计的字体
+
+- 在css中使用
+
+  - ttf文件存放font文件夹
+  - 通过 @font-face 引入字体，设置字体名字和引入路径
+  - 再指定元素，使用具体字体名字
+
+  ```html
+    <style>
+      /* 将这个字体引入到网页中 */
+      @font-face {
+          /*自定义的字体名字*/
+        font-family: "why";
+          /*引入的字体路径*/
+        src: url("./fonts/AaQingHuanYuanTi-2.ttf");
+      }
+      .box {
+          /*使用字体名字*/
+        font-family: "why";
+      }
+    </style>
+    <div class="box">我是div元素</div>
+  ```
+
+![使用web字体](C:\Users\admin\Desktop\系统笔记\img_css\使用web字体.png)
+
+------
+
+#### web-fonts的兼容性 
+
+- https://font.qqe2.com/
+
+![web-fonts的兼容性](C:\Users\admin\Desktop\系统笔记\img_css\web-fonts的兼容性.png)
+
+------
+
+#### web fonts兼容性写法 
+
+- 解决兼容适配
+- https://font.qqe2.com/
+  - 打开字体，下载压缩包，包含所有字体文件
+  - 多个url ，写上所有字体文件，达到适配所有
+    - 字体文件中的css文件，有写好的 @font-face 
+    - 直接复制,修改引入路径
+  - format，帮助浏览器快速识别字体的格式
+  - 统一默认样式
+    - `font-style: normal;`  ` font-weight: 400;`
+
+```css
+@font-face {
+      font-family: "myfont";
+      src: url("./fonts02/AaQingHuanYuanTi.eot"); /* IE9 */
+      src: url("./fonts02/AaQingHuanYuanTi.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
+      url("./fonts02/AaQingHuanYuanTi.woff") format("woff"), /* chrome、firefox */
+      url("./fonts02/AaQingHuanYuanTi.ttf") format("truetype"), /* chrome、firefox、opera、Safari, Android, iOS 4.2+ */
+      url("./fonts02/AaQingHuanYuanTi.svg#uxfonteditor") format("svg"); /* iOS 4.1- */
+      font-style: normal;
+      font-weight: 400;
+    }
+    body {
+      font-family: "myfont";
+    }
+```
+
+![web fonts兼容性写法](C:\Users\admin\Desktop\系统笔记\img_css\web fonts兼容性写法.png)
+
+------
+
+### 字体图标
+
+- https://www.iconfont.cn/
+- 加入购物车，下载代码文件
+- css文件、ttf文件，放入项目font文件夹中
+- link引入font中的css文件，class使用具体图标，css改变图标样式
+
+```css
+/*引入*/
+<link rel="stylesheet" href="./fonts03/iconfont.css">
+  <style>
+/* 改变*/
+    .icon-shouye {
+      font-size: 30px;
+      color: red;
+    }
+  </style>
+/* iconfont是必写的，第二个class就是对应的不同图标 */
+<i class="iconfont icon-shouye"></i>
+```
+
+#### 字体图标 
+
+![字体图标](C:\Users\admin\Desktop\系统笔记\img_css\字体图标.png)
+
+------
+
+#### 字体图标的使用 
+
+![字体图标的使用](C:\Users\admin\Desktop\系统笔记\img_css\字体图标的使用.png)
+
+------
+
+#### 精灵图 CSS Sprite 
+
+![精灵图 CSS Sprite](C:\Users\admin\Desktop\系统笔记\img_css\精灵图 CSS Sprite.png)
+
+------
+
+#### 精灵图的使用 
+
+- https://www.toptal.com/developers/css/sprite-generator
+  - 生成精灵图
+- http://www.spritecow.com
+  - 获取精灵图中每个图标的具体位置
+
+```css
+  <style>
+    .topbar {
+      background-image: url(../images/topbar_sprite.png);
+      background-repeat: no-repeat;
+      display: inline-block;
+    }
+    i.hot-icon {
+      background-position: -192px 0;
+      width: 26px;
+	    height: 13px;
+    }
+    i.logo-icon {
+      background-position: 0 -19px;
+      width: 157px;
+	    height: 33px;
+    }
+  </style>
+  <div class="box">
+    <i class="topbar hot-icon"></i>
+    <i class="topbar logo-icon"></i
+  </div>
+```
+
+![精灵图的使用](C:\Users\admin\Desktop\系统笔记\img_css\精灵图的使用.png)
+
+------
+
+#### cusor 
+
+![cusor](C:\Users\admin\Desktop\系统笔记\img_css\cusor.png)
+
+------
+
+## CSS元素定位 
+
+### 标准流（Normal Flow） 
+
+![标准流（Normal Flow）](C:\Users\admin\Desktop\系统笔记\img_css\标准流（Normal Flow）.png)
+
+------
+
+
+
+### margin-padding位置调整 
+
+![margin-padding位置调整](C:\Users\admin\Desktop\系统笔记\img_css\margin-padding位置调整.png)
+
+------
+
+### 元素的定位 
+
+- 定位允许您从**正常的文档流布局中取出元素**，并使它们具有不同的行为: 
+  -  例如放在另一个元素的上面; 
+  -  或者始终保持在浏览器视窗内的同一位置 
+
+### position属性 
+
+![position属性](C:\Users\admin\Desktop\系统笔记\img_css\position属性.png)
+
+------
+
+#### 静态定位 - static 
+
+- position属性的默认值
+  - 元素按照normal flow（标准流）布局 
+  - left 、right、top、bottom 没有任何作用 
+
+#### 相对定位 - relative 
+
+- 页面放大缩小，img的中心一直保持在页面的中心 
+  - 方案一：img的margin是%时，是相对于它的包含块的宽度，就是div的宽度
+    - translate中的百分比是相对于自己
+  - 方案二：背景图，center
+
+```css
+.box {
+      height: 489px;
+      background-color: #f00;
+      /* 超出隐藏，不出现滚动条 */
+      overflow: hidden;
+    }
+
+    /*页面放大缩小，img的中心一直保持在页面的中心*/
+    .box img {
+      position: relative;
+      /* left: 图片的一半 */
+      /* left: -960px; */
+        
+      /* translate中的百分比是相对于自己 */
+      transform: translate(-50%);
+
+      /* 向右边移动div的一半
+        img的margin是%时，是相对于它的包含块的宽度，就是div的宽度
+      */
+      margin-left: 50%;
+    }
+
+  <div class="box">
+    <img src="../images/mhxy.jpg" alt="">
+  </div>
+```
+
+```css
+.box {
+      height: 489px;
+      background-color: #f00;
+      background: url(../images/mhxy.jpg) center;
+    }
+<div class="box"></div>
+```
+
+![相对定位 - relative](C:\Users\admin\Desktop\系统笔记\img_css\相对定位 - relative.png)
+
+------
+
+#### 固定定位 - fixed 
+
+![固定定位 - fixed](C:\Users\admin\Desktop\系统笔记\img_css\固定定位 - fixed.png)
+
+------
+
+#### 画布 和 视口 
+
+![画布 和 视口](C:\Users\admin\Desktop\系统笔记\img_css\画布 和 视口.png)
+
+------
+
+#### 定位元素的特点 
+
+![定位元素的特点](C:\Users\admin\Desktop\系统笔记\img_css\定位元素的特点.png)
+
+------
+
+#### 绝对定位 - absolute 
+
+![绝对定位 - absolute](C:\Users\admin\Desktop\系统笔记\img_css\绝对定位 - absolute.png)
+
+------
+
+![绝对定位2](C:\Users\admin\Desktop\系统笔记\img_css\绝对定位2.png)
+
+------
+
+#### 子绝父相 
+
+- 绝对定位是相对于最近的一个定位元素
+
+![子绝父相](C:\Users\admin\Desktop\系统笔记\img_css\子绝父相.png)
+
+------
+
+
+
+#### 粘性定位 - sticky 
+
+![粘性定位 - sticky](C:\Users\admin\Desktop\系统笔记\img_css\粘性定位 - sticky.png)
+
+------
+
+
+
+#### position值对比 
+
+![position值对比](C:\Users\admin\Desktop\系统笔记\img_css\position值对比.png)
+
+------
+
+
+
+### CSS属性 - z-index 
+
+![CSS属性 - z-index](C:\Users\admin\Desktop\系统笔记\img_css\CSS属性 - z-index.png)
 
 ------
 
