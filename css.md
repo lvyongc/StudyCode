@@ -1714,11 +1714,16 @@ td {
 
 #### 定位元素的特点 
 
+- 父级由内容撑开的情况下，子级为定位元素时，父级不再由子级内容撑开
+
 ![定位元素的特点](C:\Users\admin\Desktop\系统笔记\img_css\定位元素的特点.png)
 
 ------
 
 #### 绝对定位 - absolute 
+
+- 定位对象是 具有定位的父级（不是static的）
+- 定位父级宽度 = 绝对定位子级宽度  + 子级left + 子级right + margin-left + margin-right
 
 ![绝对定位 - absolute](C:\Users\admin\Desktop\系统笔记\img_css\绝对定位 - absolute.png)
 
@@ -1726,19 +1731,69 @@ td {
 
 ![绝对定位2](C:\Users\admin\Desktop\系统笔记\img_css\绝对定位2.png)
 
+### 绝对定位水平居中
+
+![定位居中](C:\Users\admin\Desktop\系统笔记\img_css\定位居中.png)
+
+- 定位元素在父级水平居中,原理是利用 margin-left和margin-right
+
+- box的宽度800 = 子级宽度 + 子级left + 子级right + margin-left + margin-right
+- 当其他都为0，子级宽度没有设置的时候宽度是auto，子级宽度=父级宽度800
+- 当其他都为0，子级宽度设置了200，一般情况下剩余宽度（800-200）给到  margin-right
+- 当left 、right为0，子级200，margin左右auto`800=200+0+0+auto+auto`
+  - 子级会水平居中，600平均给了左右margin
+
+#### 绝对定位垂直居中
+
+- 当top、bottom为0，子级200，margin上下auto`800=200+0+0+auto+auto`
+  - 子级会垂直居中，600平均给了上下margin
+
+#### 绝对定位全部居中
+
+- 兼容性好
+
+![定位全部居中](C:\Users\admin\Desktop\系统笔记\img_css\定位全部居中.png)
+
+#### auto
+
+- auto 不是等分，不是100%，是交给浏览器来处理是多少
+  - 在margin时，一般是等分
+  - 定位方向为auto，不是等分，可能是原来的位置
+- width:auto
+  - 行内非替换元素（内联块），width是包裹内容
+  - 块元素，包含块的宽度
+  - 绝对定位，包裹内容
+
 ------
 
 #### 子绝父相 
 
-- 绝对定位是相对于最近的一个定位元素
+- relative 不脱离文档流
+- absolute 脱离文档流
+- 子绝父相
+- 孙绝父绝祖父相，只要定位不是static就可以
+- 绝对定位是相对于最近的一个父级祖父级定位元素
 
 ![子绝父相](C:\Users\admin\Desktop\系统笔记\img_css\子绝父相.png)
 
 ------
 
+### CSS样式结构
 
+- 命名，类型-描述
+- 公共的样式用 _
+- 单独的用 -
+
+![样式规范](C:\Users\admin\Desktop\系统笔记\img_css\样式规范.png)
+
+![样式结构](C:\Users\admin\Desktop\系统笔记\img_css\样式结构.png)
+
+------
 
 #### 粘性定位 - sticky 
+
+- `position:sticky;top:0`
+- 当元素距离视口顶部（可滚动的父级视口）距离为0时，变为固定定位
 
 ![粘性定位 - sticky](C:\Users\admin\Desktop\系统笔记\img_css\粘性定位 - sticky.png)
 
@@ -1756,7 +1811,141 @@ td {
 
 ### CSS属性 - z-index 
 
+- 层级需要相同，兄弟关系层级，不能越级比较，兄弟1和兄弟2的子级不能比较，只会比较兄弟1和2
+
 ![CSS属性 - z-index](C:\Users\admin\Desktop\系统笔记\img_css\CSS属性 - z-index.png)
+
+------
+
+## CSS浮动
+
+### 认识浮动 
+
+![认识浮动](C:\Users\admin\Desktop\系统笔记\img_css\认识浮动.png)
+
+------
+
+### 浮动规则一 
+
+![浮动规则一](C:\Users\admin\Desktop\系统笔记\img_css\浮动规则一.png)
+
+------
+
+### 浮动规则二 
+
+![浮动规则二](C:\Users\admin\Desktop\系统笔记\img_css\浮动规则二.png)
+
+------
+
+### 浮动规则三 
+
+![浮动规则三](C:\Users\admin\Desktop\系统笔记\img_css\浮动规则三.png)
+
+------
+
+### 浮动规则四 
+
+- 层叠是覆盖
+
+![浮动规则四](C:\Users\admin\Desktop\系统笔记\img_css\浮动规则四.png)
+
+------
+
+### 浮动规则五 
+
+![浮动规则五](C:\Users\admin\Desktop\系统笔记\img_css\浮动规则五.png)
+
+------
+
+### 浮动常用的场景 
+
+- 解决行内级元素、inline-block元素的水平间隙问题 
+
+```css
+将多个行内级元素中间的空格(间隙)去除的方法
+      1. 删除换行符(不推荐)
+      2. 将父级元素的font-size设置为0, 但是需要子元素设置回来
+      3. 子元素(span)统一向一个方向浮动即可
+      4. flex布局
+```
+
+```css
+/* 公共的class */
+    .content {
+      width: 1190px;
+      margin: 0 auto;
+      background-color: orange;
+      height: 800px;
+    }
+
+    /* 布局样式 */
+    .box {
+      /* margin: 0 -5px; */
+      /* 3.方案三: 设置负的的margin(没有兼容性) */
+      margin-right: -10px;
+    }
+
+    .item {
+      width: 230px;
+      height: 322px;
+      background-color: purple;
+      color: #fff;
+
+      /* 浮动 */
+      float: left;
+      margin-right: 10px;
+      /* margin: 0 5px; */
+    }
+  <div class="content">
+    <div class="box">
+      <div class="item item1">1</div>
+      <div class="item item2">2</div>
+      <div class="item item3">3</div>
+      <div class="item item4">4</div>
+      <div class="item item5">5</div>
+    </div>
+  </div>
+```
+
+- 不需要单独设置每行最后一个的margin为0
+- content为1190，box是块子级，没有指定width，默认是auto，就是1190
+- 父盒子宽度=子宽度+margin左右值，当box,margin-right: -10px时，1190 != 1190+0+(-10)
+  - 所以box的宽度自动从1190变成1200，这样才能相等
+  - 
+
+### 浮动的问题 – 高度塌陷 
+
+![浮动的问题 – 高度塌陷](C:\Users\admin\Desktop\系统笔记\img_css\浮动的问题 – 高度塌陷.png)
+
+------
+
+### CSS属性 - clear 
+
+![CSS属性 - clear](C:\Users\admin\Desktop\系统笔记\img_css\CSS属性 - clear.png)
+
+------
+
+
+
+### 清除浮动的方法 
+
+![清除浮动的方法](C:\Users\admin\Desktop\系统笔记\img_css\清除浮动的方法.png)
+
+------
+
+
+
+### 伪元素清除浮动 
+
+![– 伪元素清除浮动](C:\Users\admin\Desktop\系统笔记\img_css\– 伪元素清除浮动.png)
+
+------
+
+
+
+### 布局方案总结 
+
+![布局方案总结](C:\Users\admin\Desktop\系统笔记\img_css\布局方案总结.png)
 
 ------
 
