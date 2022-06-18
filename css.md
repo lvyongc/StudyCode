@@ -1911,7 +1911,14 @@ td {
 - content为1190，box是块子级，没有指定width，默认是auto，就是1190
 - 父盒子宽度=子宽度+margin左右值，当box,margin-right: -10px时，1190 != 1190+0+(-10)
   - 所以box的宽度自动从1190变成1200，这样才能相等
-  - 
+  - 变成了1200，就可以放下所有子级了，最后一个不会因为空间不足，自动到第二行
+- 或者直接给box设置1200宽度，因为没有背景，所以不影响视觉效果
+
+### 边框布局
+
+- box-sizing: border-box
+  - 去掉边框占得宽度
+  - 所有加边框，并去掉右边框，最后一个加右边框
 
 ### 浮动的问题 – 高度塌陷 
 
@@ -1921,19 +1928,37 @@ td {
 
 ### CSS属性 - clear 
 
+- 新加空标签，利用 clear:both，移动到浮动元素下面
+  - 浮动元素本身有高度，但在父级中没有浮动元素的高度，现在空标签移动到浮动元素下面了，空标签移动的距离就是浮动元素的高度，空标签也在父级中，这样父级就有了高度（空标签的高度+空标签移动的距离，就是浮动元素的高度）
+
 ![CSS属性 - clear](C:\Users\admin\Desktop\系统笔记\img_css\CSS属性 - clear.png)
 
 ------
 
-
-
 ### 清除浮动的方法 
+
+- 利用 class +  after伪元素，给到父级
+  - 伪元素是内联元素，没有宽度，相当于没有
+  - 改为 block 有宽度，独占一行
+  - after 添加一个元素
+  - 就是利用after往父级中添加一个元素，再通过clear让这个元素移动到浮动元素下面，父级高度就是元素移动的距离（浮动元素的高度）
+  - content 为空，添加的元素就没有高度，不会影响父级的高度
+
+```css
+.clear_fix::after {
+      content: "";
+      clear: both;
+      display: block;
+
+      /* 浏览器兼容 */
+      visibility: hidden;
+      height: 0;
+    }
+```
 
 ![清除浮动的方法](C:\Users\admin\Desktop\系统笔记\img_css\清除浮动的方法.png)
 
 ------
-
-
 
 ### 伪元素清除浮动 
 
@@ -1941,11 +1966,580 @@ td {
 
 ------
 
-
-
 ### 布局方案总结 
 
 ![布局方案总结](C:\Users\admin\Desktop\系统笔记\img_css\布局方案总结.png)
 
 ------
+
+## vertical-align 
+
+- 块元素每行都有一个行盒，它将当前行所有内容包裹在一起，最高内容的高度就是行盒的高度，就是行高
+- 行盒内的内容，如何对齐呢？
+  - 使用 vertical-align ，改变一个行盒中 **内联元素**的对齐方式
+  -  **内联元素**设置vertical-align
+  - 默认是 baseline 基线对齐
+    - 无论内容中有没有文字（没有会预留文字），都会按照文字的基线为标准，图片和图形的底部会和这个标准对齐（保持在一条直线上）
+    - 文字基线是倒数第二条线（共4条）
+    - 下到上，底线、基线、中线、顶线
+    - 所以图片就会出现底部间隙
+  - 不让它基线对齐就可以了
+    - vertical-align
+    - 改变对齐方式
+    - 解决底部间隙问题
+- 当 inline-block 中有文本的时候，基线是不确定的
+  - 会是最后一行文字的基线
+  - 1行就是基线
+  - 2行，是第二行的基线
+  - 这2个基线就不相同了，对齐方式混乱
+
+![vertical-align](C:\Users\admin\Desktop\系统笔记\img_css\vertical-align.png)
+
+------
+
+#### vertical-align – 不同情况分析 
+
+![vertical-align – 不同情况分析](C:\Users\admin\Desktop\系统笔记\img_css\vertical-align – 不同情况分析.png)
+
+![vertical-align – 不同情况分析2](C:\Users\admin\Desktop\系统笔记\img_css\vertical-align – 不同情况分析2.png)
+
+------
+
+#### vertical-align的baseline 
+
+![vertical-align的baseline](C:\Users\admin\Desktop\系统笔记\img_css\vertical-align的baseline.png)
+
+------
+
+#### vertical-align的其他值 
+
+- middle
+  - 不是 直接 垂直居中
+  - 是与 基线+小写x高度的一半 对齐
+  - 只能达到 大概 居中，且需要先把文本居中
+    - 因为共4条线
+    - 下到上，底线、基线、中线、顶线
+    - 基线+小写x高度的一半，在基线和中线之间的位置
+    - 不是文本的中心，中线才是中心
+
+![vertical-align的其他值](C:\Users\admin\Desktop\系统笔记\img_css\vertical-align的其他值.png)
+
+#### 内联  inline-block 垂直居中
+
+- 利用文本基线对齐，达到居中
+  - 1-文字大小一致
+  - 2-其中一个先居中
+  - 3-另外一个的文字会和第一个基线对齐，达到居中
+    - 它的父级盒子也就居中了
+    - 前提是它在父级盒子中是居中的
+
+- 行高 是可以继承的
+
+------
+
+## transform 形变
+
+![transform](C:\Users\admin\Desktop\系统笔记\img_css\transform.png)
+
+------
+
+![transform的用法](C:\Users\admin\Desktop\系统笔记\img_css\transform的用法.png)
+
+------
+
+#### 位移translate
+
+- traslate的百分比是相对于自身的 
+
+![位移translate](C:\Users\admin\Desktop\系统笔记\img_css\位移translate.png)
+
+------
+
+![translate的补充](C:\Users\admin\Desktop\系统笔记\img_css\translate的补充.png)
+
+------
+
+## 居中方案
+
+### 水平居中
+
+```html
+ <!-- 
+    水平居中:
+      1.行内级元素: 
+        * 设置父元素的text-align: center
+      2.块级元素:
+        * 设置当前块级元素(宽度) margin: 0 auto;
+      3.绝对定位
+        * 元素有宽度情况下, left0/right0/margin: 0 auto;
+      4.flex
+        * justify-content: center
+   -->
+```
+
+### 垂直居中
+
+```html
+<!--
+    垂直居中:
+      1.绝对定位
+        * 元素有高度情况下, top0/bottom0/margin: auto 0;
+  -->
+  <!-- 
+    1.垂直居中: 绝对定位
+    弊端:
+      1> 必须使用定位(脱离标准流)
+      2> 必须给元素设置高度
+   -->
+```
+
+```html
+<!-- 
+    2.垂直居中: flex布局(直接使用flex)
+    弊端:
+      1> 当前flex局部中所有的元素都会被垂直居中
+      2> 相对来说, 兼容性差一点点(基本可以忽略)
+   -->
+   <!-- <div class="container">
+     <div class="box2">flex布局的居中</div>
+     aaaa
+   </div> -->
+
+   <!-- 
+    3.垂直居中: top/translate(个人推荐, 不好理解)
+  -->
+```
+
+```css
+/* 两件事情:
+          1.让元素向下位移父元素的50%
+          2.让元素向上位移自身的50% 
+      */
+      /* margin-top的百分比是相对于包含块(父元素)的宽度 ，这里需要的是高度*/
+      /* margin-top: 50%; 不能使用*/
+
+      position: relative;
+      top: 50%;
+      transform: translate(0, -50%);
+```
+
+#### 缩放scale
+
+![缩放scale](C:\Users\admin\Desktop\系统笔记\img_css\缩放scale.png)
+
+------
+
+#### transform-origin 
+
+![transform-origin](C:\Users\admin\Desktop\系统笔记\img_css\transform-origin.png)
+
+------
+
+#### 旋转 - rotate 
+
+![旋转 - rotate](C:\Users\admin\Desktop\系统笔记\img_css\旋转 - rotate.png)
+
+![旋转rotate](C:\Users\admin\Desktop\系统笔记\img_css\旋转rotate.png)
+
+------
+
+#### 倾斜skew
+
+![倾斜skew](C:\Users\admin\Desktop\系统笔记\img_css\倾斜skew.png)
+
+------
+
+#### transform设置多个值 
+
+- 单个设置前面的会被覆盖失效
+
+![transform设置多个值](C:\Users\admin\Desktop\系统笔记\img_css\transform设置多个值.png)
+
+------
+
+## transition动画 
+
+![transition动画](C:\Users\admin\Desktop\系统笔记\img_css\transition动画.png)
+
+------
+
+#### 哪些CSS属性可以做动画 
+
+- https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_animated_properties
+
+![哪些CSS属性可以做动画](C:\Users\admin\Desktop\系统笔记\img_css\哪些CSS属性可以做动画.png)
+
+------
+
+#### 过渡动画transition
+
+```css
+/* 告知浏览器 box 在进行一些CSS属性变化的时候有一个过渡效果 */
+      /* transition-property: transform, left; */
+      /* transition-property: all;
+      transition-duration: 1s;
+      transition-timing-function: ease-in;
+      transition-delay: 1s; */
+      
+      /* 简写属性 */
+      transition: all 1s ease-in 1s;
+```
+
+![过渡动画transition](C:\Users\admin\Desktop\系统笔记\img_css\过渡动画transition.png)
+
+------
+
+## 几个英语词汇的区分 
+
+![几个英语词汇的区分](C:\Users\admin\Desktop\系统笔记\img_css\几个英语词汇的区分.png)
+
+------
+
+## 认识CSS Animation 
+
+![认识CSS Animation](C:\Users\admin\Desktop\系统笔记\img_css\认识CSS Animation.png)
+
+------
+
+#### @keyframes规则 
+
+![@keyframes规则](C:\Users\admin\Desktop\系统笔记\img_css\@keyframes规则.png)
+
+------
+
+#### 关键帧动画 -keyframes
+
+![关键帧动画](C:\Users\admin\Desktop\系统笔记\img_css\关键帧动画.png)
+
+------
+
+```css
+ .box {
+      /* box要执行moveAnim的动画 */
+      /* 名字 */
+      animation-name: moveAnim;
+      /* 持续时间 */
+      animation-duration: 3s;
+      /* 变化曲线 */
+      animation-timing-function: ease-in-out;
+
+      /* 延迟时间 */
+      /* animation-delay: 2s; */
+       /* 动画执行的次数 */
+      /* animation-iteration-count: 2; */
+       /* 动画执行的方向 */
+      /* animation-direction: reverse; */
+      /* 元素停留在动画的哪一个位置 */
+      /* animation-fill-mode: forwards; */
+
+      /* js动态修改 */
+      /* 控制动画运行、暂停 */
+      /* animation-play-state: paused; */
+
+      /* 缩写 */
+      animation: moveAnim 3s linear 1s 2 normal forwards, ;
+    }
+
+    @keyframes moveAnim {
+      0% {
+        transform: translate(0, 0) scale(0.5, 0.5);
+      }
+
+      33% {
+        transform: translate(0, 200px) scale(1.2, 1.2);
+      }
+
+      66% {
+        transform: translate(400px, 200px) scale(1, 1);
+      }
+
+      100% {
+        transform: translate(400px, 0) scale(0.5, 0.5);
+      }
+    }
+```
+
+#### animation属性 
+
+![animation属性](C:\Users\admin\Desktop\系统笔记\img_css\animation属性.png)
+
+------
+
+## 认识flexbox 
+
+![认识flexbox](C:\Users\admin\Desktop\系统笔记\img_css\认识flexbox.png)
+
+------
+
+### 原先的布局存在的痛点 
+
+![原先的布局存在的痛点](C:\Users\admin\Desktop\系统笔记\img_css\原先的布局存在的痛点.png)
+
+------
+
+### flex布局的重要概念 
+
+![flex布局的重要概念](C:\Users\admin\Desktop\系统笔记\img_css\flex布局的重要概念.png)
+
+------
+
+### flex布局的模型 
+
+- 默认主轴（从左到右）排列布局
+
+![flex布局的模型](C:\Users\admin\Desktop\系统笔记\img_css\flex布局的模型.png)
+
+------
+
+### flex相关的属性 ![flex相关的属性](C:\Users\admin\Desktop\系统笔记\img_css\flex相关的属性.png)
+
+------
+
+### flex-direction 
+
+- 决定主轴方向
+
+![flex-direction](C:\Users\admin\Desktop\系统笔记\img_css\flex-direction.png)
+
+------
+
+### flex-wrap 
+
+![flex-wrap](C:\Users\admin\Desktop\系统笔记\img_css\flex-wrap.png)
+
+------
+
+### flex-flow 
+
+- flex-flow 属性是 flex-direction 和 flex-wrap 的简写。 
+  - 顺序任何, 并且都可以省略; 
+
+### justify-content 
+
+- 决定主轴
+
+![justify-content](C:\Users\admin\Desktop\系统笔记\img_css\justify-content.png)
+
+------
+
+### align-item 
+
+- align-item默认值是normal，默认拉伸子级
+  - 需手动改变
+
+- 决定交叉轴
+- stretch 生效条件
+  - 不设置高度，或者高度为 auto
+  - 默认值也是拉伸的效果
+
+![align-item](C:\Users\admin\Desktop\系统笔记\img_css\align-item.png)
+
+------
+
+### SEO优化
+
+- logo图片、a链接
+  - 添加文字，让搜索引擎可以搜索到
+  - 不显示 `text-indent: -9999px `
+
+### align-content 
+
+- 决定多行，交叉轴，对齐方式
+
+![align-content](C:\Users\admin\Desktop\系统笔记\img_css\align-content.png)
+
+------
+
+### flex-item属性 - order 
+
+```css
+.container {
+      width: 500px;
+      height: 500px;
+      background-color: orange;
+
+      display: flex;
+    }
+
+    .item {
+      width: 120px;
+      height: 120px;
+    }
+
+    .item1 {
+      order: 5;
+    }
+
+    .item2 {
+      order: 3;
+    }
+
+    .item3 {
+      order: 9;
+    }
+```
+
+![flex-item属性 - order](C:\Users\admin\Desktop\系统笔记\img_css\flex-item属性 - order.png)
+
+------
+
+### flex-item属性 - flex items - align-self
+
+- 单独设置某个元素的排列方式
+
+```css
+.container {
+      width: 500px;
+      height: 500px;
+      background-color: orange;
+
+      display: flex;
+	/*全部居中*/ 
+      align-items: center;
+    }
+
+    .item {
+      width: 120px;
+      height: 120px;
+    }
+
+    .item1 {
+      height: 90px;
+    }
+
+    .item2 {
+      height: 150px;
+/*单独的设置*/ 
+      align-self: flex-start;
+    }
+```
+
+
+
+![flex-items](C:\Users\admin\Desktop\系统笔记\img_css\flex-items.png)
+
+ 
+
+------
+
+### flex-grow 
+
+- 给item设置
+- 把剩余空间给到item
+- 1，平均分给所有item
+
+![flex-grow](C:\Users\admin\Desktop\系统笔记\img_css\flex-grow.png)
+
+------
+
+### flex-shrink 
+
+- 和grow相反，缩小
+- 默认值1，默认缩小
+- 缩小某个item
+
+![flex-shrink](C:\Users\admin\Desktop\系统笔记\img_css\flex-shrink.png)
+
+------
+
+### flex-basis 
+
+- 设置主轴方向item的基础尺寸（宽度）
+- 让内容显示完整，自动扩展宽度
+- 设置item宽度的
+
+![flex-basis](C:\Users\admin\Desktop\系统笔记\img_css\flex-basis.png)
+
+------
+
+### flex-item属性 - flex属性 
+
+- 缩写，设置给item
+
+- flex-grow flex-shrink flex-basis
+
+  - 默认值 0 1 auto
+
+- flex:1
+
+  - 设置的是grow为1
+
+  - 让某个子级宽度 = 剩余空间
+
+  ```css
+  /* 所有子级 */
+  .news-section .banner .title-list .item {
+        /* 剩余空间分出去，每个子级占一份，平均分布 */
+        flex: 1;
+        text-align: center;
+      }
+  ```
+
+- flex-shrink flex-basis是默认值 1 auto
+
+- 1 1 auto
+
+  - 所有子级宽度相同，平均分布剩余空间
+
+```css
+      /* flex-grow flex-shrink flex-basis */
+      /* none: 0 0 auto */
+      /* auto: 1 1 auto */
+      flex: 1 1 10px;
+```
+
+![flex-item属性 - flex属性](C:\Users\admin\Desktop\系统笔记\img_css\flex-item属性 - flex属性.png)
+
+------
+
+### flex常见问题
+
+- 所有子级靠边平均分布，当最后一行子级数量不够时，也会平均分布
+  - 现在希望，最后一行一次排列分布
+
+![flex问题](C:\Users\admin\Desktop\系统笔记\img_css\flex问题.png)
+
+![flex问题2](C:\Users\admin\Desktop\系统笔记\img_css\flex问题2.png)
+
+
+
+------
+
+- 在子级最后添加2个空标签（2个是根据几列得到的，4列-2，因为space-between）
+- 空标签不设置高度，就看不到，因为设置了宽度，它占据了位置
+- 当最后一行有3个item时，空标签会占据最后一个位置，所以就是对齐的
+  - 剩下的一个空标签也占了位置，但是视觉上看不到，因为没有高度，也不会影响父级整体高度
+
+```css
+.container {
+      width: 500px;
+      background-color: orange;
+
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+    .item {
+      width: 110px;
+      height: 140px;
+    }
+
+    .container > i {
+      width: 110px;
+	}
+  <div class="container">
+    <div class="item item1">1</div>
+    <div class="item item2">2</div>
+    <div class="item item3">3</div>
+    <div class="item item1">1</div>
+    <div class="item item2">2</div>
+    <div class="item item3">3</div>
+    <div class="item item1">1</div>
+    <div class="item item2">2</div>
+    <div class="item item3">3</div>
+    <div class="item item3">3</div>
+    /* 添加空标签的个数是列数减-2 */
+   <i></i><i></i>
+  </div>
+```
 
