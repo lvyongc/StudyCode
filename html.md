@@ -209,3 +209,59 @@ https://www.jianshu.com/p/899e749be47c
 
 ------
 
+## HTML5
+
+### HTML5语义化元素 
+
+![HTML5语义化元素](C:\Users\admin\Desktop\系统笔记\img\HTML5语义化元素.png)
+
+------
+
+### HTML5其他新增元素 
+
+![HTML5其他新增元素](C:\Users\admin\Desktop\系统笔记\img\HTML5其他新增元素.png)
+
+------
+
+### video 
+
+![video](C:\Users\admin\Desktop\系统笔记\img\video.png)
+
+------
+
+### video支持的视频格式 
+
+![video支持的视频格式](C:\Users\admin\Desktop\系统笔记\img\video支持的视频格式.png)
+
+------
+
+### video的兼容性写法 
+
+![video的兼容性写法](C:\Users\admin\Desktop\系统笔记\img\video的兼容性写法.png)
+
+------
+
+### audio 
+
+![audio](C:\Users\admin\Desktop\系统笔记\img\audio.png)
+
+------
+
+### audio支持的音频格式 
+
+![audio支持的音频格式](C:\Users\admin\Desktop\系统笔记\img\audio支持的音频格式.png)
+
+------
+
+## input元素的扩展内容 
+
+![input元素的扩展内容](C:\Users\admin\Desktop\系统笔记\img\input元素的扩展内容.png)
+
+------
+
+### 新增全局属性 data-* 
+
+![新增全局属性](C:\Users\admin\Desktop\系统笔记\img\新增全局属性.png)
+
+------
+

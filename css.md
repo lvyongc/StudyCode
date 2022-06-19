@@ -1080,6 +1080,96 @@ td {
 
 ![单元格合并](C:\Users\admin\Desktop\系统笔记\img_css\单元格合并.png)
 
+```html
+ <style>
+         .schedule-time {
+      width: 100%;
+      font-size: 12px;
+      text-align: center;
+      border-collapse: collapse;
+    }
+
+     .schedule-time thead tr {
+      background-color: #f5f5f5;
+      height: 29px;
+      line-height: 29px;
+      font-size: 14px;
+      color: #999;
+    }
+
+     .schedule-time tbody tr {
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+     .schedule-time tbody td {
+      padding: 10px 0;
+    }
+
+     .schedule-time tbody .team {
+      margin-bottom: 5px;
+    }
+
+     .schedule-time tbody img {
+      width: 25px;
+      height: 25px;
+    }
+
+     .schedule-time td:nth-child(2),
+     .schedule-time td:nth-child(4) {
+      width: 83px;
+    }
+
+     .schedule-time td:nth-child(3) {
+      font-size: 14px;
+      color: #f3c258;
+    }
+</style>
+  <table class="schedule-time">
+    <thead>
+      <tr>
+        <td>时间</td>
+        <td>战队</td>
+        <td></td>
+        <td>战队</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>4-23 19:00</td>
+        <td>
+          <div class="team">
+            <img src="./img/team_01.png" alt="">
+          </div>
+          广州TTG
+        </td>
+        <td>VS</td>
+        <td>
+          <div>
+            <img src="./img/team_02.png" alt="">
+          </div>
+          北京WB
+        </td>
+      </tr>
+      <tr>
+        <td>4-23 19:00</td>
+        <td>
+          <div class="team">
+            <img src="./img/team_01.png" alt="">
+          </div>
+          广州TTG
+        </td>
+        <td>VS</td>
+        <td>
+          <div>
+            <img src="./img/team_02.png" alt="">
+          </div>
+          北京WB
+        </td>
+      </tr>
+    </tbody>
+  </table>
+```
+
 ------
 
 ## 常见的表单元素 
@@ -2157,7 +2247,53 @@ td {
 
 ------
 
+## transition&transform
+
+- 给放大加上过度的时间和变化曲线
+
+```css
+.main .entrance-section a img {
+      width: 100%;
+      height: 100%;
+      transition: transform 400ms ease;
+    }
+
+    .main .entrance-section a:hover img {
+      transform: scale(1.1);
+    }
+```
+
+## 两行省略号
+
+```css
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+```
+
+```css
+    /*一行省略*/
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+	/*父级超出隐藏*/
+	overflow: hidden;
+```
+
 ## transition动画 
+
+- transition: border-bottom 400ms ease; 
+
+```css
+/*从上至下动画显示*/
+height:0;
+transition:height 1s ease-in;
+item:hover{
+    height:100px;
+}
+```
 
 ![transition动画](C:\Users\admin\Desktop\系统笔记\img_css\transition动画.png)
 
@@ -2260,6 +2396,8 @@ td {
 ```
 
 #### animation属性 
+
+- forwards  停留在动画结束的最后一帧
 
 ![animation属性](C:\Users\admin\Desktop\系统笔记\img_css\animation属性.png)
 
@@ -2488,6 +2626,11 @@ td {
       flex: 1 1 10px;
 ```
 
+- flex:0 auto;
+  - grow:0
+  - basis:auto 自动根据内容决定宽度
+  - 横向列表，不是平均分布宽度，而是根据内容宽度分布宽度
+
 ![flex-item属性 - flex属性](C:\Users\admin\Desktop\系统笔记\img_css\flex-item属性 - flex属性.png)
 
 ------
@@ -2542,4 +2685,205 @@ td {
    <i></i><i></i>
   </div>
 ```
+
+## meta元素 
+
+![meta元素](C:\Users\admin\Desktop\系统笔记\img_css\meta元素.png)
+
+------
+
+### meta元素的http-equiv属性 
+
+- 指定使用哪个浏览器来模拟打开（渲染）网页，用作ie适配
+
+![meta元素的http-equiv属性](C:\Users\admin\Desktop\系统笔记\img_css\meta元素的http-equiv属性.png)
+
+------
+
+### meta元素的name属性 
+
+- seo 优化 利于被搜索到
+
+- https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/meta/name
+- robots指定爬虫规则，哪些可以被爬取到，哪些不允许爬
+  - content="all"	所有的都可以
+- 描述、关键词
+
+![meta元素的name属性](C:\Users\admin\Desktop\系统笔记\img_css\meta元素的name属性.png)
+
+------
+
+### link图标 
+
+![link图标](C:\Users\admin\Desktop\系统笔记\img_css\link图标.png)
+
+------
+
+### CSS样式的字符编码 
+
+- css 使用的编码格式 @charset
+
+- https://en.wikipedia.org/wiki/Byte_order_mark
+
+![CSS样式的字符编码](C:\Users\admin\Desktop\系统笔记\img_css\CSS样式的字符编码.png)
+
+------
+
+## CSS属性 - white-space 
+
+![white-space](C:\Users\admin\Desktop\系统笔记\img\white-space.png)
+
+------
+
+### CSS属性 - text-overflow 
+
+![text-overflow](C:\Users\admin\Desktop\系统笔记\img_css\text-overflow.png)
+
+------
+
+### CSS中的函数 
+
+![CSS中的函数](C:\Users\admin\Desktop\系统笔记\img_css\CSS中的函数.png)
+
+------
+
+### CSS函数 - var 
+
+![CSS函数 - var](C:\Users\admin\Desktop\系统笔记\img_css\CSS函数 - var.png)
+
+------
+
+### CSS函数 -calc 
+
+![CALC](C:\Users\admin\Desktop\系统笔记\img\CALC.png)
+
+------
+
+### CSS函数 - blur 
+
+![blur](C:\Users\admin\Desktop\系统笔记\img\blur.png)
+
+------
+
+### CSS函数 – gradient 
+
+![CSS函数 – gradient](C:\Users\admin\Desktop\系统笔记\img\CSS函数 – gradient.png)
+
+------
+
+### linear-gradient的使用 
+
+![linear-gradient的使用](C:\Users\admin\Desktop\系统笔记\img\linear-gradient的使用.png)
+
+------
+
+### 浏览器前缀 
+
+![浏览器前缀](C:\Users\admin\Desktop\系统笔记\img\浏览器前缀.png)
+
+------
+
+
+
+## FC – Formatting Context 
+
+![fc](C:\Users\admin\Desktop\系统笔记\img\fc.png)
+
+------
+
+### BFC – Block Formatting Context 
+
+![BFC – Block Formatting Context](C:\Users\admin\Desktop\系统笔记\img_css\BFC – Block Formatting Context.png)
+
+------
+
+### BFC有什么作用呢？ 
+
+![BFC有什么作用呢？](C:\Users\admin\Desktop\系统笔记\img_css\BFC有什么作用呢？.png)
+
+------
+
+### BFC的作用一：解决折叠问题（权威） 
+
+![解决折叠问题](C:\Users\admin\Desktop\系统笔记\img_css\解决折叠问题.png)
+
+------
+
+### BFC的作用二：解决浮动高度塌陷（权威） 
+
+![解决浮动高度塌陷](C:\Users\admin\Desktop\系统笔记\img_css\解决浮动高度塌陷.png)
+
+------
+
+## 媒体查询 
+
+![媒体查询](C:\Users\admin\Desktop\系统笔记\img_css\媒体查询.png)
+
+------
+
+### 媒体查询 - 媒体类型（Media types） 
+
+![媒体查询 - 媒体类型（Media types）](C:\Users\admin\Desktop\系统笔记\img_css\媒体查询 - 媒体类型（Media types）.png)
+
+------
+
+### 媒体查询 – 媒体特性（Media features） 
+
+![媒体特性](C:\Users\admin\Desktop\系统笔记\img_css\媒体特性.png)
+
+------
+
+### 媒体查询 – 逻辑操作符（logical operators） 
+
+![逻辑操作符](C:\Users\admin\Desktop\系统笔记\img_css\逻辑操作符.png)
+
+------
+
+### 常见的移动端设备 
+
+![常见的移动端设备](C:\Users\admin\Desktop\系统笔记\img_css\常见的移动端设备.png)
+
+------
+
+## CSS中的单位 
+
+![CSS中的单位](C:\Users\admin\Desktop\系统笔记\img_css\CSS中的单位.png)
+
+------
+
+### CSS中的绝对单位（ Absolute length units ） 
+
+![绝对单位](C:\Users\admin\Desktop\系统笔记\img_css\绝对单位.png)
+
+------
+
+### CSS中的相对单位（ Relative length units ） 
+
+![相对单位](C:\Users\admin\Desktop\系统笔记\img_css\相对单位.png)
+
+------
+
+### 当我们聊pixel时，到底在聊些什么？ 
+
+![当我们聊pixel时，到底在聊些什么？](C:\Users\admin\Desktop\系统笔记\img_css\当我们聊pixel时，到底在聊些什么？.png)
+
+------
+
+### 像素的不同分类（一） 
+
+![像素的不同分类（一）](C:\Users\admin\Desktop\系统笔记\img_css\像素的不同分类（一）.png)
+
+------
+
+### 物理像素和逻辑像素 
+
+![物理像素和逻辑像素](C:\Users\admin\Desktop\系统笔记\img_css\物理像素和逻辑像素.png)
+
+------
+
+### DPR、PPI、DPI 
+
+![DPR、PPI、DPI](C:\Users\admin\Desktop\系统笔记\img_css\DPR、PPI、DPI.png)
+
+------
 
