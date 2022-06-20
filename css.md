@@ -2731,6 +2731,20 @@ item:hover{
 
 ## CSS属性 - white-space 
 
+```css
+.box {
+      width: 200px;
+      background: orange;
+
+      /* white-space */
+      /* nowrap不换行, 合并: 会合并 */
+      /* pre: 不换行, 合并: 不合并 */
+      /* pre-wrap: 换行, 合并: 不合并 */
+      /* pre-line: 换行, 合并: 合并连续的空白, 但保留换行符 */
+      white-space: pre-line;
+    }		
+```
+
 ![white-space](C:\Users\admin\Desktop\系统笔记\img\white-space.png)
 
 ------
@@ -2749,17 +2763,55 @@ item:hover{
 
 ### CSS函数 - var 
 
+- :root 就是 html
+
+```css
+:root {
+      /* -- 定义了一个变量(CSS属性) */
+      /* 变量,只有后代元素可以使用 */
+      --main-color: #f00;
+    }
+    
+    .box {
+        /*var 引入使用变量*/
+      color: var(--main-color);
+    }
+
+    .title {
+      color: var(--main-color);
+    }
+```
+
 ![CSS函数 - var](C:\Users\admin\Desktop\系统笔记\img_css\CSS函数 - var.png)
 
 ------
 
 ### CSS函数 -calc 
 
+-  width的百分比相对于包含块(父元素) 
+  - 父级宽度 - 固定子级 = 自适应的另一个子级
+- 定位元素absolute 的包含块不一定是父级，是最近的定位元素relative
+
 ![CALC](C:\Users\admin\Desktop\系统笔记\img\CALC.png)
 
 ------
 
 ### CSS函数 - blur 
+
+- 先添加一层背景在上方，+半透明效果,再把这个背景模糊
+
+```css
+.cover {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+    /*半透明效果*/
+      background-color: rgba(255,255,255,0.2);
+      backdrop-filter: blur(10px);
+    }
+```
 
 ![blur](C:\Users\admin\Desktop\系统笔记\img\blur.png)
 
@@ -2773,6 +2825,11 @@ item:hover{
 
 ### linear-gradient的使用 
 
+- background-image 设置
+- to 方向
+- 角度 deg
+- 颜色后 跟 距离
+
 ![linear-gradient的使用](C:\Users\admin\Desktop\系统笔记\img\linear-gradient的使用.png)
 
 ------
@@ -2782,8 +2839,6 @@ item:hover{
 ![浏览器前缀](C:\Users\admin\Desktop\系统笔记\img\浏览器前缀.png)
 
 ------
-
-
 
 ## FC – Formatting Context 
 

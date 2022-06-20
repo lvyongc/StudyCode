@@ -237,6 +237,8 @@ https://www.jianshu.com/p/899e749be47c
 
 ### video的兼容性写法 
 
+- p标签是在都不支持的时候生效
+
 ![video的兼容性写法](C:\Users\admin\Desktop\系统笔记\img\video的兼容性写法.png)
 
 ------
@@ -254,6 +256,17 @@ https://www.jianshu.com/p/899e749be47c
 ------
 
 ## input元素的扩展内容 
+
+- autofocus 是 自动获取焦点
+- multiple 是可以 选中多个值
+
+```html
+<select multiple>
+    <option value="">苹果</option>
+    <option value="">香蕉</option>
+    <option value="">句子</option>
+  </select>
+```
 
 ![input元素的扩展内容](C:\Users\admin\Desktop\系统笔记\img\input元素的扩展内容.png)
 
