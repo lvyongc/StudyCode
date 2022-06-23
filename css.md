@@ -2836,11 +2836,19 @@ item:hover{
 
 ### 浏览器前缀 
 
+- 新出的，在还没有成为标准的时候，需要添加前缀，作为过渡方案
+  - 当成为标准后，检测到带了前缀，会自动转成新标准
+  - 如果没有成为标准，检测到带了前缀，会自动删除
+
 ![浏览器前缀](C:\Users\admin\Desktop\系统笔记\img\浏览器前缀.png)
 
 ------
 
 ## FC – Formatting Context 
+
+- 盒子在标准流里，都属于某个fc
+  - 块，属于BFC布局中
+  - 内联、内联块，属于IFC布局中
 
 ![fc](C:\Users\admin\Desktop\系统笔记\img\fc.png)
 
@@ -2848,11 +2856,20 @@ item:hover{
 
 ### BFC – Block Formatting Context 
 
+- 块元素所在的布局，就是BFC
+- 以下情况会形成BFC
+
 ![BFC – Block Formatting Context](C:\Users\admin\Desktop\系统笔记\img_css\BFC – Block Formatting Context.png)
 
 ------
 
 ### BFC有什么作用呢？ 
+
+- 在同一个 BFC 中 相邻margin才会折叠
+- 盒子的布局（父级）变成BFC，才形成2个BFC
+- 一个布局中，2个子级为都设置BFC，它们2个还是在同一个布局中，同一个BFC中
+  - 只有布局不同，才会在2个BFC中
+  - 布局可以理解为，设置了BFC的父级
 
 ![BFC有什么作用呢？](C:\Users\admin\Desktop\系统笔记\img_css\BFC有什么作用呢？.png)
 
@@ -2866,11 +2883,48 @@ item:hover{
 
 ### BFC的作用二：解决浮动高度塌陷（权威） 
 
+- 清除浮动加给需要高度的元素
+- BFC解决浮动元素高度塌陷的前提条件
+  - 浮动的父级高度为 auto，设置为auto，或者不设置，高度默认是auto
+  - 已经是BFC了
+    - 有了前提条件后，开始计算高度
+    - 内联元素，把行高的顶部到底部距离，算到BFC里面
+    - 块，把块的上到下边缘的距离，算到BFC里面
+    - 如果有绝对定位元素，不会计算
+    - 如果是浮动元素，会增加 **BFC的高度** 来包裹这些浮动元素的下边缘
+
 ![解决浮动高度塌陷](C:\Users\admin\Desktop\系统笔记\img_css\解决浮动高度塌陷.png)
 
 ------
 
 ## 媒体查询 
+
+```css
+/* @import是可以和媒体查询结合来使用，最大宽度800时，才会加载css */
+@import url(./css/body_bgc.css) (max-width: 800px);
+```
+
+```css
+<link rel="stylesheet" media="screen and (max-width: 800px)" href="./css/body_bgc.css">
+/*media写规则*/
+```
+
+```css
+<style>
+
+    @media (max-width: 800px) {
+      body {
+        background-color: orange;
+      }
+    }
+	@media (min-width: 500px) and (max-width: 800px) {
+          body {
+            background-color: orange;
+          }
+        }
+    
+  </style>
+```
 
 ![媒体查询](C:\Users\admin\Desktop\系统笔记\img_css\媒体查询.png)
 
@@ -2896,6 +2950,22 @@ item:hover{
 
 ### 常见的移动端设备 
 
+```css
+/* CSS层叠性，会覆盖掉之前的.380时，满足320，又满足375，375会覆盖320，因为书写顺序 */
+    @media (min-width: 320px) {
+      .box { font-size: 15px; }
+    }
+    @media (min-width: 375px) {
+      .box { font-size: 18px; }
+    }
+    @media (min-width: 414px) {
+      .box { font-size: 21px; }
+    }
+    @media (min-width: 480px) {
+      .box { font-size: 24px; }
+    }
+```
+
 ![常见的移动端设备](C:\Users\admin\Desktop\系统笔记\img_css\常见的移动端设备.png)
 
 ------
@@ -2913,6 +2983,12 @@ item:hover{
 ------
 
 ### CSS中的相对单位（ Relative length units ） 
+
+- 1em是相对于自己的字体大小的1倍，前提是自己设置了字体大小
+  - 自己没有设置，是相对于父级的，根本还是相对于自己，因为是继承了父级的
+- rem 是根元素HTML的字体大小
+- vw、wh
+  - vw  视口宽度 共100份
 
 ![相对单位](C:\Users\admin\Desktop\系统笔记\img_css\相对单位.png)
 
@@ -2932,13 +3008,33 @@ item:hover{
 
 ### 物理像素和逻辑像素 
 
+- 物理像素是固定的，屏幕上由多少个像素点组成
+- 逻辑像素，是在物理像素的基础之上，做了一层计算，无论物理像素是多少，全部转为1920*1080个像素（分辨率）
+  - 这样，100px是相对于1920来计算的，不是相对于物理像素
+  - 不用计算，不同物理像素，对应的100px是多少了，现在是统一的相对1920的100
+  - 如果不转换，就是相对于物理像素，就是分辨率，不同的物理像素中的100px占据的整个屏幕空间不同，4K中的100px占据的空间少，2k中的100px占据的空间少，要达到在各自整个屏幕中占据的空间一样大，就需要对每个屏幕做单独的适配
+    - 为了解决这个问题，有了逻辑像素，全部转为1920
+    - 这样100px，在固定的1920中，占据的空间也是固定的
+  - 1920是逻辑像素
+- 4k的屏幕，设置了1920分辨率呢？
+  - 1920个*逻辑像素* 中的每个逻辑像素，都会放置多个 *物理像素* ，越多越清晰
+- CSS像素就是逻辑像素
+- 使用JS获取逻辑像素
+
 ![物理像素和逻辑像素](C:\Users\admin\Desktop\系统笔记\img_css\物理像素和逻辑像素.png)
 
 ------
 
 ### DPR、PPI、DPI 
 
+- DPR：设备像素比
+  - 1个逻辑像素中放了几个物理像素，这就是 设备像素比
+  - 1中放2，就是2
+- PPI
+  - 1英寸可以放多少个物理像素，PPI就是多少
+
 ![DPR、PPI、DPI](C:\Users\admin\Desktop\系统笔记\img_css\DPR、PPI、DPI.png)
 
 ------
 
+CSS预处理器 
