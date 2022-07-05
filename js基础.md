@@ -561,11 +561,72 @@ sayHello("why", 18)
 
 ### 逻辑或的本质 
 
+- var message = info || obj || "我是默认值" 
+  - info、obj为假，使用默认值
+  - 为真，直接返回
+
+- 在判断的时候转为 布尔，为true时，返回原值（转为 布尔 之前的值）
+
+```js
+	1.先将运算元转成Boolean类型
+      2.对转成的boolean类型进行判断
+        * 如果为true, 直接将结果(原始值)返回,后续的条件都不会进行判断
+        * 如果为false, 进行第二个运算元的判断
+        * 以此类推
+      3.如果找到最后, 也没有找到, 那么返回最后一个运算元
+```
+
+- 脱离分支语句, 单独使用逻辑或 
+
+```js
+// 本质推导一: 之前的多条件是如何进行判断的
+    var chineseScore = 95
+    var mathScore = 99
+    // chineseScore > 90为true, 那么后续的条件都不会进行判断
+    if (chineseScore > 90 || mathScore > 90) {}
+
+    // 本质推导二: 获取第一个有值的结果
+    var info = "abc"
+    var obj = {name: "why"}
+    var message = info || obj || "我是默认值"
+    console.log(message.length)
+```
+
 ![逻辑或的本质](C:\Users\admin\Desktop\系统笔记\img_js_基础\逻辑或的本质.png)
 
 ------
 
 ### 逻辑与的本质 
+
+- 前面为真，再调用后面的
+  - `obj && obj.friend && obj.friend.eating && obj.friend.eating()`
+
+```js
+// 本质推导: 对一些对象中的方法进行有值判断
+    var obj = {
+      name: "why",
+      friend: {
+        name: "kobe",
+        eating: function() {
+          console.log("eat something")
+        }
+      }
+    }
+
+    // 调用eating函数
+    // obj.friend.eating()
+    obj && obj.friend && obj.friend.eating && obj.friend.eating()
+
+	/** 也可以脱离条件判断来使用
+      逻辑与的本质
+       1.拿到第一个运算元, 将运算元转成Boolean类型
+       2.对运算元的Boolean类型进行判断
+         * 如果false, 返回运算元(原始值)
+         * 如果true, 查找下一个继续来运算
+         * 以此类推
+       3.如果查找了所有的都为true, 那么返回最后一个运算元(原始值)
+       /
+```
 
 ![逻辑与的本质](C:\Users\admin\Desktop\系统笔记\img_js_基础\逻辑与的本质.png)
 
@@ -579,6 +640,10 @@ sayHello("why", 18)
 
 ### switch语句 
 
+- switch 判断是 全等 === 类型相同
+- default 当 case都不满足的时候，执行
+- break 跳出 switch，后面的代码不会执行了
+
 ![switch语句](C:\Users\admin\Desktop\系统笔记\img_js_基础\switch语句.png)
 
 ------
@@ -586,6 +651,848 @@ sayHello("why", 18)
 ### switch语句的补充 
 
 ![switch语句的补充](C:\Users\admin\Desktop\系统笔记\img_js_基础\switch语句的补充.png)
+
+------
+
+## 认识循环 
+
+![认识循环](C:\Users\admin\Desktop\系统笔记\img_js_基础\认识循环.png)
+
+------
+
+### while循环 
+
+- 条件为真 - 执行代码 - 判断条件 - 条件为真 - 执行...
+- 一直为真，一直执行，死循环
+
+```js
+// 计算0~99的偶数和
+    var count = 0
+    var totalCount = 0
+    while (count < 100) {
+      if (count % 2 === 0) { // 偶数 2468...
+        totalCount += count
+      }
+      count++
+    }
+
+    console.log("所有的偶数和:", totalCount)
+
+    // 算法优化
+    var count = 0
+    var totalCount = 0
+    while (count < 100) {
+      totalCount += count
+      count += 2
+    }
+```
+
+```js
+// 死循环
+    while (true) {
+      console.log("Hello World")
+      console.log("Hello Coderwhy")
+    }
+```
+
+![while循环](C:\Users\admin\Desktop\系统笔记\img_js_基础\while循环.png)
+
+------
+
+### do..while循环 
+
+- 先执行 - 再判断 - 再执行
+
+![do..while循环](C:\Users\admin\Desktop\系统笔记\img_js_基础\do..while循环.png)
+
+------
+
+### for循环 
+
+- 先执行 begin，判断条件 - 代码块 - step - 判断条件 - 代码块 - step ...
+- 偶数和  i+=2
+- i=0不是固定的，i也可以=2=3
+- i++ 、i <  100 同理 
+
+```js
+for (var i = 1; i <= n; i++) {
+        total += i
+      }
+```
+
+```js
+var totalCount = 0
+    for (var i = 1; i < 100; i+=2) {
+      totalCount += i
+    }
+```
+
+![for循环](C:\Users\admin\Desktop\系统笔记\img_js_基础\for循环.png)
+
+------
+
+### for循环的嵌套 
+
+- 外层不满足 - 停止
+  - 外层每次执行，内层会执行完整的循环
+
+```js
+// for循环的嵌套: 循环中执行体, 里面又嵌套了循环
+    for (var i = 0; i < 10; i++) {
+
+      console.log("i开始执行:", i)
+
+      for (var j = 0; j < 3; j++) {
+        console.log("执行j循环")
+      }
+
+      console.log("i结束执行:", i)
+    }
+```
+
+- 三角形
+
+```js
+for (var i = 0; i < 6; i++) {
+      document.write("<div>")
+      
+      for (var m = 0; m < i+1; m++) {
+        document.write("❤ ")
+      }
+
+      document.write("</div>")
+    }
+```
+
+- 乘法表
+  - i是列，i是0，i+1=1，i+2=2，X轴上的每列数据
+  - m是行，m是0，m+1=1，m+2=2，Y轴上的每行数据
+  - i是外，m是内，外是列，内是行
+
+```js
+document.write("<table>")
+
+    for (var i = 0; i < 9; i++) {
+      document.write("<tr>")
+      
+      for (var m = 0; m < i+1; m++) {
+        var a = m + 1
+        var b = i + 1
+        var result = (m+1)*(i+1)
+        document.write(`<td>${a}*${b}=${result}</td>`)
+      }
+
+      document.write("</tr>")
+    }
+
+    document.write("</table>")
+```
+
+### 循环控制 
+
+- 清楚在哪里停止执行
+
+```js
+var names = ["abc", "cba", "nba", "mba", "bba", "aaa", "bbb"]
+
+    // 循环遍历数组
+    // break关键字的使用
+    // 需求: 遇到nba时, 不再执行后续的迭代
+    for (var i = 0; i < 4; i++) {
+      console.log(names[i])
+      if (names[i] === "nba") {
+        break  // 在这里立刻结束，后面的不执行
+      }
+    }
+
+    // continue关键字的使用: 立刻结束本次循环, 执行下一次循环(step)
+    // 需求: 不打印nba
+    for (var i = 0; i < 7; i++) {
+      if (names[i] === "nba" || names[i] === "cba") {
+        continue // 在这里立刻结束，下面的console不会执行
+      }
+      console.log(names[i])
+    }
+```
+
+![循环控制](C:\Users\admin\Desktop\系统笔记\img_js_基础\循环控制.png)
+
+```js
+// 1.随机生成一个0~99的数字 -- 猜数游戏
+    var randomNum = Math.floor(Math.random() * 100)
+    alert(randomNum)
+
+    // 2.玩家有7次机会猜测数字
+    var count = 3
+    for (var i = 0; i < count; i++) {
+      // 获取用户的输入
+      var inputNum = Number(prompt("请输入您猜测的数字:"))
+
+      // 和randomNum进行比较
+      if (inputNum === randomNum) {
+        alert("恭喜您, 猜对了")
+        break
+      } else if (inputNum > randomNum) {
+        alert("您猜大了")
+      } else {
+        alert("您猜小了")
+      }
+
+      if (i === count - 1) {
+        alert("您的次数已经用完了")
+      }
+    }
+```
+
+------
+
+### 循环的总结 
+
+- 不确定循环次数 - while
+- 确定 - for
+
+![循环的总结](C:\Users\admin\Desktop\系统笔记\img_js_基础\循环的总结.png)
+
+------
+
+## JavaScript函数 
+
+### 程序中的foo、bar、baz 
+
+![程序中的foo、bar、baz](C:\Users\admin\Desktop\系统笔记\img_js_基础\程序中的foo、bar、baz.png)
+
+------
+
+### 认识函数 
+
+![认识函数](C:\Users\admin\Desktop\系统笔记\img_js_基础\认识函数.png)
+
+------
+
+### 函数使用的步骤 
+
+![函数使用的步骤](C:\Users\admin\Desktop\系统笔记\img_js_基础\函数使用的步骤.png)
+
+------
+
+### 声明和调用函数 
+
+![声明和调用函数](C:\Users\admin\Desktop\系统笔记\img_js_基础\声明和调用函数.png)
+
+------
+
+### 函数的参数 
+
+![函数的参数](C:\Users\admin\Desktop\系统笔记\img_js_基础\函数的参数.png)
+
+------
+
+### 函数的返回值 
+
+```js
+// var result = prompt("请输入一个数字:")
+    // 1.理解函数的返回值
+    // function sayHello(name) {
+    //   console.log(`Hi ${name}`)
+    // }
+
+    // var foo = sayHello("Kobe")
+    // console.log("foo:", foo)
+
+    // 2.返回值的注意事项
+    // 注意事项一: 所有的函数, 如果没有写返回值, 那么默认返回undefined
+    // function foo() {
+    //   console.log("foo函数被执行~")
+    // }
+
+    // var result = foo()
+    // console.log("foo的返回值:", result)
+
+    // 注意事项二: 我们也可以明确的写上return
+    // 写上return关键字, 但是后面什么内容都没有的时候, 也是返回undefined
+    // function bar() {
+    //   console.log("bar函数被执行~")
+    //   return
+    // }
+    // var result = bar()
+    // console.log("bar的返回值:", result)
+
+    // 注意事项三: 如果在函数执行到return关键字时, 函数会立即停止执行, 退出函数
+    // function baz() {
+    //   console.log("Hello Baz")
+    //   return
+    //   console.log("Hello World")
+    //   console.log("Hello Why")
+    // }
+
+    // baz()
+
+
+    // 函数的具体返回值
+    function sum(num1, num2) {
+      var result = num1 + num2
+      return result
+    }
+
+    var total = sum(20, 30)
+    console.log("total:", total)
+```
+
+![函数的返回值](C:\Users\admin\Desktop\系统笔记\img_js_基础\函数的返回值.png)
+
+------
+
+### 数字格式化
+
+```js
+// 从服务器拿到很多的数字
+    var playCount1 = 13687 // 13687
+    var playCount2 = 5433322 // 543万
+    var playCount3 = 8766633333 // 87亿
+
+
+    // 封装一个工具函数: 对数字进行格式化
+    // 10_0000_0000就是1000000000语法糖
+    // 语法糖的概念: 一种简写或者特殊的写法, 这种写法相对于原有的写法更加的方便或者阅读性更强
+    // 相比于原来的写法, 有一点点的甜头, 称之为语法糖
+    function formatCount(count) {
+      var result = 0
+      if (count >= 10_0000_0000) { // 超过10_0000_0000值进行转换
+        result = Math.floor(count / 1_0000_0000) + "亿"
+      } else if (count >= 10_0000) {
+        result = Math.floor(count / 1_0000) + "万"
+      } else {
+        result = count
+      }
+
+      return result
+    }
+
+    console.log(formatCount(playCount1))
+    console.log(formatCount(playCount2))
+    console.log(formatCount(playCount3))
+```
+
+### arguments参数 
+
+```js
+// 1.arguments的认识
+    function foo(name, age) {
+      console.log("传入的参数", name, age)
+
+      // 在函数中都存在一个变量, 叫arguments
+      console.log(arguments)
+      // arguments是一个对象
+      console.log(typeof arguments)
+      // 对象内部包含了所有传入的参数
+      // console.log(arguments[0])
+      // console.log(arguments[1])
+      // console.log(arguments[2])
+      // console.log(arguments[3])
+
+      // 对arguments来进行遍历
+      for (var i = 0; i < arguments.length; i++) {
+        console.log(arguments[i])
+      }
+    }
+
+    foo("why", 18, 1.88, "广州市")
+
+
+    // 2.arguments的案例
+    function sum() {
+      var total = 0
+      for (var i = 0; i < arguments.length; i++) {
+        var num = arguments[i]
+        total += num
+      }
+      return total
+    }
+
+    console.log(sum(10, 20))
+    console.log(sum(10, 20, 30))
+    console.log(sum(10, 20, 30, 40))
+```
+
+![arguments参数](C:\Users\admin\Desktop\系统笔记\img_js_基础\arguments参数.png)
+
+------
+
+### 函数中调用函数 
+
+![函数中调用函数](C:\Users\admin\Desktop\系统笔记\img_js_基础\函数中调用函数.png)
+
+------
+
+### 函数的递归 
+
+![函数的递归](C:\Users\admin\Desktop\系统笔记\img_js_基础\函数的递归.png)
+
+------
+
+### 递归的实现思路 
+
+- 递归的性能是比循环低的，但代码比循环简洁
+
+```js
+// 需求: 封装一个函数, 函数可以实现x的n次方法
+    function pow1(x, n) {
+      return x ** n
+    }
+
+    // console.log(pow1(2, 3))
+    // console.log(pow1(3, 3))
+
+    // console.log(Math.pow(2, 3))
+    // console.log(Math.pow(3, 3))
+
+    // 一. for循环实现方式 
+    // x² = x * x
+    // x³ = x * x * x
+    function pow2(x, n) {
+      var result = 1
+      for (var i = 0; i < n; i++) {
+        result *= x
+      }
+      return result
+    }
+
+    console.log(pow2(2, 3))
+    console.log(pow2(3, 3))
+
+    // 二. 递归实现方式(必须有一个结束条件)
+    // 缺点: 性能是比较低(占用过多的栈内存)
+    // 优点: 写出来的代码非常简洁
+    function pow(x, n) {
+      return x * pow(x, n-1)
+    }
+
+    console.log(pow(2, 3))
+    console.log(pow(3, 3))
+```
+
+### 斐波那契数列
+
+```js
+// 什么是斐波那契数列，后面是前面2个的和
+    // 数列: 1 1 2 3 5 8 13 21 34 55  ... x
+    // 位置: 1 2 3 4 5 6 7  8  9  10  ... n
+
+    // 1.斐波那契的递归实现
+    function fibonacci(n) {
+      if (n === 1 || n === 2) return 1
+      return fibonacci(n-1) + fibonacci(n-2)
+    }
+
+
+    // 2.斐波那契的for循环实现
+    function fibonacci(n) {
+      // 特殊的情况(前两个数字)
+      if (n === 1 || n === 2) return 1
+
+      // for循环的实现
+      var n1 = 1
+      var n2 = 1
+      var result = 0
+      for (var i = 3; i <= n; i++) {
+        result = n1 + n2
+        n1 = n2
+        n2 = result
+      }
+      return result
+    }
+
+    console.log(fibonacci(5))
+    console.log(fibonacci(10))
+```
+
+![递归的实现思路 ](C:\Users\admin\Desktop\系统笔记\img_js_基础\递归的实现思路 .png)
+
+------
+
+### 局部变量和外部变量 
+
+- 函数内使用 var 声明的是函数的局部变量
+- 函数内 没有使用 var 声明的是 全局变量
+
+```js
+// 1.全局变量(global variable): 在全局(script元素中)定义一个变量, 那么这个变量是可以在定义之后的任何范围内被访问到的, 那么这个变量就称之为是一个全局变量.
+    var message = "Hello World"
+    
+    // 在函数中访问message
+    function sayHello() {
+      // 外部变量(outer variable): 在函数内部去访问函数之外的变量, 访问的变量称之为外部变量
+      console.log("sayHello中访问message:", message)
+
+      // 2.局部变量(local variable): 在函数内部定义的变量, 只有在函数内部才能进行访问, 称之为局部变量
+      var nickname = "coderwhy"
+      
+      // 3.没有使用 var 定义，直接写变量名，是全局变量
+      nickname = "coderwhy"
+
+      function hi() {
+        console.log("hi function~")
+        // message也是一个外部变量
+        console.log("hi中访问message:", message)
+        // nickname也是一个外部变量
+        console.log("hi中访问nickname:", nickname)
+      }
+      hi()
+    }
+
+    sayHello()
+```
+
+![局部变量和外部变量](C:\Users\admin\Desktop\系统笔记\img_js_基础\局部变量和外部变量.png)
+
+------
+
+### 函数表达式（Function Expressions） 
+
+![函数表达式（Function Expressions）](C:\Users\admin\Desktop\系统笔记\img_js_基础\函数表达式（Function Expressions）.png)
+
+------
+
+### 函数声明 vs 函数表达式 
+
+- 函数表达式是在代码执行到时，才被创建，才能被使用
+- 函数声明是在被定义之前，就可以被调用
+
+![函数声明 vs 函数表达式](C:\Users\admin\Desktop\系统笔记\img_js_基础\函数声明 vs 函数表达式.png)
+
+------
+
+### JavaScript头等函数 
+
+- 函数作为一等(头等)公民
+  - 函数可以被赋值给变量
+  - 让函数在变量之间来回传递
+  - 函数可以另外一个函数的参数
+  - 函数作为另外一个函数的返回值
+  - 将函数存储在另外一个数据结构中
+- 函数式编程
+  - 函数可以作为头等公民的编程方式, 就是函数式编程方式(范式)
+
+```js
+
+    // 函数作为一等(头等)公民
+    // 1.函数可以被赋值给变量(函数表达式写法)
+    var foo1 = function() {
+      console.log("foo1函数被执行~")
+    }
+    foo1()
+
+    // 2.让函数在变量之间来回传递
+    var foo2 = foo1
+    foo2()
+
+
+    // 3.函数可以另外一个函数的参数
+    function bar(fn) {
+      console.log("fn:", fn)
+      fn()
+    }
+    bar(foo1)
+
+
+    // 4.函数作为另外一个函数的返回值
+    function sayHello() {
+      function hi() {
+        console.log("hi kobe")
+      }
+      return hi
+    }
+
+    var fn = sayHello()
+    fn()
+
+
+    // 5.将函数存储在另外一个数据结构中
+    var obj = {
+      name: "why",
+      eating: function() {
+        console.log("eating")
+      }
+    }
+    obj.eating()
+
+    // 函数式编程: 使用函数来作为头等公民使用函数, 这种编程方式(范式).
+    // JavaScript支持函数式编程.		
+```
+
+![JavaScript头等函数](C:\Users\admin\Desktop\系统笔记\img_js_基础\JavaScript头等函数.png)
+
+------
+
+### 回调函数（Callback Function） 
+
+- 将一个函数作为另外一个函数的参数传入到另外一个函数中；
+- 在另外一个函数中，对于传入的函数进行调用的过程，就叫做函数的回调
+
+```js
+	// 1.函数回调的概念理解
+    function foo(fn) {
+      // 通过fn去调用bar函数的过程, 称之为函数的回调
+      fn()
+    }
+    function bar() {
+      console.log("bar函数被执行了~")
+    }
+    foo(bar)
+    
+    // 2.函数回调
+    function request(url, callback) {
+      var list = ["javascript", "javascript学习", "JavaScript高级编程"]
+      callback(list)
+    }
+
+    // 传入的函数是没有名字, 匿名函数
+    request("url", function(res) {
+      console.log(res)
+    })
+```
+
+![回调函数（Callback Function）](C:\Users\admin\Desktop\系统笔记\img_js_基础\回调函数（Callback Function）.png)
+
+------
+
+### 高阶函数
+
+- foo可以接受另外一个函数作为参数，那么foo就称之为是一个高阶函数；
+- 如果一个函数有返回另外一个函数，那么这个函数也叫做高阶函数；
+
+### 立即执行函数 
+
+```js
+// 立即执行函数的参数和返回值
+    var result = (function(name) {
+      console.log("函数立刻被执行~", name)
+      return "Hello World"
+    })("why")
+    console.log(result)
+
+```
+
+- 作用1
+  - 防止全局变量的命名冲突 ，避免变量污染(也可以单独给变量加统一前缀)（或ES6使用esmodule避免）
+  - 在立即执行函数中定义的变量是有自己的作用域的 
+
+```js
+// esmodule -> import/export -> es5中立即执行函数
+var xmModule = (function() {
+  // 自执行函数，独立作用域，避免变量污染
+  // 声明单独变量及需要导出的属性
+  var xmModule = {}
+  var message = "Hello XiaoMing"
+  xmModule.message = message
+  // 导出
+  return xmModule
+})()
+
+```
+
+- 作用2
+  - 独立作用域，保存了私有的变量
+  - 看作用域，作用域内可以拿到每个i
+  - 作用域内拿不到就去上层作用域，拿到的是循环结束的i
+
+```js
+// let
+var btnEls = document.querySelectorAll(".btn")
+	// let 独立块级作用域
+    for (let i = 0; i < btnEls.length; i++) {
+      var btn = btnEls[i];
+      btn.onclick = function() {
+        console.log(`按钮${i+1}发生了点击`)
+      }
+    }
+
+    // var 使用立即执行函数
+    var btnEls = document.querySelectorAll(".btn") // 4个
+    for (var i = 0; i < btnEls.length; i++) {
+      var btn = btnEls[i];
+       // 这里接收了循环的所有i
+      (function(m) {
+        btn.onclick = function() {
+            //取得是m，就是每次传递的i，这个i是和btn顺序对应的
+          console.log(`按钮${m+1}发生了点击`)
+        }
+      })(i) // 循环每次都把i传进去了
+    }
+```
+
+![闭包](C:\Users\admin\Desktop\系统笔记\img_js_基础\闭包.png)
+
+![立即执行函数](C:\Users\admin\Desktop\系统笔记\img_js_基础\立即执行函数.png)
+
+------
+
+### 立即执行函数的其他写法 
+
+- +加号，是一个表达式，让...变成表达式
+
+![立即执行函数的其他写法](C:\Users\admin\Desktop\系统笔记\img_js_基础\立即执行函数的其他写法.png)
+
+------
+
+## 代码风格 
+
+- 变量两边 加空格
+- 操作符两边 加空格
+- 不同逻辑代码块之间加 空行
+- else 不需要另起一行，且两边 加空格
+
+```js
+	// 1.foo和()之间不需要有空格
+    // 2.多参数,后面加上一个空格
+    // 3.()和{之间有一个空格
+    // 4.{和其他函数定义在同一行中
+    function foo(m, n) {
+
+    }
+
+    foo(20, 30)
+
+    if (true) {
+    } else {
+
+    }
+
+    for (var i = 0; i < 10; i++) {
+
+    }
+
+    // 模板字符串(可以换行)
+    var message = `
+       哈哈哈哈哈${100}
+    `
+```
+
+![代码风格](C:\Users\admin\Desktop\系统笔记\img_js_基础\代码风格.png)
+
+------
+
+### Chrome的debug调试技巧 
+
+- 可以查看代码的完整执行以及每个变量如何变化
+
+- 浏览器打断点
+- 代码打断点
+
+```js
+// debugger标识符就是在代码中打断点方式
+    debugger
+```
+
+- watch 监听 变量
+- breakpoints 所有断点
+- scope 作用域以及对应的变量
+  - local 自身作用域
+  - closure 上层作用域
+  - global 全局作用域
+- call stack 函数调用栈（函数是如何调用的）
+- 按钮
+  - 第一个右向三角，恢复代码执行，只恢复一个断点，再点恢复
+  - 第二个半圆，跳过当前行代码，执行下一行代码，一行一行执行
+  - 第三个下，进入当前行所包含的函数内部，点击半圆，查看函数是如何一步步执行的，包括查看异步函数
+  - 第四个上，直接跳过当前查看的函数
+  - 第五个右，同第三个
+    - 区别第三个可以查看异步函数是如何执行的
+    - 第五个，会跳过异步函数
+
+![Chrome的debug调试技巧](C:\Users\admin\Desktop\系统笔记\img_js_基础\Chrome的debug调试技巧.png)
+
+------
+
+## JavaScript的面向对象
+
+### 认识对象类型
+
+![认识对象类型](C:\Users\admin\Desktop\系统笔记\img_js_基础\认识对象类型.png)
+
+------
+
+### 创建对象和使用对象
+
+![创建对象和使用对象](C:\Users\admin\Desktop\系统笔记\img_js_基础\创建对象和使用对象.png)
+
+------
+
+### 对象的常见操作
+
+![对象的常见操作](C:\Users\admin\Desktop\系统笔记\img_js_基础\对象的常见操作.png)
+
+------
+
+### 方括号和引用的使用
+
+![方括号和引用的使用](C:\Users\admin\Desktop\系统笔记\img_js_基础\方括号和引用的使用.png)
+
+------
+
+### 对象的遍历
+
+![对象的遍历](C:\Users\admin\Desktop\系统笔记\img_js_基础\对象的遍历.png)
+
+------
+
+### 栈内存和堆内存
+
+![栈内存和堆内存](C:\Users\admin\Desktop\系统笔记\img_js_基础\栈内存和堆内存.png)
+
+------
+
+### 值类型和引用类型
+
+![值类型和引用类型](C:\Users\admin\Desktop\系统笔记\img_js_基础\值类型和引用类型.png)
+
+------
+
+### 为什么需要this？
+
+![为什么需要this？](C:\Users\admin\Desktop\系统笔记\img_js_基础\为什么需要this？.png)
+
+------
+
+### this指向什么？
+
+![this指向什么？](C:\Users\admin\Desktop\系统笔记\img_js_基础\this指向什么？.png)
+
+------
+
+### 类和对象的思维方式
+
+![类和对象的思维方式](C:\Users\admin\Desktop\系统笔记\img_js_基础\类和对象的思维方式.png)
+
+------
+
+### 创建对象的方案 – 工厂函数
+
+![创建对象的方案 – 工厂函数](C:\Users\admin\Desktop\系统笔记\img_js_基础\创建对象的方案 – 工厂函数.png)
+
+------
+
+### 认识构造函数
+
+![认识构造函数](C:\Users\admin\Desktop\系统笔记\img_js_基础\认识构造函数.png)
+
+------
+
+### 类和对象的关系
+
+![类和对象的关系](C:\Users\admin\Desktop\系统笔记\img_js_基础\类和对象的关系.png)
+
+------
+
+### JavaScript中的类（ES5）
+
+![JavaScript中的类（ES5）](C:\Users\admin\Desktop\系统笔记\img_js_基础\JavaScript中的类（ES5）.png)
+
+------
+
+### 创建对象的方案 – 构造函数（类）
+
+![创建对象的方案 – 构造函数（类）](C:\Users\admin\Desktop\系统笔记\img_js_基础\创建对象的方案 – 构造函数（类）.png)
 
 ------
 
