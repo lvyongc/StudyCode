@@ -1110,6 +1110,56 @@ var names = ["abc", "cba", "nba", "mba", "bba", "aaa", "bbb"]
 
 ------
 
+### 函数作用域
+
+```js
+    // 1.作用域的理解:message在哪一个范围内可以被使用, 称之为message的作用域(scope)
+    // 全局变量: 全局作用域
+    var message = "Hello World"
+    if (true) {
+      console.log(message)
+    }
+    function foo() {
+      console.log("在foo中访问", message)
+    }
+    foo()
+
+    // 2.var定义的变量是没有块级作用域
+    {
+      var count = 100
+      console.log("在代码块中访问count:", count)
+    }
+    console.log("在代码块外面访问count:", count)
+    // for循环的代码块也是没有自己的作用域
+    for (var i = 0; i < 3; i++) {
+      var foo = "foo"
+    }
+    console.log("for循环外面访问foo:", foo)
+    console.log("for循环外面访问i:", i) // 3
+
+    // 在函数内部定义的变量外面是访问不到的
+    function test() {
+      var bar = "bar"
+    }
+
+    test()
+    // console.log("test函数外面访问bar:", bar)
+
+    // 函数有自己的作用域: 函数内部定义的变量只有函数内部能访问到
+    function sayHello() {
+      var nickname = "kobe"
+      console.log("sayHello函数的内部:", nickname)
+      
+      function hi() {
+        console.log("hi function~")
+        console.log("在hi函数中访问nickname:", nickname)
+      }
+      hi()
+    }
+    sayHello()
+    // console.log("sayHello外面访问nickname:", nickname)
+```
+
 ### 局部变量和外部变量 
 
 - 函数内使用 var 声明的是函数的局部变量
@@ -1408,11 +1458,54 @@ var btnEls = document.querySelectorAll(".btn")
 
 ### 认识对象类型
 
+```js
+ /*
+      两个术语: 函数/方法
+         函数(function): 如果在JavaScript代码中通过function默认定义一个结构, 称之为是函数.
+         方法(method): 如果将一个函数放到对象中, 作为对象的一个属性, 那么将这个函数称之为方法.
+    */
+    function foo() { // 函数
+    }
+
+    // key: 字符串类型, 但是在定义对象的属性名时, 大部分情况下引号都是可以省略的
+    var person = {
+      // key: value
+      name: "why",
+      age: 18,
+      height: 1.88,
+      "my friend": {
+        name: "kobe",
+        age: 30
+      },
+      run: function() { // 方法
+        console.log("running")
+      }
+    }
+```
+
 ![认识对象类型](C:\Users\admin\Desktop\系统笔记\img_js_基础\认识对象类型.png)
 
 ------
 
 ### 创建对象和使用对象
+
+- delete关键字(删除操作符) `delete info.height `
+
+```js
+	// 1.对象字面量 大括号
+    var obj1 = {
+      name: "why"
+    }
+
+    // 2.new Object()
+    // Object构造函数
+    var obj2 = new Object()
+    obj2.name = "kobe"
+
+    // // 3.new 自定义类()
+    function Person() {}
+    var obj3 = new Person()
+```
 
 ![创建对象和使用对象](C:\Users\admin\Desktop\系统笔记\img_js_基础\创建对象和使用对象.png)
 
@@ -1432,11 +1525,29 @@ var btnEls = document.querySelectorAll(".btn")
 
 ### 对象的遍历
 
+- Object.keys() 拿到所有key
+- for in 拿到 key
+
+```js
+	// 对象不支持:  for..of..: 默认是不能遍历对象
+    for (var foo of info) {
+    }
+	// 数组支持
+```
+
 ![对象的遍历](C:\Users\admin\Desktop\系统笔记\img_js_基础\对象的遍历.png)
 
 ------
 
 ### 栈内存和堆内存
+
+- 栈内存 stack
+  - 简单类型
+- 堆内存 heap
+  - 复杂类型
+- 对象会在 堆内存 中保存，在栈内存中引用堆内存中保存的地址
+  - 变量名放在 栈内存中
+  - 变量名引用的地址是在堆内存中保存对象的地址
 
 ![栈内存和堆内存](C:\Users\admin\Desktop\系统笔记\img_js_基础\栈内存和堆内存.png)
 
@@ -1446,15 +1557,112 @@ var btnEls = document.querySelectorAll(".btn")
 
 ![值类型和引用类型](C:\Users\admin\Desktop\系统笔记\img_js_基础\值类型和引用类型.png)
 
+- friend 指向的是0xaaa，不是0x100
+
+![对象的引用赋值内存图](C:\Users\admin\Desktop\系统笔记\img_js_基础\对象的引用赋值内存图.png)
+
+- num传给函数的a，栈中就创建了a=num=100,a=200,num还是100，函数执行完创建的a会自动被销毁，闭包引用不会销毁
+
+```js
+function foo(a) {
+      a = 200
+    }
+    var num = 100
+    foo(num)
+    console.log(num) // 100
+```
+
+- a 又等于 一个 对象，就是重复赋值了一个新对象的引用地址，a的改变对obj没有影响
+  - 0x100 变成 0xaaa
+
+![函数传递-引用传递-创建新对象](C:\Users\admin\Desktop\系统笔记\img_js_基础\函数传递-引用传递-创建新对象.png)
+
+- 修改引用值
+
+![函数传递-引用传递-修改引用属性](C:\Users\admin\Desktop\系统笔记\img_js_基础\函数传递-引用传递-修改引用属性.png)
+
 ------
 
 ### 为什么需要this？
+
+- this 指向
+
+```js
+  <script> // 这里是一个作用域
+
+    var info = { // 这里是一个对象，是数据结构，不是一个作用域
+      name: "why",
+      age: 18,
+      running: function() { // 这里是一个作用域
+        console.log("running~", this.name) // 这个this指向的是，调用这个方法的对象，是info调用了，this就是info
+      },
+      eating: function() {
+        console.log("eating~", this.name)
+      },
+      studying: function() {
+        console.log("studying~", this.name)
+      }
+    }
+
+    info.running()
+    info.eating()
+    info.studying()
+
+  </script>
+```
 
 ![为什么需要this？](C:\Users\admin\Desktop\系统笔记\img_js_基础\为什么需要this？.png)
 
 ------
 
 ### this指向什么？
+
+- 看被谁调用
+  - 默认就是函数名+小括号 调用
+
+```js
+// 函数中是有一个this的变量, this变量在大多数情况下会指向一个对象
+    // arguments保存的是传入的所有参数
+
+    // 情况一: 如果普通的函数被默认调用, 那么this指向的就是window
+    function foo(name, age) {
+      console.log(arguments)
+      console.log(this)
+    }
+    foo("abc", 123) // win
+
+    function sayHello(name) {
+      console.log(this)
+    }
+    sayHello() // win
+
+
+    // 情况二: 如果函数它是被某一个对象来引用并且调用它, 那么this会指向这个对象(调用的那个调用)
+    var obj = {
+      name: "why",
+      running: function() {
+        console.log(this)
+        // console.log(obj)
+        // console.log(this === obj) true
+      }
+    }
+    obj.running()  // obj
+
+    // 考验题目
+    // 1.题目一:
+    var fn = obj.running  // fn是obj对象的函数
+    fn() // window，因为在这里fn函数是被默认调用的，不是被其他人调用的，看怎么调用的
+
+    // 2.题目二:
+    function bar() {
+      console.log(this)
+    }
+    var obj = {
+      name: "why",
+      bar: bar
+    }
+    obj.bar() // obj对象，这里是被obj调用的
+```
 
 ![this指向什么？](C:\Users\admin\Desktop\系统笔记\img_js_基础\this指向什么？.png)
 
@@ -1474,11 +1682,19 @@ var btnEls = document.querySelectorAll(".btn")
 
 ### 认识构造函数
 
+- 构造函数上(类上面)添加的函数, 称之为类 
+- 函数也是对象
+
 ![认识构造函数](C:\Users\admin\Desktop\系统笔记\img_js_基础\认识构造函数.png)
 
 ------
 
 ### 类和对象的关系
+
+- 如果有大量重复对象
+- 先创建 构造函数或者类（编写公共的属性、方法）
+- 再new 类，生成不同的且有一部分属性是相同的对象
+- 这样的编程方式就是，面向对象编程
 
 ![类和对象的关系](C:\Users\admin\Desktop\系统笔记\img_js_基础\类和对象的关系.png)
 
@@ -1493,6 +1709,304 @@ var btnEls = document.querySelectorAll(".btn")
 ### 创建对象的方案 – 构造函数（类）
 
 ![创建对象的方案 – 构造函数（类）](C:\Users\admin\Desktop\系统笔记\img_js_基础\创建对象的方案 – 构造函数（类）.png)
+
+------
+
+### 全局对象
+
+```js
+ 	// 浏览器中存在一个全局对象object -> window
+    // 作用一: 查找变量时, 最终会找到window头上
+    // 作用二: 将一些浏览器全局提供给我们的变量/函数/对象, 放在window对象上面
+    // 作用三(了解): 使用var定义的变量会被默认添加到window上面
+    console.log(window)
+
+    // 使用var定义变量
+    var message = "Hello World"
+
+    function foo() {
+      // 自己的作用域
+      // abc()
+      // alert("Hello World")
+      console.log(window.console === console)
+
+      // 创建一个对象
+      // var obj = new Object()
+      console.log(window.Object === Object)
+
+      // DOM
+      console.log(document)
+
+      // window.message
+      console.log(window.message)
+    }
+    foo()
+```
+
+## JavaScript常见内置类 
+
+### 原始类型的包装类 
+
+![原始类型的包装类](C:\Users\admin\Desktop\系统笔记\img_js_基础\原始类型的包装类.png)
+
+------
+
+### 包装类型的使用过程 
+
+- 在调用原始类型的属性或者方法时, 内部的操作 name = new String(name) 
+
+![包装类型的使用过程](C:\Users\admin\Desktop\系统笔记\img_js_基础\包装类型的使用过程.png)
+
+------
+
+### Number类的补充 
+
+- https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Number
+- toString 传入进制，默认10进制，按照10进制转换成字符串
+- toFixed，返回 字符串 类型
+
+![Number类的补充](C:\Users\admin\Desktop\系统笔记\img_js_基础\Number类的补充.png)
+
+------
+
+### Math对象 
+
+- [5~50)的随机数
+
+```js
+    // random: 随机生成 [0, 1)
+    console.log(Math.random())
+    // 需求: [5~50)的随机数
+    // [a, b)
+    // y = a
+    // x = b - a
+    // Math.floor(Math.random() * x) + y
+    for (var i = 0; i < 1000; i++) {
+      var randomNum = Math.floor(Math.random() * 45) + 5
+      console.log(randomNum)
+    }
+```
+
+```js
+    console.log(Number.parseInt(num1))
+    console.log(Number.parseFloat(num1))
+
+    // window对象上面
+    console.log(parseInt(num1))
+    console.log(parseFloat(num1))
+```
+
+- https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Math
+
+![Math对象](C:\Users\admin\Desktop\系统笔记\img_js_基础\Math对象.png)
+
+------
+
+### String类的补充（一）- 基本使用 
+
+- 找不到
+  - chatAt 返回空
+  - [] 返回 undefined
+- 遍历
+
+```js
+    // for..of的遍历 -> 迭代器
+    // 目前可迭代对象: 字符串/数组
+    // 对象是不支持for..of
+    // String对象内部是将字符串变成了一个可迭代对象
+    for (var char of message) {
+      console.log(char)
+    }
+```
+
+![String类的补充（一）- 基本使用](C:\Users\admin\Desktop\系统笔记\img_js_基础\String类的补充（一）- 基本使用.png)
+
+------
+
+### String类的补充（二） - 修改字符串 
+
+- 通过[]修改会失败
+
+![String类的补充（二） - 修改字符串](C:\Users\admin\Desktop\系统笔记\img_js_基础\String类的补充（二） - 修改字符串.png)
+
+------
+
+### String类的补充（三） - 查找字符串 
+
+![String类的补充（三） - 查找字符串](C:\Users\admin\Desktop\系统笔记\img_js_基础\String类的补充（三） - 查找字符串.png)
+
+------
+
+### String类的补充（四）- 开头和结尾 
+
+![String类的补充（四）- 开头和结尾](C:\Users\admin\Desktop\系统笔记\img_js_基础\String类的补充（四）- 开头和结尾.png)
+
+------
+
+### String类的补充（五） - 获取子字符串 
+
+- slice 传一个参数，从第几位开始截取到最后一位
+
+![String类的补充（五） - 获取子字符串](C:\Users\admin\Desktop\系统笔记\img_js_基础\String类的补充（五） - 获取子字符串.png)
+
+------
+
+### String类的补充（六） - 其他方法 
+
+- https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String
+
+```js
+    // concat方法: 链式调用
+    var newString2 = str1.concat(str2).concat(str3)
+    var newString3 = str1.concat(str2, str3, "abc", "cba")
+```
+
+```js
+    // split字符串转数组,以-作为分隔符，并去除-
+    var items = message.split("-")
+    // join 数组转字符串，以*作为分隔符，并添加*
+    var newMessage = items.join("*")
+```
+
+![String类的补充（六） - 其他方法](C:\Users\admin\Desktop\系统笔记\img_js_基础\String类的补充（六） - 其他方法.png)
+
+------
+
+### 认识数组（Array） 
+
+![认识数组（Array）](C:\Users\admin\Desktop\系统笔记\img_js_基础\认识数组（Array）.png)
+
+------
+
+### 数组的创建方式 
+
+```js
+    // 传入了一个数字, 它默认会当成我们要创建一个对应长度的数组
+    var arr3 = new Array(5) // 无内容，只有长度
+```
+
+![数组的创建方式](C:\Users\admin\Desktop\系统笔记\img_js_基础\数组的创建方式.png)
+
+------
+
+### 数组的基本操作 
+
+- [] 不支持负数
+- at() 负数时尾部开始访问
+
+![数组的基本操作](C:\Users\admin\Desktop\系统笔记\img_js_基础\数组的基本操作.png)
+
+------
+
+### 数组的添加、删除方法（一） 
+
+- 尾部添加支持多个
+- 尾部删除没有参数，直接写pop()，只能删除最后一个
+- 头部类似
+- 尾部操作，其他不需要移动
+- 头部操作，其他的需要移动
+
+![数组的添加、删除方法（一）](C:\Users\admin\Desktop\系统笔记\img_js_基础\数组的添加、删除方法（一）.png)
+
+------
+
+### 数组的添加、删除方法（二） 
+
+- 在第一位的 前面 添加 
+
+`    names.splice(1, 0, "hello", "kobe") `
+
+![数组的添加、删除方法（二）](C:\Users\admin\Desktop\系统笔记\img_js_基础\数组的添加、删除方法（二）.png)
+
+------
+
+### length属性 
+
+![length属性](C:\Users\admin\Desktop\系统笔记\img_js_基础\length属性.png)
+
+------
+
+### 数组的遍历 
+
+![数组的遍历](C:\Users\admin\Desktop\系统笔记\img_js_基础\数组的遍历.png)
+
+------
+
+### 数组方法 – slice、cancat、 join 
+
+![数组方法 – slice、cancat、 join](C:\Users\admin\Desktop\系统笔记\img_js_基础\数组方法 – slice、cancat、 join.png)
+
+------
+
+### 数组方法 – 查找元素 
+
+![数组方法 – 查找元素](C:\Users\admin\Desktop\系统笔记\img_js_基础\数组方法 – 查找元素.png)
+
+------
+
+### 数组的排序sort/reverse
+
+![数组的排序sort-reverse](C:\Users\admin\Desktop\系统笔记\img_js_基础\数组的排序sort-reverse.png)
+
+------
+
+### 数组的其他高阶方法 
+
+![数组的其他高阶方法](C:\Users\admin\Desktop\系统笔记\img_js_基础\数组的其他高阶方法.png)
+
+------
+
+### 时间的表示方式 
+
+![时间的表示方式](C:\Users\admin\Desktop\系统笔记\img_js_基础\时间的表示方式.png)
+
+------
+
+### 时区对比图 
+
+![时区对比图](C:\Users\admin\Desktop\系统笔记\img_js_基础\时区对比图.png)
+
+------
+
+### 创建Date对象 
+
+![创建Date对象](C:\Users\admin\Desktop\系统笔记\img_js_基础\创建Date对象.png)
+
+------
+
+### dateString时间的表示方式 
+
+![dateString时间的表示方式](C:\Users\admin\Desktop\系统笔记\img_js_基础\dateString时间的表示方式.png)
+
+------
+
+### Date获取信息的方法 
+
+![Date获取信息的方法](C:\Users\admin\Desktop\系统笔记\img_js_基础\Date获取信息的方法.png)
+
+------
+
+### Date设置信息的方法 
+
+![Date设置信息的方法](C:\Users\admin\Desktop\系统笔记\img_js_基础\Date设置信息的方法.png)
+
+------
+
+### Date获取Unix时间戳 
+
+![Date获取Unix时间戳](C:\Users\admin\Desktop\系统笔记\img_js_基础\Date获取Unix时间戳.png)
+
+------
+
+### Date.parse方法 
+
+![Date.parse方法](C:\Users\admin\Desktop\系统笔记\img_js_基础\Date.parse方法.png)
+
+------
+
+### 时间格式化的方法 
+
+![时间格式化的方法](C:\Users\admin\Desktop\系统笔记\img_js_基础\时间格式化的方法.png)
 
 ------
 
