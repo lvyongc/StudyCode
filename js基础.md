@@ -1928,11 +1928,16 @@ function foo(a) {
 
 ### 数组的遍历 
 
+- of 拿不到索引
+
 ![数组的遍历](C:\Users\admin\Desktop\系统笔记\img_js_基础\数组的遍历.png)
 
 ------
 
 ### 数组方法 – slice、cancat、 join 
+
+- slice 不会修改原数组
+- splice 会改变原数组
 
 ![数组方法 – slice、cancat、 join](C:\Users\admin\Desktop\系统笔记\img_js_基础\数组方法 – slice、cancat、 join.png)
 
@@ -1940,17 +1945,248 @@ function foo(a) {
 
 ### 数组方法 – 查找元素 
 
+```js
+var stu = null
+    for (var i = 0; i < students.length; i++) {
+      if (students[i].id === 101) {
+        stu = students[i]
+        break // break 阻止 for 循环继续往下执行，在id=101时，不执行后面的循环
+      }
+    }
+```
+
+- find 返回查找到的结果
+
 ![数组方法 – 查找元素](C:\Users\admin\Desktop\系统笔记\img_js_基础\数组方法 – 查找元素.png)
 
 ------
 
+### 手动实现forEach、find 函数
+
+- forEach
+
+```js
+    // 1.hyForEach版本一(大部分同学掌握)
+    function hyForEach(fn) {
+      for (var i = 0; i < names.length; i++) {
+        fn(names[i], i, names) // 传递参数
+      }
+    }
+
+    hyForEach(function(item, index, names) {
+      console.log("-------", item, index, names) // 接收的参数
+    })
+
+    // 2.hyForEach版本二
+    function hyForEach(fn, arr) { // 传入
+      for (var i = 0; i < arr.length; i++) {
+        fn(arr[i], i, arr)
+      }
+    }
+
+    hyForEach(function(item, index, names) {
+      console.log("-------", item, index, names)
+    }, names)
+
+    hyForEach(function(item, index, names) {
+      console.log("-------", item, index, names)
+    }, [123, 321, 111, 222])
+
+
+    // 3.hyForEach版本三
+    names.hyForEach = function(fn) {
+      for (var i = 0; i < this.length; i++) { // 由names调用，this指向names
+        fn(this[i], i, this)
+      }
+    }
+
+    names.hyForEach(function(item, index, names) {
+      console.log("-------", item, index, names)
+    })
+    
+
+    // 4.hyForEach版本四(了解)
+    Array.prototype.hyForEach = function(fn, thisArgs) {
+      for (var i = 0; i < this.length; i++) {
+        fn(this[i], i, this) // item, index, names
+      }
+    }
+
+    names.hyForEach(function(item, index, names) {
+      console.log("------", item, index, names)
+    })
+```
+
+- find
+  - 找到后或者return true ，后面的不再执行查找
+  - 找不到 undefined
+
+```js
+    var findStu = students.find(function(item) {
+      return item.id === 101
+    })
+    // 实现
+    Array.prototype.hyFind = function(fn) {
+      for (var i = 0; i < this.length; i++) {
+        var isFlag = fn(this[i], i, this) // item, index, names
+        if (isFlag) { // 找到后，停止循环
+          return this[i] // return 终止整个函数、for循环的执行
+        }
+      }
+    }
+    var findStu = students.hyFind(function(item, index, arr) {
+      console.log(item)
+      return item.id === 101
+    })
+```
+
 ### 数组的排序sort/reverse
+
+- a - b
+  - 谁小谁在前
+  - 升序
+- b - a
+  - 反转
+  - 降序
+- 复杂类型的排序 
+
+```js
+    var students = [
+      { id: 100, name: "why", age: 18 },
+      { id: 101, name: "kobe", age: 30 },
+      { id: 102, name: "james", age: 25 },
+      { id: 103, name: "curry", age: 22 }
+    ]
+
+    students.sort(function(item1, item2) {
+      return item1.age - item2.age
+    })
+```
 
 ![数组的排序sort-reverse](C:\Users\admin\Desktop\系统笔记\img_js_基础\数组的排序sort-reverse.png)
 
 ------
 
 ### 数组的其他高阶方法 
+
+```js
+    // 1.forEach函数
+    var names = ["abc", "cba", "nba", "mba"]
+
+    // forEach 接收2个参数，第二个参数是要绑定的this，this指向第二个参数  { name: "why" }
+    names.forEach(function(item) {
+      console.log(item, this)
+    }, { name: "why" })
+
+    // forEach 接收1个参数，this指向win，因为内部的实现是，默认调用的，没有被谁调用
+    names.forEach(function(item,index,arr) {
+      console.log(item, this,index,arr) // 每项、下标、整个数组
+    })
+
+    // 内部实现
+
+    Array.prototype.hyForEach = function(fn, thisArgs) {
+      for (var i = 0; i < this.length; i++) {
+        fn(this[i], i, this) // item, index, names
+        // 这个 this 执行 names，这个this（就是这个 function）就是 hyForEach 是被 names 调用的
+        console.log(this) // names
+      }
+    }
+
+    names.hyForEach(function(item, index, names) {
+      // this 指向win，因为这个 function 只是一个参数传入变成 fn ，fn是被谁调用的？没有人调用，默认执行的
+      console.log("------", item, index, names,this) // win
+    })
+```
+
+```js
+    // 2.filter函数: 过滤
+    var nums = [11, 20, 55, 100, 88, 32]
+    // 2.1. for循环实现
+    var newNums = []
+    for (var item of nums) {
+      if (item % 2 === 0) {
+        newNums.push(item)
+      }
+    }
+    // 2.2. filter实现
+    var newNums = nums.filter(function(item) {
+      return item % 2 === 0 // 返回一个新数组
+    })
+```
+
+#### map 映射
+
+- 数组的每项，按照统一规则改变，原始的第一个和改变后的第一个有对应关系，剩余也是
+- 这种对应关系就是映射
+
+```js
+    // 3.map函数: 映射
+    var nums = [11, 20, 55, 100, 88, 32]
+    var newNums = nums.map(function(item) {
+      return item * item
+    })
+    console.log(newNums)
+```
+
+![image-20220713212510810](C:\Users\admin\Desktop\系统笔记\img_js_基础\image-20220713212510810.png)
+
+#### reduce
+
+```js
+    // function的第一个参数 preValue 是上一次计算后的值（是function return 返回的值），初始没有，所以 reduce 的第二个参数就是 preValue 的初始值
+    // function的第二个参数，是每一项
+    // 最后一次执行，返回值 会作为reduce的返回值
+
+    // 第一次执行: preValue->0 item->11
+    // 第二次执行: preValue->11 item->20
+    // 第三次执行: preValue->31 item->55
+    // 第四次执行: preValue->86 item->100
+    // 第五次执行: preValue->186 item->88
+    // 第六次执行: preValue->274 item->32
+    // 最后一次执行的时候 preValue + item, 它会作为reduce的返回值
+
+    // reduce 的第二个参数：initialValue: 初始化值, 第一次执行的时候, 对应的preValue
+    // 如果initialValue没有传呢? 会把第一个item（11）作为 初始 preValue，而参数item 是第二个item（20）
+    var nums = [11, 20, 55, 100, 88, 32]
+    var result = nums.reduce(function(preValue, item) {
+      console.log(`preValue:${preValue} item:${item}`)
+      return preValue + item
+    }, 0)
+    console.log(result)
+```
+
+```js
+// 价格和数量，求和
+    var products = [
+      { name: "鼠标", price: 88, count: 3 },
+      { name: "键盘", price: 200, count: 2 },
+      { name: "耳机", price: 9.9, count: 10 },
+    ]
+    var totalPrice = products.reduce(function(preValue, item) {
+      return preValue + item.price * item.count
+    }, 0)
+    console.log(totalPrice)
+```
+
+```js
+    var nums = [11, 20, 55, 100, 88, 32]
+
+    // 过滤所有的偶数, 映射所有偶数的平方, 并且计算他们的和
+    var total = nums.filter(function(item) {
+      return item % 2 === 0
+    }).map(function(item) {
+      return item * item
+    }).reduce(function(preValue, item) {
+      return preValue + item
+    }, 0)
+    console.log(total)
+
+    var total = nums.filter(item => item % 2 === 0)
+                    .map(item => item * item)
+                    .reduce((preValue, item) => preValue + item, 0)
+    console.log(total)
+```
 
 ![数组的其他高阶方法](C:\Users\admin\Desktop\系统笔记\img_js_基础\数组的其他高阶方法.png)
 
@@ -1964,11 +2200,32 @@ function foo(a) {
 
 ### 时区对比图 
 
+- GMT 的基础上，加减时间（小时）
+
 ![时区对比图](C:\Users\admin\Desktop\系统笔记\img_js_基础\时区对比图.png)
 
 ------
 
 ### 创建Date对象 
+
+```js
+    // 1.没有传入任何的参数, 获取到当前时间
+    var date1 = new Date()
+    console.log(date1)
+
+    // 2.传入参数: 时间字符串。得到固定时间
+    var date2 = new Date("2022-08-08")
+    console.log(date2)
+
+    // 3.传入具体的年月日时分秒毫秒。得到固定时间
+    var date3 = new Date(2033, 10, 10, 09, 08, 07, 333)
+    console.log(date3)
+
+    // 4.传入一个Unix时间戳，得到 1970年1月1日00：00：00 后 10004343433 毫秒的时间
+    // 1s -> 1000ms
+    var date4 = new Date(10004343433)
+    console.log(date4)
+```
 
 ![创建Date对象](C:\Users\admin\Desktop\系统笔记\img_js_基础\创建Date对象.png)
 
@@ -1976,11 +2233,42 @@ function foo(a) {
 
 ### dateString时间的表示方式 
 
+#### 初步转换标准时间
+
+```js
+    var date = new Date()
+
+    console.log(date)
+    console.log(date.toDateString())
+```
+
 ![dateString时间的表示方式](C:\Users\admin\Desktop\系统笔记\img_js_基础\dateString时间的表示方式.png)
 
 ------
 
 ### Date获取信息的方法 
+
+```js
+    // 1.获取想要的时间信息
+    var year = date.getFullYear()
+    var month = date.getMonth() + 1
+    var day = date.getDate()
+    var hour = date.getHours()
+    var minute = date.getMinutes()
+    var second = date.getSeconds()
+    console.log(year, month, day, hour, minute, second)
+    console.log(`${year}/${month}/${day} ${hour}:${minute}:${second}`)
+
+    var weekday = date.getDay() // 一周中的第几天
+    console.log(weekday)
+
+
+    // 2.也可以给date设置时间(了解)
+    date.setFullYear(2033)
+    // 3.自动校验，没有32号，自动顺延到下月1号
+    date.setDate(32)
+    console.log(date)
+```
 
 ![Date获取信息的方法](C:\Users\admin\Desktop\系统笔记\img_js_基础\Date获取信息的方法.png)
 
@@ -1994,11 +2282,64 @@ function foo(a) {
 
 ### Date获取Unix时间戳 
 
+```js
+    // 时间戳，是1970年1月1号00：00：00 到某个时间，之间的时间（毫秒）
+    // 时间戳 转时间
+    var date = new Date(1132324234242)
+    console.log(date)
+
+    // Date对象, 时间转成时间戳
+    var date = new Date()
+    var date2 = new Date("2033-03-03")
+
+    // 方法一: 当前时间的时间戳，1970年1月1号00：00：00 到 当前时间 ，这中间的时间（毫秒）
+    var timestamp1 = Date.now()
+    console.log(timestamp1)
+
+    // 方法二/三：将一个date对象转成时间戳
+    var timestamp2 = date.getTime()
+    var timestamp3 = date2.valueOf()
+    console.log(timestamp2, timestamp3)
+
+    // 方法四: 转数字，转成时间戳
+    console.log(+date)
+
+
+    // 计算这个操作所花费的时间
+    var startTime = Date.now()
+    for (var i = 0; i < 100000; i++) {
+      console.log(i)
+    }
+    var endTime = Date.now()
+    console.log("执行100000次for循环的打印所消耗的时间:", endTime - startTime)
+
+
+    // 封装一个简单函数，计算函数执行时间
+    function testPerformance(fn) {
+      var startTime = Date.now()
+      fn()
+      var endTime = Date.now()
+    }
+```
+
 ![Date获取Unix时间戳](C:\Users\admin\Desktop\系统笔记\img_js_基础\Date获取Unix时间戳.png)
 
 ------
 
 ### Date.parse方法 
+
+```js
+    // 将字符串 转为 时间戳
+    var timeString = "03/23/2033"
+
+    // 1.方式一:
+    var date = new Date(timeString)
+    var timestamp = date.getTime()
+
+    // 2.方式二:
+    var timestamp = Date.parse(timeString)
+    console.log(timestamp)
+```
 
 ![Date.parse方法](C:\Users\admin\Desktop\系统笔记\img_js_基础\Date.parse方法.png)
 
@@ -2007,6 +2348,150 @@ function foo(a) {
 ### 时间格式化的方法 
 
 ![时间格式化的方法](C:\Users\admin\Desktop\系统笔记\img_js_基础\时间格式化的方法.png)
+
+------
+
+### 继承的概念
+
+```js
+    // 继承的概念
+    class Person {
+      constructor(name, age) {
+        // 属性
+        this.name = name
+        this.age = age
+      }
+      // 方法
+      running() {
+      }
+      eating() {
+      }
+    }
+
+     // Student extends Person 继承后 Student 为 Person 的子类 Student 拥有了 父类Person所有 属性和方法
+     // 并且 Student 还可以 添加 属于自己的 属性和方法
+    class Student extends Person {
+      // 自己的方法
+      studying() {
+
+      }
+    }
+
+    // 多个继承，会形成继承树，最底层会拥有 上面所有类的属性方法
+    // SmallStudent 有了 Student 和 Person 的 属性方法
+    class SmallStudent extends Student {
+      dwzry() {
+      }
+    }
+
+    class BigStudent extends Student {
+      xwjf() {
+      }
+    }
+    
+    var stu = new Student("why", 18)
+    stu.running()
+    stu.eating()
+    stu.studying()
+```
+
+## JavaScript的DOM操作 
+
+### 认识DOM和BOM 
+
+- api
+  - 应用程序编程接口
+
+![认识DOM和BOM](C:\Users\admin\Desktop\系统笔记\img_js_基础\认识DOM和BOM.png)
+
+------
+
+### 深入理解DOM 
+
+- DOM
+  - （文档）页面中所有的内容，表示为可修改的对象，通过JS修改对象，改变页面内容
+- BOM
+  - 通过JS对浏览器本身，做修改
+
+![深入理解DOM](C:\Users\admin\Desktop\系统笔记\img_js_基础\深入理解DOM.png)
+
+------
+
+### DOM Tree的理解 
+
+![DOM Tree的理解](C:\Users\admin\Desktop\系统笔记\img_js_基础\DOM Tree的理解.png)
+
+------
+
+### DOM的学习顺序 
+
+![DOM的学习顺序](C:\Users\admin\Desktop\系统笔记\img_js_基础\DOM的学习顺序.png)
+
+------
+
+### DOM的继承关系图 
+
+![DOM的继承关系图](C:\Users\admin\Desktop\系统笔记\img_js_基础\DOM的继承关系图.png)
+
+------
+
+### document对象 
+
+![document对象](C:\Users\admin\Desktop\系统笔记\img_js_基础\document对象.png)
+
+------
+
+### 节点（Node）之间的导航（navigator） 
+
+![节点（Node）之间的导航（navigator）](C:\Users\admin\Desktop\系统笔记\img_js_基础\节点（Node）之间的导航（navigator）.png)
+
+------
+
+### 元素（Element）之间的导航（navigator） 
+
+![元素（Element）之间的导航（navigator）](C:\Users\admin\Desktop\系统笔记\img_js_基础\元素（Element）之间的导航（navigator）.png)
+
+------
+
+### 表格（table）元素的导航（navigator） 
+
+![表格（table）元素的导航（navigator）](C:\Users\admin\Desktop\系统笔记\img_js_基础\表格（table）元素的导航（navigator）.png)
+
+------
+
+### 获取元素的方法 
+
+![获取元素的方法](C:\Users\admin\Desktop\系统笔记\img_js_基础\获取元素的方法.png)
+
+------
+
+### 节点的属性 - nodeType 
+
+![节点的属性 - nodeType](C:\Users\admin\Desktop\系统笔记\img_js_基础\节点的属性 - nodeType.png)
+
+------
+
+### 节点的属性 – nodeName、tagName 
+
+![节点的属性 – nodeName、tagName](C:\Users\admin\Desktop\系统笔记\img_js_基础\节点的属性 – nodeName、tagName.png)
+
+------
+
+### 节点的属性 - innerHTML、textContent 
+
+![节点的属性 - innerHTML、textContent](C:\Users\admin\Desktop\系统笔记\img_js_基础\节点的属性 - innerHTML、textContent.png)
+
+------
+
+### 节点的属性 - nodeValue 
+
+![节点的属性 - nodeValue](C:\Users\admin\Desktop\系统笔记\img_js_基础\节点的属性 - nodeValue.png)
+
+------
+
+### 节点的其他属性 
+
+![节点的其他属性](C:\Users\admin\Desktop\系统笔记\img_js_基础\节点的其他属性.png)
 
 ------
 
