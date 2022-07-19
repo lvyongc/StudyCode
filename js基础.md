@@ -3933,6 +3933,12 @@ Math.floor(Math.random() * arr.length)
   - 是因为nameEl的absolute定位是 right方向
     - 如果想要从左到右显示出来
     - 设置方向为left即可
+-  禁止鼠标交互
+  - `pointer-events: none;`
+  - 存在多个子级时，希望只有某个子级可以触发交互的时候，把其他子级全部禁止鼠标交互，这样鼠标交互时，只有没有禁止的子级，才能触发交互事件
+  - a有子级b 和c，移入a时，触发移入事件的，可能是a或b或c，无法确定是谁
+  - 禁止其他a,c，的鼠标交互后，再移入时只有b会触发事件
+
 
 ```js
 <body>
@@ -4011,4 +4017,293 @@ Math.floor(Math.random() * arr.length)
 
   </script>
 ```
+
+## JavaScript的BOM操作
+
+### 认识BOM
+
+![认识BOM](C:\Users\admin\Desktop\系统笔记\img_js_基础\认识BOM.png)
+
+------
+
+### window对象
+
+![window对象](C:\Users\admin\Desktop\系统笔记\img_js_基础\window对象.png)
+
+------
+
+### window对象的作用
+
+![window对象的作用](C:\Users\admin\Desktop\系统笔记\img_js_基础\window对象的作用.png)
+
+------
+
+### window常见的属性
+
+![window常见的属性](C:\Users\admin\Desktop\系统笔记\img_js_基础\window常见的属性.png)
+
+```js
+    // 1.window的查看角度
+    // ECMAScript规范: 全局对象 -> globalThis
+    // 对于浏览器 -> window
+    // 对于Node -> global
+    console.log(window)
+    console.log(globalThis === window)
+
+    // 浏览器窗口
+    console.log(window.outerHeight)
+
+
+    // 2.补充的方法
+    var openBtnEl = document.querySelector("button")
+    var closeBtnEl = document.querySelector(".close")
+    openBtnEl.onclick = function() {
+      window.open("./page/new.html", "_blank")
+    }
+    closeBtnEl.onclick = function() {
+      window.close()
+    }
+
+    // 3.常见的事件
+    // window.onfocus = function() {
+    //   console.log("窗口获取到焦点")
+    // }
+    // window.onblur = function() {
+    //   console.log("窗口失去了焦点")
+    // }
+
+    window.onhashchange = function() {
+      console.log("hash值发生改变")
+    }
+```
+
+------
+
+### location对象常见的属性
+
+`location.href`
+
+![location对象常见的属性](C:\Users\admin\Desktop\系统笔记\img_js_基础\location对象常见的属性.png)
+
+------
+
+### Location对象常见的方法
+
+```js
+var btns = document.querySelectorAll("button")
+    btns[0].onclick = function() {
+      location.assign("http://www.baidu.com") // 有记录，前进、后退
+    }
+    btns[1].onclick = function() {
+      location.replace("http://www.baidu.com") // 无记录
+    }
+    btns[2].onclick = function() {
+      location.reload() // 刷新
+    }
+```
+
+![Location对象常见的方法](C:\Users\admin\Desktop\系统笔记\img_js_基础\Location对象常见的方法.png)
+
+------
+
+### URLSearchParams
+
+https://developer.mozilla.org/zh-CN/docs/Web/API/URLSearchParams
+
+- 浏览器 URL 编码和解码
+  - encodeURIComponent
+  - decodeURIComponent
+- new URLSearchParams （）
+  - 无需处理数据格式，直接操作数据
+
+```js
+    // 4.URLSearchParams  参数
+    var urlSearchString = "?name=why&age=18&height=1.88"
+    var searchParams = new URLSearchParams(urlSearchString)
+    console.log(searchParams.get("name"))
+    searchParams.append("address", "广州市")
+    console.log(searchParams.get("address"))
+    console.log(searchParams.toString())
+```
+
+![URLSearchParams](C:\Users\admin\Desktop\系统笔记\img_js_基础\URLSearchParams.png)
+
+------
+
+### history对象常见属性和方法
+
+```js
+    // 前端路由核心: 修改了URL, 但是页面不刷新
+    // 1> 修改hash值
+    // 2> 修改history
+
+    // 1.history对应的属性
+    console.log(history.length)
+    console.log(history.state)//pushState的参数
+
+    // 2.修改history
+    btnEl.onclick = function() {
+      // history.pushState({ name: "why", age: 18 }, "", "/why") 参数，空，地址；去一个新地址
+      history.replaceState({ name: "why", age: 18 }, "", "/why")// 替换地址，无返回
+    }
+    // 返回
+    backBtnEl.onclick = function() {
+      // history.back()返回上一个地址
+      // history.forward()前进一个地址
+      // 类似于上面的两个方法, 只是可以传入层级
+      // history.go(-2)前进后退几步
+    }
+```
+
+![history对象常见属性和方法](C:\Users\admin\Desktop\系统笔记\img_js_基础\history对象常见属性和方法.png)
+
+------
+
+### navigator对象（很少使用）
+
+`navigator.userAgent`
+
+![navigator对象（很少使用）](C:\Users\admin\Desktop\系统笔记\img_js_基础\navigator对象（很少使用）.png)
+
+------
+
+### screen对象（很少使用）
+
+`screen.width`
+
+![screen对象（很少使用）](C:\Users\admin\Desktop\系统笔记\img_js_基础\screen对象（很少使用）.png)
+
+------
+
+## JSON的由来
+
+- xml放弃
+- protobuf比json压缩后的体积更小
+- 前后端统一数据格式
+
+![JSON的由来](C:\Users\admin\Desktop\系统笔记\img_js_基础\JSON的由来.png)
+
+------
+
+### JSON基本语法
+
+- key 必须加双引号
+
+![JSON基本语法](C:\Users\admin\Desktop\系统笔记\img_js_基础\JSON基本语法.png)
+
+------
+
+### JSON序列化
+
+![JSON序列化](C:\Users\admin\Desktop\系统笔记\img_js_基础\JSON序列化.png)
+
+------
+
+### JSON序列化方法
+
+- 对象、字符串，相互转换
+  - 因为对象直接存入 Storage ，被保存成一个固定的字符串 `[object Object]`
+  - 要先把整个对象转成字符串类型，再存入，取出时也要转回对象，再使用
+
+```js
+    // 1.将obj对象进行序列化
+    var objJSONString = JSON.stringify(obj)
+
+    // 2.将对象存储到localStorage
+    localStorage.setItem("info", objJSONString)
+    
+    var item = localStorage.getItem("info")
+
+    // 3.将字符串转回到对象(反序列化)
+    var newObj = JSON.parse(item)
+```
+
+![JSON序列化方法](C:\Users\admin\Desktop\系统笔记\img_js_基础\JSON序列化方法.png)
+
+------
+
+### Stringify的参数replace
+
+- JSON.stringify（）的参数
+- 转换中对数据的处理
+
+```js
+    var obj = {
+      name: "why",
+      age: 18,
+      friend: {
+        name: "kobe"
+      },
+      toJSON: function() {
+        return "123"
+      }
+    }
+
+    // 1.replacer参数,改变数据
+    var objJSONString = JSON.stringify(obj, function(key, value) {
+      if (key === "name") {
+        return "coderwhy"
+      }
+      return value
+    }, "")
+
+    // 2.space参数，数据前面的空格数
+    var objJSONString = JSON.stringify(obj, null, 4)
+
+    // 3.如果对象本身有显示toJSON方法, 那么直接调用toJSON方法，不需要手动调用，是自动调用
+    var objJSONString = JSON.stringify(obj)
+```
+
+![Stringify的参数replace](C:\Users\admin\Desktop\系统笔记\img_js_基础\Stringify的参数replace.png)
+
+------
+
+### Stringify的参数space
+
+![Stringify的参数space](C:\Users\admin\Desktop\系统笔记\img_js_基础\Stringify的参数space.png)
+
+------
+
+### parse方法
+
+- JSON.parse() 第二个参数
+- 转换中对数据的处理
+
+```js
+    var obj = {
+      name: "why",
+      age: 18
+    }
+
+    var objJSONString = JSON.stringify(obj)
+
+    var newObj = JSON.parse(objJSONString, function(key, value) {
+      if (key === "age") {
+        return value + 2 // age + 2 = 20
+      }
+      return value
+    })
+```
+
+![parse方法](C:\Users\admin\Desktop\系统笔记\img_js_基础\parse方法.png)
+
+------
+
+## 认识Storage
+
+![认识Storage](C:\Users\admin\Desktop\系统笔记\img_js_基础\认识Storage.png)
+
+------
+
+### localStorage和sessionStorage的区别
+
+- 验证一：关闭网页后重新打开，localStorage会保留，而sessionStorage会被删除； 
+- 验证二：在页面内实现跳转，localStorage会保留，sessionStorage也会保留； 
+- 验证三：在页面外实现跳转（打开新的网页），localStorage会保留，sessionStorage不会被保留；
+
+### Storage常见的方法和属性
+
+![Storage常见的方法和属性](C:\Users\admin\Desktop\系统笔记\img_js_基础\Storage常见的方法和属性.png)
+
+------
 
