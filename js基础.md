@@ -709,6 +709,63 @@ sayHello("why", 18)
 
 ### for循环 
 
+- for 循环的 执行顺序
+
+```js
+    // 强调: 代码的执行顺序
+
+    var btnEls = document.querySelectorAll("button")
+
+    // [btn1, btn2, btn3, btn4]
+
+    /*循环过程
+      for1: var btnItemEl = btnEls[0]
+            btn1.index = 0
+            btnItemEl.onclick = function() {}
+      for2: var btnItemEl = btnEls[1]
+            btn2.index = 1
+      for3: var btnItemEl = btnEls[2]
+            btn3.index = 2
+      for4: var btnItemEl = btnEls[3]
+            btn4.index = 3
+    */
+
+    // 对每一个按钮的点击进行监听
+    for (var i = 0; i < btnEls.length; i++) {
+      // 方案二A:
+      // btnItemEl 是循环的每一个按钮
+      var btnItemEl = btnEls[i]
+      // 给每个按钮添加一个index属性，值是i，按钮1234都被添加了index
+      btnItemEl.index = i
+      
+      debugger
+
+      btnItemEl.onclick = function() {
+        debugger
+        console.log(i)
+        console.log(btnItemEl)
+
+        // 怎么样在这里能拿到对应的btnItemEl？
+
+        // 方案一: 直接获取this
+        // this 是在什么时候获取的？在点击的时候
+        // 在点击时，this就是哪个按钮，点击哪个按钮this就是哪个
+        // this 指向 ：被谁调用就指向谁
+        // 循环的每次，给每个按钮都赋值了一个函数：btnItemEl.onclick = function（）｛｝
+        // 这个函数里面的this是谁？被谁调用就是谁，被按钮1调用，就是按钮1
+        console.log(this)
+
+        // 方案二B: this是谁？被谁调用就是谁，所以第一次循环是按钮1，this就是按钮1，this.index是按钮1的index
+        // 按钮1234是元素，可以直接拿到取值，从按钮上取之前存的index
+        console.log(this.index)
+        // 方案三: 闭包/立即执行函数
+      }
+    }
+
+    console.log(i) // 4
+    console.log(btnItemEl)
+```
+
 - 先执行 begin，判断条件 - 代码块 - step - 判断条件 - 代码块 - step ...
 - 偶数和  i+=2
 - i=0不是固定的，i也可以=2=3
@@ -725,6 +782,13 @@ var totalCount = 0
     for (var i = 1; i < 100; i+=2) {
       totalCount += i
     }
+```
+
+```js
+for(var i = 0;i < 5;i++){
+	console.log('1') // 先打印5个1
+}
+console.log('2') // 再打印1个2
 ```
 
 ![for循环](C:\Users\admin\Desktop\系统笔记\img_js_基础\for循环.png)
