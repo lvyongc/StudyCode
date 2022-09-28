@@ -1,4 +1,4 @@
-## Min Program - 微信 小程序
+##  Min Program - 微信 小程序
 
 ### 认识小程序
 
@@ -986,5 +986,260 @@ module.exports = {
   },
 ```
 
+##### 事件冒泡和事件捕获 
 
+- capture-bind:tap 捕获，继续传递
+  - capture-catch:tap 捕获到当前事件后，阻止后面的事件进行传递
+  - 阻止事件近一步传递 
+- bindtap 冒泡
+
+```js
+<view class="view1" capture-bind:tap="onView1CaptureTap" bindtap="onView1Tap">
+<view class="view2" capture-bind:tap="onView2CaptureTap" bindtap="onView2Tap">
+```
+
+
+
+![事件冒泡和事件捕获](C:\Users\Administrator\Desktop\StudyCode\img_min_program\事件冒泡和事件捕获.png)
+
+------
+
+![事件捕获和冒泡阶段](C:\Users\Administrator\Desktop\StudyCode\img_min_program\事件捕获和冒泡阶段.png)
+
+------
+
+##### mark-给逻辑传递数据 
+
+- mark添加的数据 会合并到一起,包括子组件
+
+```js
+<view 
+  class="mark"
+  bindtap="onMarkTap"
+  data-name="why"
+  data-age="18"
+  mark:name="kobe"
+  mark:age="30"
+>
+  <text mark:address="洛杉矶" class="title">mark</text>
+</view>
+
+  onMarkTap(event) {
+    console.log(event);
+    const data1 = event.target.dataset
+    console.log(data1);
+	// name\age\address
+    const data2 = event.mark
+    console.log(data2);
+  }
+```
+
+### 小程序组件化开发
+
+- 内置组件、自定义组件、第三方组件
+-  尽可能的将页面拆分成一个个小的、可复用的组件。
+- 这样让我们的代码更加方便组织和管理，并且扩展性也更强。 
+
+##### 自定义组件
+
+- 页面组件，写在页面的文件夹
+
+- 公共组件，写在根目录 组件文件夹
+
+  - 组件是 Component 实例化对象
+    - 组件可以继续引入组件
+  - 页面是 Page 实例化对象
+  - 使用组件的页面引入组件  
+
+  ```js
+  // 名称、引入路径
+  {
+    "usingComponents": {
+      "section-info": "/components/section-info/section-info",
+      "test-style": "/components/test-style/test-style",
+      "tab-control": "/components/tab-control/tab-control"
+    }
+  }
+  ```
+
+##### 全局注册组件
+
+- 如果在 app.json 的 usingComponents 声明（注册、引入）某个组件
+  - 那么所有页面和组件可以直接使用该组件
+
+##### 测试
+
+- 模拟器有问题，可以真机测试有没有问题
+
+##### 组件的样式细节 
+
+- 推荐使用 类 class 设置样式
+- 改变 组件样式 影响的3个值，默认是隔离
+  - 推荐使用默认值，隔离样式
+
+```js
+Component({
+  options: {
+      // 更改隔离为，可以相互影响
+    styleIsolation: "shared"
+  }
+})
+```
+
+![组件的样式细节](C:\Users\Administrator\Desktop\StudyCode\img_min_program\组件的样式细节.png)
+
+------
+
+### 组件的通信 
+
+![组件的通信](C:\Users\Administrator\Desktop\StudyCode\img_min_program\组件的通信.png)
+
+------
+
+##### 向组件传递数据 - properties
+
+![向组件传递数据 - properties](C:\Users\Administrator\Desktop\StudyCode\img_min_program\向组件传递数据 - properties.png)
+
+------
+
+```js
+// 传递
+<section-info 
+  info="abc" 
+  title="我与地坛" 
+  content="要是有些事情我没说, 别以为是我忘记了"
+  bind:titleclick="onSectionTitleClick"
+/>
+// 接收
+  properties: {
+    title: {
+      type: String,
+      value: "默认标题"
+    },
+    content: {
+      type: String,
+      value: "默认内容"
+    }
+  }
+```
+
+##### 向组件传递样式 - externalClasses 
+
+- 动态 组件样式
+
+![向组件传递样式 - externalClasses](C:\Users\Administrator\Desktop\StudyCode\img_min_program\向组件传递样式 - externalClasses.png)
+
+------
+
+```js
+/* 页面定义的class */
+.abc {
+  background-color: #0f0;
+}
+/* 页面把class info 传给组件，值为页面自己定义的class */
+<section-info info="cba" />
+
+// 组件
+Component({
+    // 定义外部传入一个class为info
+    externalClasses: ["info"]
+})
+/* 组件直接使用传入的class */
+<view class="content info">{{ content }}</view>
+```
+
+##### 组件向外传递事件 – 自定义事件 
+
+- 1、2 是组件
+- 3、4 是页面
+- 组件参数 event-cpn-btn 在 页面参数是 event的detail  
+- triggerEvent  发射事件
+
+![组件向外传递事件 – 自定义事件](C:\Users\Administrator\Desktop\StudyCode\img_min_program\组件向外传递事件 – 自定义事件.png)
+
+------
+
+```js
+    // 组件通过 triggerEvent 发射事件 titleclick
+	onTitleTap() {
+      this.triggerEvent("titleclick", "aaa");
+    },
+        // 页面监听事件 titleclick，绑定事件的回调函数
+	<section-info bind:titleclick="onSectionTitleClick" />
+        // 回调函数参数中拿到组件传递的参数 event.detail
+	onSectionTitleClick(event) {
+    	console.log("区域title发生了点击", event.detail);
+    },
+```
+
+##### 给组件传递复杂数据
+
+- 页面给组件传递复杂数据，并把组件当前的选中项，传递给页面，页面根据选中项请求数据
+
+```js
+  // 组件 接收数据
+  properties: {
+    titles: {
+      type: Array,
+      value: []
+    }
+  },
+  // 组件传递数据
+  onItemTap(event) {
+      const currentIndex = event.currentTarget.dataset.index
+      this.setData({ currentIndex })
+      // 自定义事件传递
+      this.triggerEvent("indexchange", currentIndex)
+   },
+       
+// 页面 titles 传递，bind:监听indexchange，定义回调函数onTabIndexChange
+<tab-control class="tab-control" titles="{{digitalTitles}}" bind:indexchange="onTabIndexChange" />
+
+Page({
+  data: {
+      // 定义要传递的数据
+    digitalTitles: ['电脑', '手机', 'iPad']
+  },
+    // 回调
+  onTabIndexChange(event) {
+      // 接收组件传递的数据
+    const index = event.detail
+    // 点击了 页面 digitalTitles 中的第几个
+    console.log("点击了", this.data.digitalTitles[index]);
+  },
+ })
+```
+
+##### 页面直接调用组件方法 
+
+- 页面直接调用组件方法 ,需要先给 组件添加一个class （选择器）
+- 再通过 selectComponent（class）获取到组件实例
+
+![页面直接调用组件方法](C:\Users\Administrator\Desktop\StudyCode\img_min_program\页面直接调用组件方法.png)
+
+------
+
+
+
+```js
+  // 页面中给组件添加 选择器
+  <tab-control class="tab-control" />
+  // 通过 函数 调用  selectComponent（class）获取到组件实例
+  <button bindtap="onExecTCMethod">调用组件方法</button>
+  onExecTCMethod() {
+    // 1.获取对应的组件实例对象
+    const tabControl = this.selectComponent(".tab-control")
+
+    // 2.调用组件实例的方法，并传参
+    tabControl.test(2)
+  }
+  // 组件的方法
+  test(index) {
+    this.setData({
+      currentIndex: index
+    })
+  }
+```
+
+### 什么是插槽？
 
