@@ -1,4 +1,4 @@
-##  Min Program - 微信 小程序
+## Min Program - 微信 小程序
 
 ### 认识小程序
 
@@ -986,31 +986,25 @@ module.exports = {
   },
 ```
 
-##### 事件冒泡和事件捕获 
+### 事件冒泡和事件捕获
 
-- capture-bind:tap 捕获，继续传递
-  - capture-catch:tap 捕获到当前事件后，阻止后面的事件进行传递
-  - 阻止事件近一步传递 
-- bindtap 冒泡
+- 通过 bindtap 监听的是冒泡阶段的事件
+- 通过 capture-bind:tap 监听 捕获阶段的事件
 
 ```js
 <view class="view1" capture-bind:tap="onView1CaptureTap" bindtap="onView1Tap">
-<view class="view2" capture-bind:tap="onView2CaptureTap" bindtap="onView2Tap">
+</view>
 ```
 
+![事件冒泡和事件捕获](C:\Users\admin\Desktop\系统笔记\img_min_program\事件冒泡和事件捕获.png)
 
+#### 阻止事件传递
 
-![事件冒泡和事件捕获](C:\Users\Administrator\Desktop\StudyCode\img_min_program\事件冒泡和事件捕获.png)
+- capture-bind:tap ，捕获到事件向下传递
+- capture-catch :tap，捕获到事件并阻止向下传递
+  - 用于在特定位置，阻止事件的执行
 
-------
-
-![事件捕获和冒泡阶段](C:\Users\Administrator\Desktop\StudyCode\img_min_program\事件捕获和冒泡阶段.png)
-
-------
-
-##### mark-给逻辑传递数据 
-
-- mark添加的数据 会合并到一起,包括子组件
+#### 通过mark，给逻辑传递数据
 
 ```js
 <view 
@@ -1024,93 +1018,94 @@ module.exports = {
   <text mark:address="洛杉矶" class="title">mark</text>
 </view>
 
+  // mark的数据传递
   onMarkTap(event) {
-    console.log(event);
+      // 自定义属性 {name:'why',age:'18'}
     const data1 = event.target.dataset
-    console.log(data1);
-	// name\age\address
+	  // mark {name:'kobe',age:'30',address:'洛杉矶'}
     const data2 = event.mark
-    console.log(data2);
   }
 ```
 
-### 小程序组件化开发
+### 组件化开发
 
-- 内置组件、自定义组件、第三方组件
--  尽可能的将页面拆分成一个个小的、可复用的组件。
-- 这样让我们的代码更加方便组织和管理，并且扩展性也更强。 
+- 尽可能的将页面拆分成一个个小的、可复用的组件
+- 这样让我们的代码更加方便组织和管理，并且扩展性也更强
 
-##### 自定义组件
+![组件化](C:\Users\admin\Desktop\系统笔记\img_min_program\组件化.png)
 
-- 页面组件，写在页面的文件夹
+#### 创建一个组件
 
-- 公共组件，写在根目录 组件文件夹
+- 组件通过 Component 实例化
+- 页面 通过 Page 实例化
 
-  - 组件是 Component 实例化对象
-    - 组件可以继续引入组件
-  - 页面是 Page 实例化对象
-  - 使用组件的页面引入组件  
+![创建一个组件](C:\Users\admin\Desktop\系统笔记\img_min_program\创建一个组件.png)
 
-  ```js
-  // 名称、引入路径
-  {
-    "usingComponents": {
-      "section-info": "/components/section-info/section-info",
-      "test-style": "/components/test-style/test-style",
-      "tab-control": "/components/tab-control/tab-control"
-    }
-  }
-  ```
+------
 
-##### 全局注册组件
+#### 使用自定义组件
 
-- 如果在 app.json 的 usingComponents 声明（注册、引入）某个组件
+- 页面需要在 usingComponents 引入组件，名称和组件路径
+- 自定义组件也可以引用自定义组件
+- 在 app.json 的 usingComponents 引入某个组件
   - 那么所有页面和组件可以直接使用该组件
+  - 不需要在页面的 usingComponents 引入了
 
-##### 测试
+```js
+{
+  "usingComponents": {
+    "section-info": "/components/section-info/section-info",
+    "test-style": "/components/test-style/test-style",
+    "tab-control": "/components/tab-control/tab-control"
+  }
+}
+```
 
-- 模拟器有问题，可以真机测试有没有问题
+#### 组件的样式细节
 
-##### 组件的样式细节 
-
-- 推荐使用 类 class 设置样式
-- 改变 组件样式 影响的3个值，默认是隔离
-  - 推荐使用默认值，隔离样式
+- 组件内的样式 对 外部样式 的影响 
+  - 组件内的class样式，只对组件wxml内的节点生效, 对于引用组件的Page页面不生效
+  - 组件内不能使用id选择器、属性选择器、标签选择器 ，否则会对其他组件产生影响
+    - 只使用 class 即可
+- 外部样式 对 组件内样式 的影响 
+  - 外部使用class的样式，只对外部wxml的class生效，对组件内是不生效的
+  - 外部使用了id选择器、属性选择器不会对组件内产生影响
+  - 外部使用了标签选择器，会对组件内产生影响 
+    - 不使用 标签选择器
+    - 使用 class 
+- 如何让class可以相互影响 
+  - 在组件的 Component 对象中，可以传入一个 options 属性，其中 options 属性中有一个styleIsolation（隔离）属性
+  - styleIsolation有三个取值：
+    -  ✓ - isolated 表示启用样式隔离，在自定义组件内外，使用 class 指定的样式将不会相互影响（默认取值）
+    -  ✓ - apply-shared 表示页面 wxss 样式将影响到自定义组件，但自定义组件 wxss 中指定的样式不会影响页面
+    -  ✓ - shared 表示页面 wxss 样式将影响到自定义组件，自定义组件 wxss 中指定的样式也会影响页面和其他设置 了
 
 ```js
 Component({
   options: {
-      // 更改隔离为，可以相互影响
     styleIsolation: "shared"
   }
 })
 ```
 
-![组件的样式细节](C:\Users\Administrator\Desktop\StudyCode\img_min_program\组件的样式细节.png)
+------
+
+#### 组件的通信
+
+![组件的通信](C:\Users\admin\Desktop\系统笔记\img_min_program\组件的通信.png)
 
 ------
 
-### 组件的通信 
-
-![组件的通信](C:\Users\Administrator\Desktop\StudyCode\img_min_program\组件的通信.png)
-
-------
-
-##### 向组件传递数据 - properties
-
-![向组件传递数据 - properties](C:\Users\Administrator\Desktop\StudyCode\img_min_program\向组件传递数据 - properties.png)
-
-------
+#### 向组件传递数据 - properties
 
 ```js
-// 传递
+// 页面传递
 <section-info 
-  info="abc" 
   title="我与地坛" 
   content="要是有些事情我没说, 别以为是我忘记了"
-  bind:titleclick="onSectionTitleClick"
 />
-// 接收
+// 组件接收
+Component({
   properties: {
     title: {
       type: String,
@@ -1121,125 +1116,411 @@ Component({
       value: "默认内容"
     }
   }
-```
-
-##### 向组件传递样式 - externalClasses 
-
-- 动态 组件样式
-
-![向组件传递样式 - externalClasses](C:\Users\Administrator\Desktop\StudyCode\img_min_program\向组件传递样式 - externalClasses.png)
-
-------
-
-```js
-/* 页面定义的class */
-.abc {
-  background-color: #0f0;
-}
-/* 页面把class info 传给组件，值为页面自己定义的class */
-<section-info info="cba" />
-
-// 组件
-Component({
-    // 定义外部传入一个class为info
-    externalClasses: ["info"]
 })
-/* 组件直接使用传入的class */
-<view class="content info">{{ content }}</view>
+// 组件使用
+  <view class="title">{{ title }}</view>
+  <view class="content info">{{ content }}</view>
 ```
 
-##### 组件向外传递事件 – 自定义事件 
-
-- 1、2 是组件
-- 3、4 是页面
-- 组件参数 event-cpn-btn 在 页面参数是 event的detail  
-- triggerEvent  发射事件
-
-![组件向外传递事件 – 自定义事件](C:\Users\Administrator\Desktop\StudyCode\img_min_program\组件向外传递事件 – 自定义事件.png)
+![向组件传递数据 - properties](C:\Users\admin\Desktop\系统笔记\img_min_program\向组件传递数据 - properties.png)
 
 ------
 
+#### 向组件传递样式 - externalClasses
+
+- 用于引用同个组件，但展示不同样式
+
 ```js
-    // 组件通过 triggerEvent 发射事件 titleclick
-	onTitleTap() {
-      this.triggerEvent("titleclick", "aaa");
-    },
-        // 页面监听事件 titleclick，绑定事件的回调函数
-	<section-info bind:titleclick="onSectionTitleClick" />
-        // 回调函数参数中拿到组件传递的参数 event.detail
-	onSectionTitleClick(event) {
-    	console.log("区域title发生了点击", event.detail);
-    },
+// 页面写好 cba 样式，通过 自定义键名 info ，键值 cba ，传给组件
+<section-info info="cba"/> 
+// 组件通过 externalClasses 接收 键名 
+Component({
+  externalClasses: ["info"]
+})
+// 组件直接使用 键名
+<view class="info"></view>
 ```
 
-##### 给组件传递复杂数据
+![向组件传递样式 - externalClasses](C:\Users\admin\Desktop\系统笔记\img_min_program\向组件传递样式 - externalClasses.png)
 
-- 页面给组件传递复杂数据，并把组件当前的选中项，传递给页面，页面根据选中项请求数据
+------
+
+#### 组件向外传递事件 – 自定义事件
 
 ```js
-  // 组件 接收数据
+// bindtap 组件绑定事件
+<view bindtap="onTitleTap"></view>
+// triggerEvent 并传递事件以及参数
+onTitleTap() 
+  this.triggerEvent("titleclick", "aaa")
+}
+// 页面 bind: 监听事件
+<section-info 
+  bind:titleclick="onSectionTitleClick"
+/>
+// 执行回调，detail 中 获取参数
+  onSectionTitleClick(event) {
+    console.log("发生了点击", event.detail);
+  }
+```
+
+![组件向外传递事件 – 自定义事件](C:\Users\admin\Desktop\系统笔记\img_min_program\组件向外传递事件 – 自定义事件.png)
+
+------
+
+#### 父子通信-选项卡
+
+- 父定义循环项，子接收展示，动态class 给选中的设置样式
+  - 循环后，每个子级都有循环本身的index，通过自定义属性=index
+  - 然后在点击时，让自定义属性=自定义的选中项
+  - 这样点击第几个，自定义属性就是几
+  - 最后动态class 通过三目  循环的index = 自定义的选中项，添加class
+- 子把选中的传递给父，父拿到选中的请求数据
+
+```js
+// 父,titles传递，bind:监听
+<tab-control
+  class="tab-control"
+  titles="{{digitalTitles}}"
+  bind:indexchange="onTabIndexChange"
+/>
+<button bindtap="onExecTCMethod">调用TC方法</button>
+<tab-control titles="{{['流行', '新款', '热门']}}"/>
+// js
+Page({
+    // 定义循环项
+  data: {
+    digitalTitles: ['电脑', '手机', 'iPad']
+  },
+    // 监听的回调，拿到传递的选中项，根据选中项 请求不同数据
+  onTabIndexChange(event) {
+      // 选中项
+    const index = event.detail
+    // 选中项 是数组中的哪一个
+    console.log("点击了", this.data.digitalTitles[index]);
+  }
+})
+// 子
+Component({
+    // 接收
   properties: {
     titles: {
       type: Array,
       value: []
     }
   },
-  // 组件传递数据
-  onItemTap(event) {
+// 定义选中项
+  data: {
+    currentIndex: 0
+  },
+  methods: {
+    onItemTap(event) {
+        // 点击时，选中项currentIndex = 自定义属性 index（= 循环的 index）
       const currentIndex = event.currentTarget.dataset.index
       this.setData({ currentIndex })
-      // 自定义事件传递
+      // 自定义事件，传递选中项
       this.triggerEvent("indexchange", currentIndex)
-   },
-       
-// 页面 titles 传递，bind:监听indexchange，定义回调函数onTabIndexChange
-<tab-control class="tab-control" titles="{{digitalTitles}}" bind:indexchange="onTabIndexChange" />
-
-Page({
-  data: {
-      // 定义要传递的数据
-    digitalTitles: ['电脑', '手机', 'iPad']
-  },
-    // 回调
-  onTabIndexChange(event) {
-      // 接收组件传递的数据
-    const index = event.detail
-    // 点击了 页面 digitalTitles 中的第几个
-    console.log("点击了", this.data.digitalTitles[index]);
-  },
- })
+    }
+  }
+})
+//  使用并循环展示
+<block wx:for="{{ titles }}" wx:key="*this">
+    // 动态 class 
+    // 设置自定义属性 index
+    // 循环时， 自定义属性index = 循环的 index
+    // 当 循环的 index = 选中项currentIndex(=自定义属性 index = 循环的 index) 添加class
+    <view 
+      class="item {{index === currentIndex ? 'active': ''}}"
+      bindtap="onItemTap"
+      data-index="{{index}}"
+    >
+      <text class="title">{{ item }}</text>
+    </view>
+  </block>
 ```
 
-##### 页面直接调用组件方法 
+#### 页面直接调用组件方法
 
-- 页面直接调用组件方法 ,需要先给 组件添加一个class （选择器）
-- 再通过 selectComponent（class）获取到组件实例
+- 通过 selectComponent 和 class 名字
 
-![页面直接调用组件方法](C:\Users\Administrator\Desktop\StudyCode\img_min_program\页面直接调用组件方法.png)
+![页面直接调用组件方法](C:\Users\admin\Desktop\系统笔记\img_min_program\页面直接调用组件方法.png)
 
 ------
 
-
-
 ```js
-  // 页面中给组件添加 选择器
-  <tab-control class="tab-control" />
-  // 通过 函数 调用  selectComponent（class）获取到组件实例
-  <button bindtap="onExecTCMethod">调用组件方法</button>
+// 页面
+// 使用组件，并给组件添加 class  tab-control
+<tab-control
+  class="tab-control"
+  titles="{{digitalTitles}}"
+  bind:indexchange="onTabIndexChange"
+/>
+// 通过事件,获取组件实例，并调用组件方法
+<button bindtap="onExecTCMethod">调用TC方法</button>
+
   onExecTCMethod() {
-    // 1.获取对应的组件实例对象
+    // 1.selectComponent 获取对应的组件实例对象
     const tabControl = this.selectComponent(".tab-control")
 
-    // 2.调用组件实例的方法，并传参
+    // 2.调用组件实例的方法
     tabControl.test(2)
-  }
-  // 组件的方法
-  test(index) {
-    this.setData({
-      currentIndex: index
-    })
   }
 ```
 
 ### 什么是插槽？
+
+- 组件的插槽，是为了让我们封装的组件更加具有扩展性
+
+#### 单个插槽的使用
+
+- 通过插槽，显示不同的内容，文字、图片、按钮等
+- 小程序中插槽是不支持默认值的
+
+```js
+// 页面
+
+<my-slot>
+    // 插槽-按钮
+  <button>我是按钮</button>
+</my-slot>
+
+<my-slot>
+    // 插槽-图片
+  <image src="/assets/nhlt.jpg" mode="widthFix"></image>
+</my-slot>
+
+// 组件
+<view class="my-slot">
+    
+  <view class="header">Header</view>
+
+  <view class="content">
+      
+    <!-- 显示不同的内容，图片、按钮等 -->
+    <slot></slot>
+
+  </view
+
+  <view class="footer">Footer</view>
+
+</view>
+```
+
+##### 通过class设置插槽默认值
+
+```js
+<view class="my-slot">
+    
+  <view class="header">Header</view>
+
+  <view class="content">
+      
+    <slot></slot>
+
+  </view>
+
+	// 这个就是自定义的插槽默认值，通过class 的伪类 控制显示隐藏
+  <view class="default">哈哈哈哈</view>
+
+  <view class="footer">Footer</view>
+
+</view>
+
+// 默认隐藏
+.default {
+  display: none;
+}
+// 当content的内容为空时，就是没有插入内容，让默认的显示
+// 伪类 :empty 是内容为空， + 是兄弟选择器
+.content:empty + .default {
+  display: block;
+}
+```
+
+#### 多个插槽的使用
+
+- 在组件中，开启多插槽
+
+```js
+Component({
+  options: {
+    multipleSlots: true
+  }
+})
+```
+
+- 使用多插槽
+
+```js
+// 页面，slot 命名
+<mul-slot>
+    
+  <button slot="left">left</button>
+
+  <view slot="center">哈哈哈</view>
+
+  <button slot="right">right</button>
+
+</mul-slot>
+
+
+// 组件，通过 name 名字区分
+<view class="mul-slot">
+    
+    <slot name="left"></slot>
+
+    <slot name="center"></slot>
+
+    <slot name="right"></slot>
+
+</view>
+```
+
+### behaviors-组件代码共享
+
+![behaviors](C:\Users\admin\Desktop\系统笔记\img_min_program\behaviors.png)
+
+------
+
+- 通过 Behavior 函数 创建 共享的代码
+- 这个共享代码的文件在最外层和utils一层
+
+```js
+export const counterBehavior = Behavior({
+  data: {
+    counter: 100
+  },
+  methods: {
+    increment() {
+      this.setData({ counter: this.data.counter + 1 })
+    },
+    decrement() {
+      this.setData({ counter: this.data.counter - 1 })
+    }
+  }
+})
+```
+
+- 在组件混入共享的代码，共享的代码会直接添加到组件的js文件中
+
+```js
+import { counterBehavior } from "../../behaviors/counter"
+
+Component({
+  behaviors: [counterBehavior]
+})
+```
+
+- 在组件的wxml中，直接使用，和写在js文件中一样使用
+
+```js
+<view>
+  <view class="counter">当前计数: {{counter}}</view>
+  <button bindtap="increment">+1</button>
+  <button bindtap="decrement">-1</button>
+</view>
+```
+
+- 最后在页面引入组件使用
+
+### 组件的生命周期
+
+- created
+  - 组件实例，被创建时
+  - 请求数据
+- attached
+  - 组件实例，被添加到，页面DOM树时
+  - 操作DOM
+- resdy
+  - 组件在页面渲染完成
+- detached
+  - 组件实例，从页面DOM树，移除时
+  - 回收、销毁
+
+- 组件生命周期写在，lifetimes
+
+![组件的生命周期](C:\Users\admin\Desktop\系统笔记\img_min_program\组件的生命周期.png)
+
+------
+
+#### 组件所在页面的生命周期
+
+- 组件所在的，页面被展示、页面被隐藏、页面尺寸改变时
+
+![组件所在页面的生命周期](C:\Users\admin\Desktop\系统笔记\img_min_program\组件所在页面的生命周期.png)
+
+------
+
+````js
+// 组件
+Component({
+    // 组件的生命周期
+  lifetimes: {
+    created() {
+      console.log("组件被创建created");
+    },
+    attached() {
+      console.log("组件被添加到组件树中attached");
+    },
+    detached() {
+      console.log("组件从组件树中被移除detached");
+    }
+  },
+    // 组件所在页面的生命周期
+  pageLifetimes: {
+    show() {
+      console.log("page show");
+    },
+    hide() {
+      console.log("page hide");
+    }
+  }
+})
+````
+
+### Component构造器
+
+- 组件的Componnet 可以使用的方法、属性
+
+![Component构造器](C:\Users\admin\Desktop\系统笔记\img_min_program\Component构造器.png)
+
+------
+
+![Component构造器2](C:\Users\admin\Desktop\系统笔记\img_min_program\Component构造器2.png)
+
+------
+
+### 网络请求 – API
+
+- 请求地址、参数、请求头、超时时间、请求方法
+- url data header timeout  method
+
+![网络请求 – API参数](C:\Users\admin\Desktop\系统笔记\img_min_program\网络请求 – API参数.png)
+
+------
+
+- 在页面生命周期 onLoad 发起网络请求
+
+```js
+ onLoad() {
+    wx.request({
+      url: 'http://codercba.com:1888/api/home/houselist',
+      data: {
+        page: 1
+      },
+      success: (res) => {
+        const data = res.data.data
+        this.setData({ houselist: data })
+      },
+      fail: (err) => {
+        console.log("err:", err);
+      }
+    })
+  }
+```
+
+#### 封装网络请求
+
+```js
+```
 
