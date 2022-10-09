@@ -1519,8 +1519,462 @@ Component({
   }
 ```
 
+#### 网络请求配置域名
+
+图片
+
+网络请求域名配置 
+
 #### 封装网络请求
 
+- 格式
+  - async 函数
+    - await 请求
+
+- 函数
+
 ```js
+// 封装成函数
+export function hyRequest(options) {
+  return new Promise((resolve, reject) => {
+    wx.request({ 
+      ...options, 
+      success: (res) => {
+        resolve(res.data)
+      },
+      fail: reject
+    })
+  })
+}
+// 使用
+// 将请求封装到一个单独函数中(推荐)
+this.getHouselistData()
+async getHouselistData() {
+    const houseRes = await hyRequest({
+        url: "http://codercba.com:1888/api/home/houselist",
+        data: { page: this.data.currentPage }
+    })
+    const finalHouseList = [...this.data.houselist, ...houseRes.data]
+    this.setData({ houselist: finalHouseList })
+    // 思考: 为什么这里不需要setData?
+    // 通过this.data 直接修改的，是修改成功了，但没有响应到页面上，页面数据没变,这里只需要改变数据，不需要数据显示在页面上
+    // 只在需要改变页面数据时，才是有 setData
+    this.data.currentPage++
+}
 ```
+
+- 类
+
+```js
+import { hyRequest, hyReqInstance } from "../../service/index"
+    // 使用类的实例发送请求
+    hyReqInstance.get({
+      url: "/city/all"
+    }).then(res => {
+      console.log(res);
+    })
+
+// 封装成类 -> 实例
+class HYRequest {
+  constructor(baseURL) {
+    this.baseURL = baseURL
+  }
+  request(options) {
+    const { url } = options
+    return new Promise((resolve, reject) => {
+      wx.request({
+        ...options,
+        url: this.baseURL + url,
+        success: (res) => {
+          resolve(res.data)
+        },
+        fail: (err) => {
+          console.log("err:", err);
+        }
+      })
+    })
+  }
+  get(options) {
+    return this.request({ ...options, method: "get" })
+  }
+  post(options) {
+    return this.request({ ...options, method: "post" })
+  }
+}
+
+export const hyReqInstance = new HYRequest("http://codercba.com:1888/api")
+export const hyLoginReqInstance = new HYRequest("http://123.207.32.32:3000")
+```
+
+### 系统API
+
+#### 展示弹窗
+
+图片
+
+弹窗 
+
+```js
+  onShowToast() {
+    wx.showToast({
+      title: '操作失败!',
+      icon: "error",
+      // 显示时间
+      duration: 5000,
+      // 开启后，在弹窗显示时，不能进行页面操作
+      mask: true,
+      // 弹出成功
+      success: (res) => {
+        console.log("res:", res);
+      },
+      fail: (err) => {
+        console.log("err:", err);
+      }
+    })
+
+    // wx.showLoading({
+    //   title: "加载中ing"
+    // })
+
+    // 需要单独调用 hideLoading 关闭 加载中
+  },
+  onShowModal() {
+    wx.showModal({
+      title: "确定购买吗?",
+      content: "确定购买的话, 请确定您的微信有钱!",
+      confirmColor: "#f00",
+      cancelColor: "#0f0",
+      success: (res) => {
+        // cancel
+        if (res.cancel) {
+          console.log("用户点击取消");
+        } else if (res.confirm) {
+          console.log("用户点击了确定");
+        }
+      }
+    })
+  },
+  onShowAction() {
+    wx.showActionSheet({
+      itemList: ["衣服", "裤子", "鞋子"],
+      success: (res) => {
+          // 哪个 tapIndex
+        console.log(res.tapIndex);
+      },
+      fail: (err) => {
+        console.log("err:", err);
+      }
+    })
+  }
+```
+
+#### 分享
+
+- 只需在 onShareAppMessage 写分享的内容即可
+- 不写 onShareAppMessage  ，默认也有分享功能
+
+图片
+
+分享 
+
+```js
+  // 分享功能
+  onShareAppMessage() {
+    // return 分享内容
+    // path 点击分享，进入的页面
+    return {
+      title: "旅途的内容",
+      path: "/pages/favor/favor",
+      imageUrl: "/assets/nhlt.jpg"
+    }
+  }
+```
+
+#### 获取设备信息 、位置
+
+- wx.getSystemInfo  手机
+
+- wx.getLocation  位置
+
+  - https://developers.weixin.qq.com/miniprogram/dev/reference/configuration/app.html#permission
+  - 获取位置，需要在app.json配置
+
+  ```js
+  // 2-1 
+  "permission": {
+      "scope.userLocation": {
+        "desc": "需要获取您的位置信息"
+      }
+    }
+  ```
+
+```js
+    // 1.获取手机的基本信息
+    wx.getSystemInfo({
+      success: (res) => {
+        console.log(res);
+      }
+    })
+
+    // 2-2.获取当前的位置信息
+    wx.getLocation({
+      success: (res) => {
+        console.log("res:", res);
+      }
+    })
+```
+
+#### Storage存储 
+
+- 同步会等待 同步Storage存储完成后，再继续执行下面的代码
+  - 存后要用的
+- 异步 不会 等待
+  - 存后过段时间再用的
+- 可以直接存 类型
+
+图片
+
+Storage存储 
+
+```js
+    // 同步
+	// 1.存储一些键值对
+    wx.setStorageSync('name', "haha")
+    wx.setStorageSync('age', 18)
+    wx.setStorageSync('friends', ["abc", "cba", "nba"])
+
+    // 2.获取storage中内容
+    const name = wx.getStorageSync('name')
+    const age = wx.getStorageSync('age')
+    const friends = wx.getStorageSync('friends')
+
+    // 3.删除storage中内容
+    wx.removeStorageSync('name')
+
+    // 4.清空storage中内容
+    wx.clearStorageSync()
+	
+    // 异步操作
+    wx.setStorage({
+      key: "books",
+      data: "哈哈哈",
+      // 开启 encrypt 加密 
+      encrypt: true,
+      // success 存储成功
+      success: (res) => {
+        // 成功后再取值
+        wx.getStorage({
+          key: "books",
+          encrypt: true,
+          success: (res) => {
+            console.log(res);
+          }
+        })
+      }
+    })
+```
+
+#### 界面跳转 
+
+-  界面的跳转有两种方式：
+  - 通过navigator组件
+  - 通过wx的API跳转
+
+- wx.switchTab
+  - 跳转到 tabBar页面，并关闭其他所有非tabBar页面
+  - 从某个页面的按钮，跳转到 tabBar页面
+- wx.reLaunch 
+  - 关闭所有页面，打开应用内的某个页面
+  - 页面栈有数量限制，reLaunch ，关闭所有页面，就是**清空 页面栈**，打开一个新页面
+- wx.redirectTo
+  - 关闭当前页面，跳转到应用内某个页面
+  - 不会关闭其他页面，只会关闭当前页面
+
+- wx.navigateTo
+  - 保留当前页面，跳转到应用内的某个页面
+  - 但是不能跳到 tabbar 页面
+  - 会**添加到 页面栈** 中
+- wx.navigateBack
+  - 关闭当前页面，返回上一页面或**多级**页面
+  - 在页面自定义位置，通过按钮 返回
+- navigator组件主要就是用于界面的跳转的，也可以跳转到其他小程序中
+
+```js
+// navigateTo 跳转&传递参数
+// 跳转
+    const name = this.data.name
+    const age = this.data.age
+    // 页面导航操作
+    wx.navigateTo({
+      // 跳转的过程, 传递一些参数过去
+      url: `/pages2/detail/detail?name=${name}&age=${age}`,
+      events: {
+        backEvent(data) {
+          console.log("back:", data);
+        },
+        coderwhy(data) {
+          console.log("why:", data);
+        }
+      }
+    })
+// 接收参数，在 onLoad 参数 options 中
+  onLoad(options) {
+    const name = options.name
+    const age = options.age
+    this.setData({ name, age })
+
+    // const eventChannel = this.getOpenerEventChannel()
+  }
+```
+
+```js
+// navigateBack 返回
+    wx.navigateBack({
+      // delta 返回几层
+      delta:2
+    })
+```
+
+#### 页面跳转 - 数据传递（一） 
+
+- 首页 -> 详情页：使用URL中的query字段 
+- 详情页 -> 首页：在详情页内部拿到首页的页面对象，直接修改数据 
+
+图片
+
+页面跳转 - 数据传递（一） 
+
+##### 返回时给上一级页面传递数据
+
+- getCurrentPages  存放的是所有打开的页面
+- 只在自定义的点击事件中生效，事件中执行以下代码
+- 在左上角的返回键，不生效，监听不到，无法添加代码执行
+- 如果想要2个**都生效**，写在 **生命周期 onUnload 卸载**中，不是写在函数方法中，因为这2个返回，都是卸载当前页面
+
+```js
+// 当前页面，进行返回操作的页面    
+// 方式一: 给上一级的页面传递数据
+    // 1. 获取到上一个页面的实例
+    const pages = getCurrentPages()
+    // 通过下标，返回到上一个页面，length从1开始，下标从0开始，-1是当前页面，-2才是上个页面
+    const prePage = pages[pages.length-2]
+
+    // 2.通过setData给上一个页面设置数据，message 是上个页面的
+    prePage.setData({ message: "呵呵呵" })
+```
+
+#### 页面跳转 - 数据传递（二） 
+
+##### navigateTo 的 events 
+
+```js
+// 要返回的页面，这个是上个页面   
+wx.navigateTo({
+      // 跳转的过程, 传递一些参数过去
+      url: `/pages2/detail/detail?name=${name}&age=${age}`,
+      events: {
+          // 添加 自定义回调函数 backEvent
+        backEvent(data) {
+          console.log("back:", data);
+        },
+        coderwhy(data) {
+          console.log("why:", data);
+        }
+      }
+    })
+// 当前页面，进行返回操作的页面
+    // 方式二: 回调events的函数
+    // 1. 通过 getOpenerEventChannel 拿到eventChannel
+    const eventChannel = this.getOpenerEventChannel()
+
+    // 2. 通过eventChannel.emit 调用上个页面的回调函数，并传递参数
+    eventChannel.emit("backEvent", { name: "back", age: 111 })
+    eventChannel.emit("coderwhy", { name: "why", age: 10 })
+```
+
+#### navigator组件
+
+- 用于界面的跳转的
+- 可以跳转到其他小程序中 
+
+```js
+// 跳转
+<navigator class="nav" url="/pages2/detail/detail?name=why&age=18">跳转</navigator>
+// 返回
+<navigator open-type="navigateBack">返回</navigator>
+```
+
+### 小程序登录
+
+图片
+
+小程序登录
+
+- openid
+  - 小程序唯一标识
+- unionid
+  - 微信中，多个产品是同一用户的唯一标识
+  - 公众号、小程序，是同一个人的，相互同步数据，通过 unionid 判断 
+- PC网页、小程序等，多个平台共享数据信息，想要同步数据，需要通过 账号或者手机号登录
+  - 把 账号或者手机号 和 openid 绑定在一起
+  - 其他平台，在登录后，可以通过 账号或者手机号 找到绑定的 openid ，从而找到 用户的数据
+
+图片
+
+登录的流程
+
+```js
+import { getCode } from "../../service/login";
+import { hyLoginReqInstance } from "../../service/index"  
+async onLoad() {
+    // 1.获取token, 判断token是否有值
+    const token = wx.getStorageSync('token') || ""
+
+    // 2.判断token是否过期
+    const res = await hyLoginReqInstance.post({
+      url: "/auth",
+      header: {
+        token: token
+      }
+    })
+
+    // 2.如果token有值
+    if (token && res.message === "已登录") {
+      console.log("请求其他的数据");
+    } else {
+      this.handleLogin()
+    }
+  }
+
+// 获取 token
+  async handleLogin() {
+    // 1.获取code
+    const code = await getCode()
+
+    // 2.使用code换取token
+    const res = await hyLoginReqInstance.post({
+      url: "/login",
+      data: { code }
+    })
+
+    // 3.保存token
+    wx.setStorageSync('token', res.token)
+  }
+// 封装获取 code
+export function getCode() {
+  return new Promise((resolve, reject) => {
+    wx.login({
+      success: (res) => {
+        resolve(res.code)
+      }
+    })
+  })
+}
+```
+
+
+
+
+
+
 
