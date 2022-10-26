@@ -1,5 +1,11 @@
 ## Min Program - 微信 小程序
 
+### 思考
+
+- 生命周期，控制何时更新UI
+- 数据通信的时间指数据从逻辑层开始组织数据到视图层完全接收完毕的时间，数据量小于64KB时总时长可以控制在30ms内。传输时间与数据量大体上呈现正相关关系，传输过大的数据将使这一时间显著增加。因而减少传输数据量是降低数据传输时间的有效方式。
+- 在渲染层可以用各类组件组建界面的元素，在逻辑层可以用各类API来处理各种逻辑，这里提到的组件、API其实都是小程序基础库进行包装提供的，基础库的职责还要处理数据绑定、组件系统、事件系统、通信系统等一系列框架逻辑，才能让整个小程序有序的运作起来。小程序的基础库是JavaScript编写的，它可以被注入到渲染层和逻辑层运行。
+
 ### 认识小程序
 
 - 注册账号，拿到AppId
@@ -15,6 +21,7 @@
 ##### for循环
 
 - 使用 block 包裹，*this是item
+- key 使用item的属性，比如 id
 
 ```js
 <block wx:for="{{movies}}" wx:key="*this">
@@ -131,6 +138,9 @@ btns: ["red", "blue", "green", "orange"]
 - 具体页面配置 "enablePullDownRefresh": true 开启下拉
 - 全局配置中的 window 中的 backgroundTextStyle 是设置下拉动画颜色的（3个点的颜色）
 - 在页面js中，监听下拉，下拉有默认的取消时间3s，可以自己设置取消时间（请求的时间）
+- 在请求成功后，手动停止下拉刷新
+  -  wx.stopPullDownRefresh(）
+
 
 ```js
   // 监听下拉
@@ -1521,9 +1531,7 @@ Component({
 
 #### 网络请求配置域名
 
-图片
-
-网络请求域名配置 
+![网络请求域名配置](C:\Users\admin\Desktop\系统笔记\img_min_program\网络请求域名配置.png)
 
 #### 封装网络请求
 
@@ -1608,11 +1616,7 @@ export const hyLoginReqInstance = new HYRequest("http://123.207.32.32:3000")
 
 ### 系统API
 
-#### 展示弹窗
-
-图片
-
-弹窗 
+#### 展示弹窗 ![弹窗](C:\Users\admin\Desktop\系统笔记\img_min_program\弹窗.png)
 
 ```js
   onShowToast() {
@@ -1673,9 +1677,7 @@ export const hyLoginReqInstance = new HYRequest("http://123.207.32.32:3000")
 - 只需在 onShareAppMessage 写分享的内容即可
 - 不写 onShareAppMessage  ，默认也有分享功能
 
-图片
-
-分享 
+![分享](C:\Users\admin\Desktop\系统笔记\img_min_program\分享.png)
 
 ```js
   // 分享功能
@@ -1732,9 +1734,7 @@ export const hyLoginReqInstance = new HYRequest("http://123.207.32.32:3000")
   - 存后过段时间再用的
 - 可以直接存 类型
 
-图片
-
-Storage存储 
+![Storage存储](C:\Users\admin\Desktop\系统笔记\img_min_program\Storage存储.png)
 
 ```js
     // 同步
@@ -1840,9 +1840,7 @@ Storage存储
 - 首页 -> 详情页：使用URL中的query字段 
 - 详情页 -> 首页：在详情页内部拿到首页的页面对象，直接修改数据 
 
-图片
-
-页面跳转 - 数据传递（一） 
+![页面跳转 - 数据传递（一）](C:\Users\admin\Desktop\系统笔记\img_min_program\页面跳转 - 数据传递（一）.png)
 
 ##### 返回时给上一级页面传递数据
 
@@ -1906,9 +1904,7 @@ wx.navigateTo({
 
 ### 小程序登录
 
-图片
-
-小程序登录
+![小程序登录](C:\Users\admin\Desktop\系统笔记\img_min_program\小程序登录.png)
 
 - openid
   - 小程序唯一标识
@@ -1919,9 +1915,7 @@ wx.navigateTo({
   - 把 账号或者手机号 和 openid 绑定在一起
   - 其他平台，在登录后，可以通过 账号或者手机号 找到绑定的 openid ，从而找到 用户的数据
 
-图片
-
-登录的流程
+![登录的流程](C:\Users\admin\Desktop\系统笔记\img_min_program\登录的流程.png)
 
 ```js
 import { getCode } from "../../service/login";
@@ -1972,9 +1966,68 @@ export function getCode() {
 }
 ```
 
+### 优化
 
+- 状态管理，请求一次，多个页面共享
+- promise.all，一次性同时请求拿到所有数据，完成后进行一次setdata
 
+```js
+  async fetchAllMenuList() {
+    // 1.获取tags
+    const tagRes = await getSongMenuTag()
+    const tags = tagRes.tags
 
+    // 2.根据tags去获取对应的歌单
+    const allPromises = []
+    for (const tag of tags) {
+      const promise = getSongMenuList(tag.name)
+      allPromises.push(promise)
+    }
 
+    // 3.获取到所有的数据之后, 调用一次setData
+    Promise.all(allPromises).then(res => {
+      this.setData({ songMenus: res })
+    })
+  }
+```
 
+- 在没有请求到数据的时候，页面不展示，根节点通过if展示，请求到数据后再一次性全部展示
+- 自定义组件使用插槽，增加灵活性
+- 隐藏滚动条 
 
+```js
+.yuansu ::-webkit-scrollbar {
+  display: none;
+}
+```
+
+#### 分包
+
+- 除了底部导航页面，其他都可以分包
+
+- img图片也跟随分包移动
+
+- 尽量减少主包体积，提高下载打开小程序的速度
+
+- 普通分包是对主包内的某个文件有依赖
+
+  - 在进入分包页面时，才会下载加载分包页面
+  - 使用分包预下载，设置当下载完main-music页面后，马上去下载哪个分包（分包的root、name）
+
+  ```js
+    "preloadRule": {
+      "pages/main-music/main-music": {
+        "network": "all",
+        "packages": [
+          "packagePlayer",
+          "video"
+        ]
+      }
+    }
+  ```
+
+- 独立分包，是可以自己独立运行，和主包文件无关的；一般用不到
+
+- 手动减少三方库体积
+
+  - 没有使用到的、没有依赖的文件手动删除即可
