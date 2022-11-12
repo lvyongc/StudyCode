@@ -2221,6 +2221,8 @@ ES8 Object values
 
 #### ES8 Object entries
 
+- entries 对象转成数组
+
 ES8 Object entries
 
 #### ES8 - String Padding
@@ -2259,19 +2261,94 @@ ES8 - async await
 
 #### ES10 - flat flatMap
 
+- 多维数组转一维数组
+
+```js
+    // 1.flat的使用: 
+    // 将一个数组, 按照制定的深度遍历, 将遍历到的元素和子数组中的元素组成一个新的数组, 进行返回
+    const nums = [10, 20, [111, 222], [333, 444], [[123, 321], [231, 312]]]
+    const newNums1 = nums.flat(1)
+    console.log(newNums1)
+    const newNums2 = nums.flat(2)
+    console.log(newNums2)
+
+    // 2.flatMap的使用:
+    // 1> 对数组中每一个元素应用一次传入的map对应的函数
+    const messages = [
+      "Hello World aaaaa",
+      "Hello Coderwhy",
+      "你好啊 李银河"
+    ]
+
+    // 1.for循环的方式:
+    const newInfos = []
+    for (const item of messages) {
+      const infos = item.split(" ")
+      for (const info of infos) {
+        newInfos.push(info)
+      }
+    }
+    console.log(newInfos)
+
+    // 2.先进行map, 再进行flat操作
+    const newMessages = messages.map(item => item.split(" "))
+    const finalMessages = newMessages.flat(1)
+    console.log(finalMessages)
+
+    // 3.flatMap
+    const finalMessages = messages.flatMap(item => item.split(" "))
+    console.log(finalMessages)
 ```
-
-```
-
-
 
 ES10 - flat flatMap
 
 #### ES10 - Object fromEntries
 
+- fromEntries 数组转成对象
+
+```js
+    // 1.对象
+    const obj = {
+      name: "why",
+      age: 18,
+      height: 1.88
+    }
+
+    const entries = Object.entries(obj) // 对象转数组
+    const info = Object.fromEntries(entries) // 数组转对象
+    console.log(info)
+
+    // 2.应用
+    const searchString = "?name=why&age=18&height=1.88"
+    const params = new URLSearchParams(searchString)
+    console.log(params.get("name"))
+    console.log(params.get("age"))
+    console.log(params.entries())
+
+    // for (const item of params.entries()) {
+    //   console.log(item)
+    // }
+
+    const paramObj = Object.fromEntries(params)
+    console.log(paramObj)
+```
+
 ES10 - Object fromEntries
 
+#### URLSearchParams 
+
+- 处理 URL 的查询字符串 
+- https://developer.mozilla.org/zh-CN/docs/Web/API/URLSearchParams
+
 #### ES10 - trimStart trimEnd
+
+```js
+    const message = "   Hello World    "
+    // 去除空格 
+    console.log(message.trim())
+    console.log(message.trimStart())
+    console.log(message.trimEnd())
+```
 
 ES10 - trimStart trimEnd
 
@@ -2281,9 +2358,51 @@ ES11 - BigInt
 
 #### ES11 - Nullish Coalescing Operator
 
+-  空值合并运算符 
+  - 双问号，问号前面为 unll undefined 才使用后面的值，否则使用前面的值
+
+```js
+    let info = undefined
+    // info = info || "默认值"
+    // console.log(info)
+
+    // ??: 空值合并运算符
+    info = info ?? "默认值"
+    console.log(info)
+```
+
 ES11 - Nullish Coalescing Operator
 
 #### ES11 - Optional Chaining
+
+- 可选链，有才调用，判断 不为  unll undefined
+- 问号点 ?. 
+- 函数调用也需要判断
+
+```js
+    const obj = {
+      name: "why",
+      friend: {
+        name: "kobe",
+        // running: function() {
+        //   console.log("running~")
+        // }
+      }
+    }
+
+    // 1.直接调用: 非常危险
+    obj.friend.running()
+
+    // 2.if判断: 麻烦/不够简洁
+    if (obj.friend && obj.friend.running) {
+      obj.friend.running()
+    }
+
+    // 3.可选链的用法: ?.
+	// 如果没有running函数会返回undefined，需要把undefined再进行判断 ?. 再进行调用
+// obj?.friend?.running() ==> undefined()
+    obj?.friend?.running?.()
+```
 
 ES11 - Optional Chaining
 
@@ -2292,6 +2411,9 @@ ES11 - Optional Chaining
 ES11 - Global This
 
 #### ES11 - for..in标准化
+
+- 遍历数组、字符串
+  - 对象是遍历key
 
 ES11 - for..in标准化
 
@@ -2319,3 +2441,7 @@ ES13 - Object.hasOwn(obj, propKey)
 
 ES13 - New members of classes
 
+## JS中代码报错
+
+- 在js中代码报错，后面的代码都不会执行
+- 使用 try catch 捕获错误，不影响后面的代码执行
