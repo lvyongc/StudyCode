@@ -3583,29 +3583,133 @@ promise.then(res => {
 
 ### Iterator-Generator
 
+- 迭代器和生成器
+
 #### 什么是迭代器？
+
+- A对象和B数组
+- 可以通过A来遍历B
+- 那么A就是迭代器，B就是可迭代对象
+
+```js
+    const names = ["abc", "cba", "nba"]
+    const nums = [100, 24, 55, 66, 86]
+
+    // 封装一个返回迭代器的函数
+    function createArrayIterator(arr) {
+      let index = 0
+      return {
+        // next固定的方法，返回对象，对象有2个属性
+        next: function() {
+          // done: Boolean，是否迭代完成
+          // value: 具体值/undefined
+          if (index < arr.length) {
+            return { done: false, value: arr[index++] }
+          } else {
+            return { done: true }
+          }
+        }
+      }
+    }
+    // 创建迭代器对象
+    const namesIterator = createArrayIterator(names)
+    console.log(namesIterator.next())
+    console.log(namesIterator.next())
+```
 
 ![什么是迭代器？](C:\Users\admin\Desktop\系统笔记\img_js_高级\什么是迭代器？.png)
 
 ------
 
-#### 迭代器的代码练习
-
-
-
-![迭代器的代码练习](C:\Users\admin\Desktop\系统笔记\img_js_高级\迭代器的代码练习.png)
-
-------
-
 #### 可迭代对象
 
+- 数组就是一个可迭代对象 
+- 对象object 不是一个可迭代对象 
+- 数组是怎么实现变成可迭代对象的？
+  - 实现可迭代对象
+
+```js
+
+    // 将infos变成一个可迭代对象
+    /*
+      1.必须实现一个特定的函数: [Symbol.iterator]
+      2.这个函数需要返回一个迭代器(这个迭代器用于迭代当前的对象)
+    */
+    const infos = {
+      friends: ["kobe", "james", "curry"],
+      [Symbol.iterator]: function() {
+        let index = 0
+        const infosIterator = {
+          next: function() {
+            // done: Boolean
+            // value: 具体值/undefined
+            if (index < infos.friends.length) {
+              return { done: false, value: infos.friends[index++] }
+            } else {
+              return { done: true }
+            }
+          }	
+        }
+        return infosIterator
+      }
+    }
+
+    // 可迭对象可以进行for of操作
+    for (const item of infos) {
+      console.log(item)
+    }
+    const iterator = infos[Symbol.iterator]()
+    console.log(iterator.next())
+    console.log(iterator.next())
+
+
+    // 可迭代对象必然有一个[Symbol.iterator]函数
+    // 数组是一个可迭代对象
+    const students = ["张三", "李四", "王五"]
+    console.log(students[Symbol.iterator])
+    const studentIterator = students[Symbol.iterator]()
+    console.log(studentIterator.next())
+    console.log(studentIterator.next())
+    console.log(studentIterator.next())
+    console.log(studentIterator.next())
+```
+
+#### 让对象变成可迭代对象
+
+- 实现可迭代对象的优化版
+
+```js
+    const infos = {
+      name: "why",
+      age: 18,
+      height: 1.88,
+
+      [Symbol.iterator]: function() {
+        // const keys = Object.keys(this)
+        // const values = Object.values(this)
+        // entries 拿到 key 和 value
+        const entries = Object.entries(this)
+        let index = 0
+        const iterator = {
+          next: function() {
+            if (index < entries.length) {
+              return { done: false, value: entries[index++] }
+            } else {
+              return { done: true }
+            }
+          }
+        }
+        return iterator
+      }
+    }
+        // 可迭对象可以进行for of操作
+    for (const item of infos) {
+      const [key, value] = item
+      console.log(key, value)
+    }
+```
+
 ![可迭代对象](C:\Users\admin\Desktop\系统笔记\img_js_高级\可迭代对象.png)
-
-------
-
-#### 可迭代对象的代码
-
-![可迭代对象的代码](C:\Users\admin\Desktop\系统笔记\img_js_高级\可迭代对象的代码.png)
 
 ------
 
@@ -3617,6 +3721,64 @@ promise.then(res => {
 
 #### 可迭代对象的应用
 
+```js
+      // 1.用在特定的语法上
+      const names = ["abc", "cba", "nba"];
+      const info = {
+        name: "why",
+        age: 18,
+        height: 1.88,
+        [Symbol.iterator]: function () {
+          const values = Object.values(this);
+          let index = 0;
+          const iterator = {
+            next: function () {
+              if (index < values.length) {
+                return { done: false, value: values[index++] };
+              } else {
+                return { done: true };
+              }
+            },
+          };
+          return iterator;
+        },
+      };
+
+      function foo(arg1, arg2, arg3) {
+        console.log(arg1, arg2, arg3);
+      }
+      // ... 用于可迭代对象
+      foo(...info);
+
+      // 2.一些类的构造方法中, 也是传入的可迭代对象
+      const set = new Set(["aaa", "bbb", "ccc"]);
+      const set2 = new Set("abc");
+      console.log(set2);
+      const set3 = new Set(info);
+      console.log(set3);
+
+      // 3.一些常用的方法
+      const p1 = Promise.resolve("aaaa");
+      const p2 = Promise.resolve("bbb");
+      const p3 = Promise.resolve("ccc");
+      const pSet = new Set();
+      pSet.add(p1);
+      pSet.add(p2);
+      pSet.add(p3);
+      Promise.all(pSet).then((res) => {
+        console.log("res:", res);
+      });
+
+      function bar() {
+        // console.log(arguments)
+        // 将伪数组arguments转成Array类型
+        const arr = Array.from(arguments); // 参数是可迭代对象
+        console.log(arr);
+      }
+
+      bar(111, 222, 333);
+```
+
 ![可迭代对象的应用](C:\Users\admin\Desktop\系统笔记\img_js_高级\可迭代对象的应用.png)
 
 ------
@@ -3627,13 +3789,74 @@ promise.then(res => {
 
 ------
 
+#### 对象遍历
+
+```js
+      let data = {
+        name:'1',
+        age:'2'
+      }
+      for (const item of Object.entries(data)) {
+        console.log(item);
+      }
+```
+
 #### 自定义类的迭代实现
+
+- 通过类创建出来的对象，都是可迭代对象
+
+```js
+
+```
 
 ![自定义类的迭代实现](C:\Users\admin\Desktop\系统笔记\img_js_高级\自定义类的迭代实现.png)
 
 ------
 
 #### 迭代器的中断
+
+- 通过 迭代器内的 return 函数 来监听 中断
+
+```js
+    class Person {
+      constructor(name, age, height, friends) {
+        this.name = name
+        this.age = age
+        this.height = height
+        this.friends = friends
+      }
+
+      // 实例方法
+      running() {}
+      [Symbol.iterator]() {
+        let index = 0
+        const iterator = {
+          next: () => {
+            if (index < this.friends.length) {
+              return { done: false, value: this.friends[index++] }
+            } else {
+              return { done: true }
+            }
+          },
+          return: () => {
+            console.log("监听到迭代器中断了")
+            return { done: true }
+          }
+        }
+        return iterator
+      }
+    }
+
+    
+    const p1 = new Person("why", 18, 1.88, ["curry", "kobe", "james", "tatumu"])
+
+    for (const item of p1) {
+      console.log(item)
+      if (item === "kobe") {
+        break
+      }
+    }
+```
 
 ![迭代器的中断](C:\Users\admin\Desktop\系统笔记\img_js_高级\迭代器的中断.png)
 
@@ -3647,11 +3870,81 @@ promise.then(res => {
 
 #### 生成器函数执行
 
+```js
+    /*
+      生成器函数: 
+        1.function后面会跟上符号: *
+        2.代码的执行可以被yield控制
+        3.生成器函数默认在执行时, 返回一个生成器对象
+          * 要想执行函数内部的代码, 需要生成器对象, 调用它的next操作
+          * 当遇到yield时, 就会中断执行
+        4.生成器事实上是一种特殊的迭代器
+    */
+
+    // 1.定义了一个生成器函数
+    function* foo() {
+      console.log("1111")
+      console.log("2222")
+      yield
+      console.log("3333")
+      console.log("4444")
+      yield
+      console.log("5555")
+      console.log("6666")
+    }
+
+    // 2.调用生成器函数, 返回一个 生成器对象
+    const generator = foo()
+    // 调用next方法
+    generator.next() // 1 2
+    generator.next() // 3 4
+    generator.next() // 5 6
+```
+
 ![生成器函数执行](C:\Users\admin\Desktop\系统笔记\img_js_高级\生成器函数执行.png)
 
 ------
 
 #### 生成器传递参数 – next函数
+
+```js
+// 1.定义了一个生成器函数
+      function* foo(name1) {
+        console.log("执行内部代码:1111", name1);
+        console.log("执行内部代码:2222", name1);
+        const name2 = yield "aaaa";
+        console.log("执行内部代码:3333", name2);
+        console.log("执行内部代码:4444", name2);
+        const name3 = yield "bbbb";
+        // return "bbbb"
+        console.log("执行内部代码:5555", name3);
+        console.log("执行内部代码:6666", name3);
+        yield "cccc";
+        return undefined;
+      }
+
+      // 2.调用生成器函数, 返回一个 生成器对象
+      const generator = foo("next1"); // next1 是第一次传的参数赋值给name1
+      // 调用next方法;会返回迭代器，yield的done: false，return的done: true；yield 后面的值就是迭代器的value
+      // console.log(generator.next()) // { done: false, value: "aaaa" }
+      // console.log(generator.next()) // { done: false, value: "bbbb" }
+      // console.log(generator.next()) //  { done: false, value: "cccc" }
+      // console.log(generator.next()) // {done: true, value: undefined}
+
+      // 3.在中间位置直接return，return "bbbb", 结果return后面的 done: true, value: undefined
+      // console.log(generator.next()) // { done: false, value: "aaaa" }
+      // console.log(generator.next()) // { done: true, value: "bbbb" }
+      // console.log(generator.next()) // { done: true, value: undefined }
+      // console.log(generator.next()) // { done: true, value: undefined }
+      // console.log(generator.next()) // { done: true, value: undefined }
+      // console.log(generator.next()) // { done: true, value: undefined }
+
+      // 4.给函数每次执行的时候, 传入参数
+      console.log(generator.next()); // 这里不是第一次传参的地方
+      console.log(generator.next("next2")); // next2 赋值给了name2并作为迭代器的value
+      console.log(generator.next("next3"));
+      // console.log(generator.next())
+```
 
 ![生成器传递参数 – next函数](C:\Users\admin\Desktop\系统笔记\img_js_高级\生成器传递参数 – next函数.png)
 
@@ -3665,17 +3958,123 @@ promise.then(res => {
 
 #### 生成器抛出异常 – throw函数
 
+```js
+      function* foo(name1) {
+        console.log("执行内部代码:1111", name1);
+        console.log("执行内部代码:2222", name1);
+        const name2 = yield "aaaa";
+        console.log("执行内部代码:3333", name2);
+        console.log("执行内部代码:4444", name2);
+        const name3 = yield "bbbb";
+        // return "bbbb"
+        console.log("执行内部代码:5555", name3);
+        console.log("执行内部代码:6666", name3);
+        yield "cccc";
+
+        console.log("最后一次执行");
+        return undefined;
+      }
+
+      const generator = foo("next1");
+
+      // 1.generator.return提前结束函数
+      console.log(generator.next());
+      console.log(generator.return("next2"));
+      console.log("-------------------");
+      console.log(generator.next("next3"));
+      console.log(generator.next("next4"));
+
+      // 2.generator.throw向函数抛出一个异常，如果没有捕获异常就会终止代码继续执行
+      console.log(generator.next());
+      console.log(generator.throw(new Error("next2 throw error")));
+      console.log("-------------------");
+      console.log(generator.next("next3"));
+      console.log(generator.next("next4"));
+```
+
 ![生成器抛出异常 – throw函数](C:\Users\admin\Desktop\系统笔记\img_js_高级\生成器抛出异常 – throw函数.png)
 
 ------
 
 #### 生成器替代迭代器
 
+- 使用生成器替代迭代器实现可迭代对象
+
+```js
+    // 1.对之前的代码进行重构(用生成器函数)
+    const names = ["abc", "cba", "nba"]
+    const nums = [100, 22, 66, 88, 55]
+    // 生成器就是一个迭代器
+    function* createArrayIterator(arr) {
+      for (let i = 0; i < arr.length; i++) {
+        yield arr[i] // yield的返回值就是next的返回值
+      }
+    }
+	// 语法糖
+	function* createArrayIterator(arr) {
+      yield* arr
+    }
+
+    // const namesIterator = createArrayIterator(names)
+    // console.log(namesIterator.next())
+    // console.log(namesIterator.next())
+    // console.log(namesIterator.next())
+    // console.log(namesIterator.next())
+
+    // 2.生成器函数, 可以生成某个范围的值
+    // [3, 9)
+    function* createRangeGenerator(start, end) {
+      for (let i = start; i < end; i++) {
+        yield i
+      }
+    }
+
+    const rangeGen = createRangeGenerator(3, 9)
+    console.log(rangeGen.next())
+    console.log(rangeGen.next())
+    console.log(rangeGen.next())
+    console.log(rangeGen.next())
+    console.log(rangeGen.next())
+    console.log(rangeGen.next())
+    console.log(rangeGen.next())
+    console.log(rangeGen.next())
+```
+
 ![生成器替代迭代器](C:\Users\admin\Desktop\系统笔记\img_js_高级\生成器替代迭代器.png)
 
 ------
 
 #### 自定义类迭代 – 生成器实现
+
+- 封装一个类，创建的实例都为生成器(迭代器)
+- 终版，实现类，所有对象变成可迭代对象
+
+```js
+    class Person {
+      constructor(name, age, height, friends) {
+        this.name = name
+        this.age = age
+        this.height = height
+        this.friends = friends
+      }
+
+      // 实例方法；生成器（迭代器）函数 *[Symbol.iterator]
+      *[Symbol.iterator]() {
+        yield* this.friends
+      }
+    }
+
+    const p = new Person("why", 18, 1.88, ["kobe", "james", "curry"])
+    for (const item of p) {
+      console.log(item)
+    }
+
+    const pIterator = p[Symbol.iterator]()
+    console.log(pIterator.next())
+    console.log(pIterator.next())
+    console.log(pIterator.next())
+    console.log(pIterator.next())
+```
 
 ![自定义类迭代 – 生成器实现](C:\Users\admin\Desktop\系统笔记\img_js_高级\自定义类迭代 – 生成器实现.png)
 
