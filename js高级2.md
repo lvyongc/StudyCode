@@ -4088,6 +4088,94 @@ promise.then(res => {
 
 #### 异步处理方案
 
+- 直接使用方案4
+
+```js
+    // 封装请求的方法: url -> promise(result)
+    function requestData(url) {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(url)
+        }, 2000)
+      })
+    }
+    /*
+      需求: 
+        1.发送一次网络请求, 等到这次网络请求的结果
+        2.发送第二次网络请求, 等待这次网络请求的结果
+        3.发送第三次网络请求, 等待这次网络请求的结果
+    */
+    // 方式一: 层层嵌套(回调地狱 callback hell)
+    function getData() {
+      // 1.第一次请求
+      requestData("why").then(res1 => {
+        console.log("第一次结果:", res1)
+
+        // 2.第二次请求
+        requestData(res1 + "kobe").then(res2 => {
+          console.log("第二次结果:", res2)
+
+          // 3.第三次请求
+          requestData(res2 + "james").then(res3 => {
+            console.log("第三次结果:", res3)
+          })
+        })
+      })
+    }
+
+    // 方式二: 使用Promise进行重构(解决回调地狱)
+    // 链式调用
+    function getData() {
+      requestData("why").then(res1 => {
+        console.log("第一次结果:", res1)
+        return requestData(res1 + "kobe") // res2;return的promise给到第二个then
+      }).then(res2 => {
+        console.log("第二次结果:", res2)
+        return requestData(res2 + "james") // res3
+      }).then(res3 => {
+        console.log("第三次结果:", res3)
+      })
+    }
+
+    // 方式三: async/await的实现原理；使用生成器和yield
+    function* getData() {
+      // yield 中断执行
+      const res1 = yield requestData("why")
+      console.log("res1:", res1)
+
+      const res2 = yield requestData(res1 + "kobe")
+      console.log("res2:", res2)
+
+      const res3 = yield requestData(res2 + "james")
+      console.log("res3:", res3)
+    }
+
+    const generator = getData()
+    // next 拿到res1 ，value 是值，requestData返回的是promise，调用then。这是第一个yield
+    generator.next().value.then(res1 => {
+      generator.next(res1).value.then(res2 => { // 这是第2个yield
+        generator.next(res2).value.then(res3 => {
+          generator.next(res3)
+        })
+      })
+    })
+
+    // 方式四: async/await的解决方案
+    async function getData() {
+        // requestData 是请求，放入promise
+      const res1 = await requestData("why")
+      console.log("res1:", res1)
+
+      const res2 = await requestData(res1 + "kobe")
+      console.log("res2:", res2)
+
+      const res3 = await requestData(res2 + "james")
+      console.log("res3:", res3)
+    }
+
+    const generator = getData()
+```
+
 ![异步处理方案](C:\Users\admin\Desktop\系统笔记\img_js_高级\异步处理方案.png)
 
 ------
@@ -4100,6 +4188,67 @@ promise.then(res => {
 
 #### 自动执行generator函数
 
+- 优化，async/await的实现原理；使用生成器和yield
+
+```js
+    // 封装请求的方法: url -> promise(result)
+    function requestData(url) {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(url)
+        }, 2000)
+      })
+    }
+
+    // 生成器的处理方案
+    function* getData() {
+      const res1 = yield requestData("why")
+      console.log("res1:", res1)
+
+      const res2 = yield requestData(res1 + "kobe")
+      console.log("res2:", res2)
+
+      const res3 = yield requestData(res2 + "james")
+      console.log("res3:", res3)
+
+      const res4 = yield requestData(res3 + "curry")
+      console.log("res4:", res4)
+
+      const res5 = yield requestData(res4 + "tatumu")
+      console.log("res5:", res5)
+    }
+
+    // const generator = getData()
+    // generator.next().value.then(res1 => {
+    //   generator.next(res1).value.then(res2 => {
+    //     generator.next(res2).value.then(res3 => {
+    //       generator.next(res3).value.then(res4 => {
+    //         generator.next(res4)
+    //       })
+    //     })
+    //   })
+    // })
+
+    // 自动化执行生成器函数(了解)
+    function execGenFn(genFn) {
+      // 1.获取对应函数的generator
+      const generator = genFn()
+      // 2.定义一个递归函数
+      function exec(res) {
+        // result -> { done: true/false, value: 值/undefined }
+        const result = generator.next(res)
+        if (result.done) return
+        result.value.then(res => {
+          exec(res)
+        })
+      }
+      // 3.执行递归函数
+      exec()
+    }
+
+    execGenFn(getData)
+```
+
 ![自动执行generator函数](C:\Users\admin\Desktop\系统笔记\img_js_高级\自动执行generator函数.png)
 
 ------
@@ -4108,21 +4257,238 @@ promise.then(res => {
 
 #### 异步函数 async function
 
+```js
+    // 普通函数
+    function foo() {} // 函数声明
+    const bar = function() {} // 表达式
+    const baz = () => {}
+
+    // 生成器函数，返回生成器对象
+    function* foo() {}
+
+    // 异步函数 async
+    async function foo() {
+      console.log("foo function1")
+      console.log("foo function2")
+      console.log("foo function3")
+    }
+    foo()
+
+    const bar2 = async function() {}
+    const baz3 = async () => {}
+    class Person {
+      async running() {}
+    }
+```
+
 ![异步函数 async function](C:\Users\admin\Desktop\系统笔记\img_js_高级\异步函数 async function.png)
 
 ------
 
 #### 异步函数的执行流程
 
+- 异步函数返回值是一个 promise
+
+```js
+    // 返回值的区别
+    // 1.普通函数
+    function foo1() {
+      return 123
+      // 不返回默认就是 undefined
+    }
+    foo1()
+
+    // 2.异步函数,返回一个promise
+    async function foo2() {
+      // 1.返回一个普通的值
+      return ["abc", "cba", "nba"]
+      // -> Promise.resolve(["abc", "cba", "nba"])
+
+      // 2.返回一个Promise
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve("aaa")
+        }, 3000)
+      })
+
+      // 3.返回一个thenable对象
+      return {
+        then: function (resolve, reject) {
+          resolve("bbb")
+        }
+      }
+    }
+
+    foo2().then(res => {
+      console.log("res:", res)
+    })
+```
+
 ![异步函数的执行流程](C:\Users\admin\Desktop\系统笔记\img_js_高级\异步函数的执行流程.png)
 
 ------
 
+#### 异步函数异常
+
+```js
+
+    // 什么情况下异步函数的结果是rejected
+
+    // 如果异步函数中有抛出异常(产生了错误), 这个异常不会被立即浏览器处理
+    // 进行如下处理: Promise.reject(error)
+    async function foo() {
+      console.log("---------1")
+      console.log("---------2")
+      // "abc".filter()
+      throw new Error("coderwhy async function error")
+      console.log("---------3")
+
+      // return new Promise((resolve, reject) => {
+      //   reject("err rejected")
+      // })
+
+      return 123
+    }
+
+    // promise -> pending -> fulfilled/rejected
+    foo().then(res => {
+      console.log("res:", res)
+    }).catch(err => {
+      console.log("coderwhy err:", err) // console3 并不会执行
+      // 在这里写错误后继续执行的代码
+      console.log("继续执行其他的逻辑代码")
+    })
+```
+
 #### await关键字
+
+- await 前面必须是 async
+- async后面不一定是await
+- await后面的必须是promise，并且await要等到promise的成功状态，才会继续执行async异步函数的下一行代码
+- 通过 catch 捕获错误
+
+```js
+    // await条件: 必须在异步函数中使用
+    function bar() {
+      console.log("bar function")
+      return new Promise(resolve => {
+        setTimeout(() => {
+          resolve(123)
+        }, 10000)
+      })
+    }
+
+    async function foo() {
+      console.log("-------")
+      // await后续返回一个Promise, 那么会等待Promise有结果之后, 才会继续执行后续的代码
+      const res1 = await bar() // 执行到这里等10s，拿到123再打印出来
+      console.log("await后面的代码:", res1)
+      const res2 = await bar() // 执行到这里再等10s，拿到123再打印出来
+      console.log("await后面的代码:", res2)
+
+      console.log("+++++++")
+    }
+	
+    foo().catch(err => {
+      console.log("err:", err)
+    })
+```
+
+```js
+    function requestData(url) {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(url)
+          // reject("error message")
+        }, 2000);
+      })
+    }
+
+    async function getData() {
+      // 1-方法内，通过 try、catch 捕获异常
+      try {
+        const res1 = await requestData("why")
+        console.log("res1:", res1)
+
+        const res2 = await requestData(res1 + "kobe")
+        console.log("res2:", res2)
+      } catch (error) {
+        console.log("error:", error)
+      }
+
+    }
+    // 2-调用方法时，通过 catch 捕获异常
+    getData().catch(err => {
+      console.log("err:", err)
+    })
+```
 
 ![await关键字](C:\Users\admin\Desktop\系统笔记\img_js_高级\await关键字.png)
 
 ------
+
+#### async&await
+
+- 不一定要自己写promise来包裹请求
+- async 异步函数，默认返回promise，async 异步函数内，直接写请求
+
+```js
+   // 1.定义Promise
+    function requestData(url) {
+      console.log("request data")
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(url)
+        }, 3000)
+      })
+    }
+	// 2.async 异步函数，默认返回promise
+    async function test() {
+      console.log("test function")
+      return "test"
+    }
+
+    async function bar() {
+      console.log("bar function")
+
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve("bar")
+        }, 2000);
+      })
+    }
+
+    async function demo() {
+      console.log("demo function")
+      return {
+        then: function(resolve) {
+          resolve("demo")
+        }
+      }
+    }
+
+
+    // 2.调用的入口async函数
+    async function foo() {
+      console.log("foo function")
+
+      const res1 = await requestData("why")
+      console.log("res1:", res1)
+
+      const res2 = await test()
+      console.log("res2:", res2)
+
+      const res3 = await bar()
+      console.log("res3:", res3)
+
+      const res4 = await demo()
+      console.log("res4:", res4)
+    }
+
+    foo().catch(err => {
+      console.log("err:", err)
+    })
+```
 
 #### 计算机体系结构
 
@@ -4130,15 +4496,19 @@ promise.then(res => {
 
 ------
 
-
-
 #### 进程和线程
+
+- 进程：打开一个应用就会开启一个或多个进程，通过这个进程管理这个应用如何运行
+- 线程：在操作系统中的进程中，通过线程来执行代码，一个进程中最少有一个线程，这一个称为主线程
+- 进程是线程的容器
 
 ![进程和线程](C:\Users\admin\Desktop\系统笔记\img_js_高级\进程和线程.png)
 
 ------
 
 #### 操作系统 – 进程 – 线程
+
+- 每个线程负责执行各自的代码
 
 ![操作系统 – 进程 – 线程](C:\Users\admin\Desktop\系统笔记\img_js_高级\操作系统 – 进程 – 线程.png)
 
@@ -4152,11 +4522,77 @@ promise.then(res => {
 
 #### 浏览器中的JavaScript线程
 
+- JS是单线程
+- 浏览器、node是JS的进程
+- 浏览器有多个进程，进程中包含了多个线程，其中一个线程是，JS的单线程
+- 同一时间只能做一件事情，执行上下文栈，依次执行，遇到函数创建函数的执行上下文，依次从栈顶开始执行，执行完销毁，执行 下一个 执行上下文的下一行代码，全部执行完销毁，再执行 下一个执行上下文，直到全局执行上下文执行完成销毁，代码执行完成
+
+![JS执行](C:\Users\admin\Desktop\系统笔记\img_js_高级\JS执行.png)
+
+------
+
 ![浏览器中的JavaScript线程](C:\Users\admin\Desktop\系统笔记\img_js_高级\浏览器中的JavaScript线程.png)
 
 ------
 
+#### JS单线程中的异步代码是如何执行的？
+
+- setTimeout 定时器，不是由JS线程来执行的，是由浏览器的其他进程中的某个线程来执行的
+- 所以才不用等待setTimeout 的时间，就执行setTimeout 下面的代码
+- setTimeout 定时器,是2个函数，一个是setTimeout 本身，一个是setTimeout 的回调函数
+- 本身的函数是由JS线程执行的，但JS线程会把回调函数，交给浏览器，浏览器完成回调函数的计时工作，当计时结束，会把回调函数放入队列中，浏览器并不是执行回调内的代码，回调函数内的代码还是由JS线程来执行的
+- 这样JS线程就可以继续往下执行了 = setTimeout 的执行上下文栈销毁
+- 直到全局执行上下文栈，执行完成，没有代码执行了
+- 浏览器的其他线程在setTimeout 计时结束时，会把setTimeout 的回调函数，添加到事件队列中，如果有多个就添加多个，最先加入的会被最先执行
+  - 放入队列中，是为了给事件排序，依次完成执行
+- 全局执行上下文栈的所有代码执行完成后，全局执行上下文栈，会一直查看队列中有没有事件需要执行，有的话就执行，如何执行？
+- 把回调放入全局执行上下文栈，回调是一个函数，创建函数执行上下文栈，执行，销毁，直到全局销毁，全部代码执行完成
+- setTimeout 的计时为0，回调函数同样也是在其他正常代码全部执行完成后，再执行的
+  - 因为只有栈内存中的全局执行上下文栈，全部代码执行完成后，才会去队列中取最先加入的，放入全局执行上下文栈中，去执行，所以setTimeout 的回调是最后执行的
+
+![单线程异步执行](C:\Users\admin\Desktop\系统笔记\img_js_高级\单线程异步执行.png)
+
+```js
+    let name = "why"
+    name = "kobe"
+
+    function bar() {
+      console.log("bar function")
+    }
+
+    function foo() {
+      console.log("foo function")
+      // 1.在JavaScript内部执行
+      let total = 0
+      for (let i = 0; i < 1000000; i++) {
+        total += i
+      }
+
+      // 2.创建一个定时器，在浏览器执行
+      setTimeout(() => {
+        console.log("setTimeout")
+      }, 10000);
+      // 所以这个函数，不会等setTimeout的10S后再执行，而是立即执行的
+      bar()
+    }
+
+    foo()
+```
+
+------
+
+#### JS线程中的事件执行
+
+- 浏览器监听按钮点击，点击，找到绑定的函数，放入事件队列中，执行上下文栈中全部执行完后，会去查看事件队列中有没有事件，有，把最早放入队列的事件，放入执行上下文栈中去执行
+
+![JS事件](C:\Users\admin\Desktop\系统笔记\img_js_高级\JS事件.png)
+
 #### 浏览器的事件循环
+
+- 图右侧的闭环，就是事件循环
+  - 具体查看：
+  - JS单线程中的异步代码是如何执行的？
+  - JS线程中的事件执行
 
 ![浏览器的事件循环](C:\Users\admin\Desktop\系统笔记\img_js_高级\浏览器的事件循环.png)
 
@@ -4164,11 +4600,47 @@ promise.then(res => {
 
 #### 宏任务和微任务
 
+- resolve 会执行then，then的回调会被加入到队列中，在最后执行（全局上下文栈的代码全部执行完成后再执行）,resolve前面的代码会被直接执行
+
+##### 任务队列
+
+- 宏任务
+  - 定时器、ajax网络请求
+- 微任务
+  - promise的then的回调
+- 优先级
+  - 当全局上下文栈的代码全部执行完，执行任何一个宏任务之前，都会先去查看任务列队中是否有微任务需要执行，有先执行完所有的微任务，再执行宏任务
+
 ![宏任务和微任务](C:\Users\admin\Desktop\系统笔记\img_js_高级\宏任务和微任务.png)
 
 ------
 
 ![宏任务和微任务画图](C:\Users\admin\Desktop\系统笔记\img_js_高级\宏任务和微任务画图.png)
+
+```js
+    // 定时器
+    setTimeout(() => {
+      console.log("setTimeout0")
+    }, 0)
+    setTimeout(() => {
+      console.log("setTimeout1")
+    }, 0)
+
+    // Promise中的then的回调也会被添加到队列中
+    console.log("1111111")
+    new Promise((resolve, reject) => {
+      console.log("2222222")
+      console.log("-------1")
+      console.log("-------2")
+      resolve()
+      console.log("-------3")
+    }).then(res => {
+      console.log("then传入的回调: res", res)
+    })
+    console.log("3333333")
+
+    console.log("script end")
+```
 
 ------
 
@@ -4176,21 +4648,45 @@ promise.then(res => {
 
 ![Promise面试题](C:\Users\admin\Desktop\系统笔记\img_js_高级\Promise面试题.png)
 
-------
+- 解析
 
-#### promise async await 面试题
+![1全局](C:\Users\admin\Desktop\系统笔记\img_js_高级\1全局.png)
 
-![面试题一-画图](C:\Users\admin\Desktop\系统笔记\img_js_高级\面试题一-画图.png)
+![2微任务](C:\Users\admin\Desktop\系统笔记\img_js_高级\2微任务.png)
 
-------
-
-![面试题二-画图](C:\Users\admin\Desktop\系统笔记\img_js_高级\面试题二-画图.png)
+![3执行完成](C:\Users\admin\Desktop\系统笔记\img_js_高级\3执行完成.png)
 
 ------
 
-![promise async await 面试题](C:\Users\admin\Desktop\系统笔记\img_js_高级\promise async await 面试题.png)
+#### async await 面试题1
+
+#### await 后面的代码 
+
+- 必须等到promise是 成功状态 后 才会执行，错误状态就不会执行代码了
+- await 后面的代码，就 相等于 是 then的回调
+
+![1-代码执行顺序](C:\Users\admin\Desktop\系统笔记\img_js_高级\1-代码执行顺序.png)
+
+![2-代码执行顺序](C:\Users\admin\Desktop\系统笔记\img_js_高级\2-代码执行顺序.png)
+
+![3-代码执行顺序](C:\Users\admin\Desktop\系统笔记\img_js_高级\3-代码执行顺序.png)
 
 ------
+
+#### async await 面试题2
+
+#### await 后面的代码 
+
+- async 异步函数，默认返回promise，没有写状态，就是默认返回 undefiend ，async2函数 默认返回了 promise.resolve(undefiend)，那么async2 下面的代码，会被加入微任务，log(async1 end)，被加入微任务
+- await async2 执行顺序
+  - await 上面的代码 和 async2函数中的 resolve上面的代码，是正常执行
+    - async1 start \ async2
+  - 而 await 下面的代码需要等待 promise 是 resolve状态后，才会被加入微任务中,并不是执行，是加入微任务
+    - async1 end
+
+![await1](C:\Users\admin\Desktop\系统笔记\img_js_高级\await1.png)
+
+![await2](C:\Users\admin\Desktop\系统笔记\img_js_高级\await2.png)
 
 #### Node的事件循环
 
@@ -4228,13 +4724,90 @@ promise.then(res => {
 
 ------
 
-#### 错误处理方案
+### 错误处理方案
+
+-  throw 是抛出异常，不是处理异常，只有处理异常，异常后的代码才会继续执行
+  - 是异常后，所有的代码都不会执行，包括全局代码
+  - 异常会往上层传递，直到浏览器接收到异常，终止程序执行
+-  try catch 处理异常
+
+```js
+    // 1.遇到一个错误, 造成后续的代码全部不能执行
+    function foo() {
+      "abc".filter() // 这行代码报错，下面的代码都不会执行了，包括btn的点击，不是函数中，是全局的代码都不会执行
+
+      console.log("第15行代码")
+      console.log("-------")
+    }
+
+    foo()
+    console.log("+++++++++")
+    // 包括这里都不会执行
+    const btn = document.querySelector("button")
+    btn.onclick = function() {
+      console.log("监听btn的点击")
+    }
+
+    // 2.自己封装一些工具
+    function sum(num1, num2) {
+      if (typeof num1 !== "number") {
+        throw "type error: num1传入的类型有问题, 必须是number类型"
+      }
+
+      if (typeof num2 !== "number") {
+        throw "type error: num2传入的类型有问题, 必须是number类型"
+      }
+
+      return num1 + num2
+    }
+
+    // 李四调用
+    const result = sum(123, 321)
+```
 
 ![错误处理方案](C:\Users\admin\Desktop\系统笔记\img_js_高级\错误处理方案.png)
 
 ------
 
 #### throw关键字
+
+-  throw 是抛出异常，不是处理异常，只有处理异常，异常后的代码才会继续执行
+
+- 遇到throw之后, 后续的代码都不会执行
+
+```js
+    class HYError {
+      constructor(message, code) {
+        this.errMessage = message
+        this.errCode = code
+      }
+    }
+
+    // throw抛出一个异常
+    // 1.函数中的代码遇到throw之后, 后续的代码都不会执行
+    // 2.throw抛出一个具体的错误信息
+    function foo() {
+      console.log("foo function1")
+      // 1.number/string/boolean
+      // throw "反正就是一个错误"
+
+      // 2.抛出一个对象
+      // throw { errMessage: "我是错误信息", errCode: -1001 }
+      // throw new HYError("错误信息", -1001)
+
+      // 3.Error类: 错误函数的调用栈以及位置信息
+      throw new Error("我是错误信息")
+		// 不会执行的
+      console.log("foo function2")
+      console.log("foo function3")
+      console.log("foo function4")
+    }
+
+    function bar() {
+      foo()
+    }
+    bar()
+```
 
 ![throw关键字](C:\Users\admin\Desktop\系统笔记\img_js_高级\throw关键字.png)
 
@@ -4254,17 +4827,103 @@ promise.then(res => {
 
 #### 异常的捕获
 
+- catch 捕获后，throw 所在函数中，throw 后面的代码还是不会执行，但只限于throw所在的函数，全局的代码 是可以正常执行的
+  - log : function1\ --------
+
+```js
+    function foo() {
+      console.log("foo function1")
+      throw new Error("我是错误信息")
+        // 下面的依然不会被执行
+      console.log("foo function2")
+      console.log("foo function3")
+      console.log("foo function4")
+    }
+
+    function test() {
+      // 自己捕获了异常的话, 那么异常就不会传递给浏览器, 那么后续的代码可以正常执行
+      try {
+        foo()
+        console.log("try后续的代码")
+      } catch (error) {
+        console.log("catch中的代码")
+        // console.log(error)
+      } finally {
+        console.log("finally代码")
+      }
+    }
+
+    function bar() {
+      test()
+    }
+
+    bar()
+	// 但全局的可以正常执行
+    console.log("--------")
+```
+
 ![异常的捕获](C:\Users\admin\Desktop\系统笔记\img_js_高级\异常的捕获.png)
 
 ------
 
 ### 认识Storage
 
+- 部分数据，可以长期使用，保存到浏览器，避免每次发送请求
+
+```js
+    // 1.token的操作
+    let token = localStorage.getItem("token")
+    if (!token) {
+      console.log("从服务器获取token")
+      token = "1"
+      localStorage.setItem("token", token)
+    }
+
+    // 2.username/password的操作
+    let username = localStorage.getItem("username")
+    let password = localStorage.getItem("password")
+    if (!username || !password) {
+      console.log("让用户输入账号和密码")
+      username = "coderwhy"
+      password = "123456"
+      // 将token/username/password保存到storage
+      localStorage.setItem("username", username)
+      localStorage.setItem("password", password)
+    }
+
+    // 3.后续的操作
+    console.log(token)
+    console.log(token.length)
+    console.log(token + " 哈哈哈")
+```
+
 ![认识Storage](C:\Users\admin\Desktop\系统笔记\img_js_高级\认识Storage.png)
 
 ------
 
 #### localStorage和sessionStorage的区别
+
+- localStorage 本地存储，永久存储
+- sessionStorage 会话存储，关闭后清除
+
+```js
+    // 1.验证一: 关闭网页
+    // 1.1.localStorage的存储保持
+    localStorage.setItem("name", "localStorage")
+
+    // 1.2.sessionStorage的存储会消失
+    sessionStorage.setItem("name", "sessionStorage")
+
+
+    // 2.验证二: 路由跳转（在同一个标签页）都会保存，使用sessionStorage可以不在本地存储，减少空间
+    localStorage.setItem("info", "local")
+    sessionStorage.setItem("info", "session")
+
+    
+    // 3.验证三: 打开新的页面, 并且是在新的标签中打开
+    localStorage.setItem("infoTab", "local") // 保存
+    sessionStorage.setItem("infoTab", "session")  // 清除，一个标签页是一个会话
+```
 
 ![localStorage和sessionStorage的区别](C:\Users\admin\Desktop\系统笔记\img_js_高级\localStorage和sessionStorage的区别.png)
 
@@ -4273,6 +4932,515 @@ promise.then(res => {
 #### Storage常见的方法和属性
 
 ![Storage常见的方法和属性](C:\Users\admin\Desktop\系统笔记\img_js_高级\Storage常见的方法和属性.png)
+
+------
+
+#### Storage封装
+
+- storage本身是不能直接存储对象类型的 
+
+```js
+      // storage本身是不能直接存储对象类型的
+      const userInfo = {
+        name: "1",
+        nickname: "2",
+        level: 100,
+        imgURL: "http://github.com/3",
+      };
+
+      // localStorage.setItem("userInfo", JSON.stringify(userInfo))
+      // console.log(JSON.parse(localStorage.getItem("userInfo")))
+
+      sessionCache.setCache("userInfo", userInfo);
+      console.log(sessionCache.getCache("userInfo"));
+```
+
+```js
+class Cache {
+  constructor(isLocal = true) {
+    // 使用 localStorage 还是 sessionStorage
+    this.storage = isLocal ? localStorage : sessionStorage;
+  }
+
+  setCache(key, value) {
+    if (!value) {
+      // throw 抛出异常，终止代码继续执行
+      throw new Error("value error: value必须有值!");
+    }
+
+    if (value) {
+      this.storage.setItem(key, JSON.stringify(value));
+    }
+  }
+
+  getCache(key) {
+    const result = this.storage.getItem(key);
+    if (result) {
+      return JSON.parse(result);
+    }
+  }
+
+  removeCache(key) {
+    this.storage.removeItem(key);
+  }
+
+  clear() {
+    this.storage.clear();
+  }
+}
+
+const localCache = new Cache();
+const sessionCache = new Cache(false);
+```
+
+### 正则表达式
+
+- https://c.runoob.com/front-end/854/
+
+#### 什么是正则表达式？
+
+- 用于处理字符串
+
+```js
+      // 创建正则
+      // 1> 匹配的规则pattern
+      // 2> 匹配的修饰符flags
+      // new创建
+      const re1 = new RegExp("abc", "ig"); // 全局匹配abc忽略大小写
+      // 字面量创建
+      const re2 = /abc/gi; // 全局匹配abc忽略大小写
+```
+
+![什么是正则表达式？](C:\Users\admin\Desktop\系统笔记\img_js_高级\什么是正则表达式？.png)
+
+------
+
+#### 正则表达式的使用方法
+
+```js
+    // 创建正则
+    const re1 = /abc/ig
+    const message = "fdabc123 faBC323 dfABC222 A2324aaBc"
+
+    // 2.使用字符串的方法, 传入一个正则表达式
+    // 需求: 将所有的abc(忽略大小写)换成cba
+
+    const newMessage = message.replaceAll("abc", "cba") // 不能实现忽略大小写
+    
+    const newMessage1 = message.replaceAll(/abc/ig, "cba") // 正则可以
+
+    // 需求: 将字符串中数字全部删除；\d 数字； + 一个或多个
+    const newMessage2 = message.replaceAll(/\d+/ig, "")
+```
+
+```js
+    // 创建正则
+    const re1 = /abc/ig
+    const message = "fdabc123 faBC323 dfABC222 A2324aaBc"
+
+    // 1.使用正则对象上的实例方法
+    // 1.1.test方法: 检测某一个字符串是否符合正则的规则；返回布尔
+    if (re1.test(message)) {
+      console.log("message符合规则")
+    } else {
+      console.log("message不符合规则")
+    }
+
+    // 1.2.exec方法: 使用正则执行一个字符串；返回匹配的第一个结果，即使是全局匹配
+    const res1 = re1.exec(message) // 数组
+    console.log(res1)
+
+
+    // 2.使用字符串的方法, 传入一个正则表达式
+    // 2.1. match方法:返回匹配的结果，全局返回所有
+    const result2 = message.match(re1) // 数组
+    console.log(result2)
+
+    // 2.2. matchAll方法
+    // 注意: matchAll传入的正则修饰符,必须加g
+    const result3 = message.matchAll(re1) // 返回一个迭代器（iterator）
+    // console.log(result3.next())
+    // console.log(result3.next())
+    // console.log(result3.next())
+    // console.log(result3.next())
+    for (const item of result3) {
+      console.log(item)
+    }
+
+    // 2.3. replace/replaceAll 字符串替换方法
+
+    // 2.4. split切割方法
+    const result4 = message.split(re1)
+
+    // 2.5. search搜索方法
+    const result5 = message.search(re1)
+    console.log(result5)
+```
+
+![正则表达式的使用方法](C:\Users\admin\Desktop\系统笔记\img_js_高级\正则表达式的使用方法.png)
+
+------
+
+#### 修饰符flag的使用
+
+![修饰符flag的使用](C:\Users\admin\Desktop\系统笔记\img_js_高级\修饰符flag的使用.png)
+
+------
+
+#### 规则-字符类
+
+- 拉丁字母就是英文字母，不分大小写
+
+```js
+    // \d 匹配一个数字
+    // \d+ 匹配一个或者多个数字
+    const re = /\d+/ig
+
+    // \d -> 匹配范围是所有的数字 0~9
+    console.log(message.match(re))
+```
+
+![字符类](C:\Users\admin\Desktop\系统笔记\img_js_高级\字符类.png)
+
+------
+
+#### 规则 – 锚点
+
+```js
+    const message = "My name is WHY."
+
+    // 字符串方法
+    if (message.startsWith("my")) {
+      console.log("以my开头")
+    }
+    if (message.endsWith("why")) {
+      console.log("以why结尾")
+    }
+
+    // 正则: 锚点
+    if (/^my/i.test(message)) {
+      console.log("以my开头")
+    }
+    // \. 必须是 . ; \ 是转义符号
+    // . 除换行符之外的任何字符
+    if (/why\.$/i.test(message)) {
+      console.log("以why.结尾")
+    }
+
+    const re = /^coder$/
+    const info = "codaaaer"
+    console.log(re.test(info)) // false
+```
+
+![规则 – 锚点](C:\Users\admin\Desktop\系统笔记\img_js_高级\规则 – 锚点.png)
+
+------
+
+#### 词边界
+
+```js
+    // \w：字母或数字或下划线 _
+    const message = "My name! is WHY."
+
+    // 需求: name, name必须是一个单独的词
+    // \b ：词边界，不是 \w 
+    if (/\bname\b/i.test(message)) {
+      console.log("有name, name有边界")
+    }
+
+    // 词边界的应用
+    const infos = "now time is 11:56, 12:00 eat food, number is 123:456"
+    const timeRe = /\b\d\d:\d\d\b/ig
+    console.log(infos.match(timeRe))
+```
+
+#### 规则 – 转义字符串
+
+![规则 – 转义字符串](C:\Users\admin\Desktop\系统笔记\img_js_高级\规则 – 转义字符串.png)
+
+------
+
+#### 集合（Sets）和范围（Ranges）
+
+![集合（Sets）和范围（Ranges）](C:\Users\admin\Desktop\系统笔记\img_js_高级\集合（Sets）和范围（Ranges）.png)
+
+------
+
+#### 量词（Quantifiers）
+
+![量词（Quantifiers）](C:\Users\admin\Desktop\系统笔记\img_js_高级\量词（Quantifiers）.png)
+
+------
+
+#### 贪婪（ Greedy）和惰性（ lazy）模式
+
+![贪婪（ Greedy）和惰性（ lazy）模式](C:\Users\admin\Desktop\系统笔记\img_js_高级\贪婪（ Greedy）和惰性（ lazy）模式.png)
+
+------
+
+#### 捕获组（capturing group）
+
+![捕获组（capturing group）](C:\Users\admin\Desktop\系统笔记\img_js_高级\捕获组（capturing group）.png)
+
+------
+
+#### 捕获组的补充
+
+![捕获组的补充](C:\Users\admin\Desktop\系统笔记\img_js_高级\捕获组的补充.png)
+
+------
+
+#### 案例练习 – 歌词解析
+
+![柯里化案例练习](C:\Users\admin\Desktop\系统笔记\img_js_高级\柯里化案例练习.png)
+
+------
+
+#### 案例练习 – 时间格式化
+
+![案例练习 – 时间格式化](C:\Users\admin\Desktop\系统笔记\img_js_高级\案例练习 – 时间格式化.png)
+
+------
+
+### 网络
+
+#### 前后端分离的优势
+
+![前后端分离的优势](C:\Users\admin\Desktop\系统笔记\img_js_高级\前后端分离的优势.png)
+
+------
+
+#### 网页的渲染过程 – 服务器端渲染
+
+![网页的渲染过程 – 服务器端渲染](C:\Users\admin\Desktop\系统笔记\img_js_高级\网页的渲染过程 – 服务器端渲染.png)
+
+------
+
+#### 网页的渲染过程 – 前后端分离
+
+![网页的渲染过程 – 前后端分离](C:\Users\admin\Desktop\系统笔记\img_js_高级\网页的渲染过程 – 前后端分离.png)
+
+------
+
+#### 什么是HTTP？
+
+![什么是HTTP？](C:\Users\admin\Desktop\系统笔记\img_js_高级\什么是HTTP？.png)
+
+------
+
+#### 网页中资源的获取
+
+![网页中资源的获取](C:\Users\admin\Desktop\系统笔记\img_js_高级\网页中资源的获取.png)
+
+------
+
+#### HTTP的组成
+
+![HTTP的组成](C:\Users\admin\Desktop\系统笔记\img_js_高级\HTTP的组成.png)
+
+------
+
+#### HTTP的版本
+
+![HTTP的版本](C:\Users\admin\Desktop\系统笔记\img_js_高级\HTTP的版本.png)
+
+------
+
+#### HTTP的请求方式
+
+![HTTP的请求方式](C:\Users\admin\Desktop\系统笔记\img_js_高级\HTTP的请求方式.png)
+
+------
+
+#### HTTP Request Header（一）
+
+![HTTP Request Header（一）](C:\Users\admin\Desktop\系统笔记\img_js_高级\HTTP Request Header（一）.png)
+
+------
+
+#### HTTP Request Header（二）
+
+![HTTP Request Header（二）](C:\Users\admin\Desktop\系统笔记\img_js_高级\HTTP Request Header（二）.png)
+
+------
+
+#### HTTP Response响应状态码
+
+- https://developer.mozilla.org/zh-CN/docs/web/http/status
+
+![HTTP Response响应状态码](C:\Users\admin\Desktop\系统笔记\img_js_高级\HTTP Response响应状态码.png)
+
+------
+
+#### HTTP Request Header
+
+![HTTP Request Header](C:\Users\admin\Desktop\系统笔记\img_js_高级\HTTP Request Header.png)
+
+------
+
+#### Chrome安装插件 - FeHelper
+
+![Chrome安装插件 - FeHelper](C:\Users\admin\Desktop\系统笔记\img_js_高级\Chrome安装插件 - FeHelper.png)
+
+------
+
+#### AJAX发送请求
+
+![AJAX发送请求](C:\Users\admin\Desktop\系统笔记\img_js_高级\AJAX发送请求.png)
+
+------
+
+#### XMLHttpRequest的state（状态）
+
+![XMLHttpRequest的state（状态）](C:\Users\admin\Desktop\系统笔记\img_js_高级\XMLHttpRequest的state（状态）.png)
+
+------
+
+#### XMLHttpRequest其他事件监听
+
+![XMLHttpRequest其他事件监听](C:\Users\admin\Desktop\系统笔记\img_js_高级\XMLHttpRequest其他事件监听.png)
+
+------
+
+#### 响应数据和响应类型
+
+![响应数据和响应类型](C:\Users\admin\Desktop\系统笔记\img_js_高级\响应数据和响应类型.png)
+
+------
+
+#### HTTP响应的状态status
+
+![HTTP响应的状态status](C:\Users\admin\Desktop\系统笔记\img_js_高级\HTTP响应的状态status.png)
+
+------
+
+#### GET/POST请求传递参数
+
+![GETPOST请求传递参数](C:\Users\admin\Desktop\系统笔记\img_js_高级\GETPOST请求传递参数.png)
+
+------
+
+#### ajax网络请求封装
+
+![ajax网络请求封装](C:\Users\admin\Desktop\系统笔记\img_js_高级\ajax网络请求封装.png)
+
+------
+
+#### 延迟时间timeout和取消请求
+
+![延迟时间timeout和取消请求](C:\Users\admin\Desktop\系统笔记\img_js_高级\延迟时间timeout和取消请求.png)
+
+------
+
+#### 认识Fetch和Fetch API
+
+![认识Fetch和Fetch API](C:\Users\admin\Desktop\系统笔记\img_js_高级\认识Fetch和Fetch API.png)
+
+------
+
+#### Fetch数据的响应（Response）
+
+![Fetch数据的响应（Response）](C:\Users\admin\Desktop\系统笔记\img_js_高级\Fetch数据的响应（Response）.png)
+
+------
+
+#### Fetch网络请求的演练
+
+![Fetch网络请求的演练](C:\Users\admin\Desktop\系统笔记\img_js_高级\Fetch网络请求的演练.png)
+
+------
+
+#### Fetch POST请求
+
+![Fetch POST请求](C:\Users\admin\Desktop\系统笔记\img_js_高级\Fetch POST请求.png)
+
+------
+
+#### XMLHttpRequest文件上传
+
+![XMLHttpRequest文件上传](C:\Users\admin\Desktop\系统笔记\img_js_高级\XMLHttpRequest文件上传.png)
+
+------
+
+#### Fetch文件上传
+
+![Fetch文件上传](C:\Users\admin\Desktop\系统笔记\img_js_高级\Fetch文件上传.png)
+
+------
+
+### 防抖和节流
+
+#### 认识防抖和节流函数
+
+![认识防抖和节流函数](C:\Users\admin\Desktop\系统笔记\img_js_高级\认识防抖和节流函数.png)
+
+------
+
+#### 认识防抖debounce函数
+
+![认识防抖debounce函数](C:\Users\admin\Desktop\系统笔记\img_js_高级\认识防抖debounce函数.png)
+
+------
+
+#### 防抖函数的案例
+
+![防抖函数的案例](C:\Users\admin\Desktop\系统笔记\img_js_高级\防抖函数的案例.png)
+
+------
+
+#### 认识节流throttle函数
+
+![认识节流throttle函数](C:\Users\admin\Desktop\系统笔记\img_js_高级\认识节流throttle函数.png)
+
+------
+
+#### 节流函数的应用场景
+
+![节流函数的应用场景](C:\Users\admin\Desktop\系统笔记\img_js_高级\节流函数的应用场景.png)
+
+------
+
+#### 生活中的例子：防抖和节流
+
+![生活中的例子：防抖和节流](C:\Users\admin\Desktop\系统笔记\img_js_高级\生活中的例子：防抖和节流.png)
+
+------
+
+#### 案例准备
+
+![案例准备](C:\Users\admin\Desktop\系统笔记\img_js_高级\案例准备.png)
+
+------
+
+#### Underscore库的介绍
+
+- https://underscorejs.org/
+
+![Underscore库的介绍](C:\Users\admin\Desktop\系统笔记\img_js_高级\Underscore库的介绍.png)
+
+------
+
+#### Underscore实现防抖和节流
+
+![Underscore实现防抖和节流](C:\Users\admin\Desktop\系统笔记\img_js_高级\Underscore实现防抖和节流.png)
+
+------
+
+#### 自定义防抖和节流函数
+
+![自定义防抖和节流函数](C:\Users\admin\Desktop\系统笔记\img_js_高级\自定义防抖和节流函数.png)
+
+------
+
+#### 自定义深拷贝函数
+
+![自定义深拷贝函数](C:\Users\admin\Desktop\系统笔记\img_js_高级\自定义深拷贝函数.png)
+
+------
+
+#### 自定义事件总线
+
+![自定义事件总线](C:\Users\admin\Desktop\系统笔记\img_js_高级\自定义事件总线.png)
 
 ------
 
