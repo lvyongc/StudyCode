@@ -5156,11 +5156,54 @@ const sessionCache = new Cache(false);
 
 #### 规则 – 转义字符串
 
+```js
+      // 定义正则: 对.转义
+      const re = /\./gi;
+      const message = "abc.why";
+      const results = message.match(re);
+
+      // 特殊: /
+      // const re2 = /\//
+
+      // 获取到很多的文件名
+      // jsx -> js文件
+      const fileNames = [
+        "abc.html",
+        "Home.jsx",
+        "index.html",
+        "index.js",
+        "util.js",
+        "format.js",
+      ];
+      // 获取所有的js的文件名(webpack)
+      // x?: 是0个或者1个x，x可有可无
+      const jsfileRe = /\.jsx?$/;
+      // 1.for循环做法
+      const newFileNames1 = [];
+      for (const filename of fileNames) {
+        if (jsfileRe.test(filename)) {
+          newFileNames1.push(filename);
+        }
+      }
+
+      // 2.filter高阶函数
+      const newFileNames = fileNames.filter((filename) =>
+        jsfileRe.test(filename)
+      );
+```
+
 ![规则 – 转义字符串](C:\Users\admin\Desktop\系统笔记\img_js_高级\规则 – 转义字符串.png)
 
 ------
 
 #### 集合（Sets）和范围（Ranges）
+
+```js
+// 1开头第二位3-9任意，数字，后面9位结尾；前面2+后9=11
+/^1[3-9]\d{9}$/
+// 排除0-9
+[^0-9]
+```
 
 ![集合（Sets）和范围（Ranges）](C:\Users\admin\Desktop\系统笔记\img_js_高级\集合（Sets）和范围（Ranges）.png)
 
@@ -5168,11 +5211,43 @@ const sessionCache = new Cache(false);
 
 #### 量词（Quantifiers）
 
+```js
+    // 1.量词的使用
+    const re = /a{3,5}/ig // 3-5个a
+    const message = "fdaaa2fdaaaaaasf42532fdaagjkljlaaaaf"
+
+    const results = message.match(re)
+    console.log(results)
+
+    // 2.常见的符号: +/?/*
+    // + 是 {1,}
+    // ? 是 {0,1}
+    // * 是 {0,}
+
+    // 3.案例: 字符串的html元素, 匹配出来里面所有的标签
+    const htmlElement = "<div><span>哈哈哈</span><h2>我是标题</h2></div>"
+    const tagRe = /<\/?[a-z][a-z0-9]*>/ig
+```
+
 ![量词（Quantifiers）](C:\Users\admin\Desktop\系统笔记\img_js_高级\量词（Quantifiers）.png)
 
 ------
 
 #### 贪婪（ Greedy）和惰性（ lazy）模式
+
+```js
+    // 1.贪婪模式/惰性模式
+    const message = "我最喜欢的两本书: 《黄金时代》和《沉默的大多数》、《一只特立独行的猪》"
+
+    // 默认.+ 采用贪婪模式,到最后一个》；.+ 任意字符1个或多个;
+    const nameRe = /《.+》/ig
+    
+    // const result1 = message.match(nameRe)
+    // console.log(result1)
+
+    // .+? 使用惰性模式，到第一个》；
+    const nameRe1 = /《.+?》/ig
+```
 
 ![贪婪（ Greedy）和惰性（ lazy）模式](C:\Users\admin\Desktop\系统笔记\img_js_高级\贪婪（ Greedy）和惰性（ lazy）模式.png)
 
@@ -5180,11 +5255,32 @@ const sessionCache = new Cache(false);
 
 #### 捕获组（capturing group）
 
+```js
+    // 1.捕获组
+    const message = "我最喜欢的两本书: 《黄金时代》和《沉默的大多数》、《一只特立独行的猪》"
+
+    // 使用惰性模式
+    const nameRe = /(?:《)(?<why>.+?)(?:》)/ig // 3组
+    const iterator = message.matchAll(nameRe)
+    for (const item of iterator) {
+      console.log(item)
+    }
+
+    // 2.将捕获组作为整体
+    const info = "dfabcabcfabcdfdabcabcabcljll;jk;j"
+    const abcRe = /(abc){2,}/ig // abc两个以上
+    console.log(info.match(abcRe))
+```
+
 ![捕获组（capturing group）](C:\Users\admin\Desktop\系统笔记\img_js_高级\捕获组（capturing group）.png)
 
 ------
 
 #### 捕获组的补充
+
+```js
+/(abc|cba|nba){2,}/ig
+```
 
 ![捕获组的补充](C:\Users\admin\Desktop\系统笔记\img_js_高级\捕获组的补充.png)
 
@@ -5192,11 +5288,140 @@ const sessionCache = new Cache(false);
 
 #### 案例练习 – 歌词解析
 
+```js
+    /*
+      currentTime: 2000
+
+      [00:00.000] 作词 : 许嵩 -> { time: 0, content: "作词 : 许嵩" }
+      [00:01.000] 作曲 : 许嵩 -> { time: 1000, content: "作曲 : 许嵩" }
+    */
+    const lyricString = "[00:00.000] 作词 : 许嵩\n[00:01.000] 作曲 : 许嵩\n[00:02.000] 编曲 : 许嵩\n[00:22.240]天空好想下雨\n[00:24.380]我好想住你隔壁\n"
+
+    // 一. 没有封装
+    // 1.根据\n切割字符串
+    const lyricLineStrings = lyricString.split("\n")
+    // console.log(lyricLineStrings)
+
+    // 2.针对每一行歌词进行解析
+    // [01:22.550]夏末秋凉里带一点温热有换季的颜色；几位数字；分组
+    const timeRe = /\[(\d{2}):(\d{2})\.(\d{2,3})\]/i
+    const lyricInfos = []
+    for (const lineString of lyricLineStrings) {
+      // 1.获取时间
+      const result = lineString.match(timeRe)
+      // continue 过掉这次循环，继续下次循环
+      if (!result) continue
+      const minuteTime = result[1] * 60 * 1000 // 分钟转毫秒
+      const secondTime = result[2] * 1000
+      // *1 保证为数字，不为字符串
+      const mSecondTime = result[3].length === 3? result[3]*1: result[3]*10
+      const time = minuteTime + secondTime + mSecondTime
+      
+      // 2.获取内容
+      const content = lineString.replace(timeRe, "").trim()
+
+      // 3.将对象放到数组中；{ time, content } =》 { time:time, content:content };对象增强写法
+      lyricInfos.push({ time, content })
+    }
+    console.log(lyricInfos)
+    
+    // 二.封装工具: 解析歌词
+    const lyricInfos1 = parseLyric(lyricString)
+    console.log(lyricInfos1)
+```
+
+```js
+function parseLyric(lyricString) {
+  // 1.根据\n切割字符串
+  const lyricLineStrings = lyricString.split("\n")
+  // console.log(lyricLineStrings)
+
+  // 2.针对每一行歌词进行解析
+  // [01:22.550]夏末秋凉里带一点温热有换季的颜色
+  const timeRe
+  const lyricInfos = = /\[(\d{2}):(\d{2})\.(\d{2,3})\]/i []
+  for (const lineString of lyricLineStrings) {
+    // 1.获取时间
+    const result = lineString.match(timeRe)
+    if (!result) continue
+    const minuteTime = result[1] * 60 * 1000
+    const secondTime = result[2] * 1000
+    const mSecondTime = result[3].length === 3? result[3]*1: result[3]*10
+    const time = minuteTime + secondTime + mSecondTime
+    
+    // 2.获取内容
+    const content = lineString.replace(timeRe, "").trim()
+
+    // 3.将对象放到数组中
+    lyricInfos.push({ time, content })
+  }
+
+  return lyricInfos
+}
+```
+
 ![柯里化案例练习](C:\Users\admin\Desktop\系统笔记\img_js_高级\柯里化案例练习.png)
 
 ------
 
 #### 案例练习 – 时间格式化
+
+```js
+    // timestamp: 1659252290626
+    // yyyy/MM/dd hh:mm:ss
+    // yyyy*MM*dd hh-mm-ss
+    // dayjs/moment
+    function formatTime(timestamp, fmtString) {
+      // 1.将时间戳转成Date
+      const date = new Date(timestamp)
+
+      // // 2.获取到值
+      // const year = date.getFullYear()
+      // const month = date.getMonth() + 1
+      // const day = date.getDate()
+      // const hour = date.getHours()
+      // const minute = date.getMinutes()
+      // const second = date.getSeconds()
+
+      // // 3.创建正则
+      // const yearRe = /y+/
+      // const monthRe = /M+/
+
+      // 2.正则和值匹配起来
+      const dateO = {
+        "y+": date.getFullYear(),
+        "M+": date.getMonth() + 1,
+        "d+": date.getDate(),
+        "h+": date.getHours(),
+        "m+": date.getMinutes(),
+        "s+": date.getSeconds()
+      }
+
+      // 3.for循环进行替换
+      for (const key in dateO) {
+        const keyRe = new RegExp(key)
+        // fmtString是否有 key 
+        if (keyRe.test(fmtString)) {
+          // 个位补位；padStart方法，2位，如果不足2位，在前面补0
+          const value = (dateO[key] + "").padStart(2, "0")
+          // "y+" 替换成 "y+"匹配的值
+          fmtString = fmtString.replace(keyRe, value)
+        }
+      }
+
+      return fmtString
+    }
+
+    // 某一个商品上架时间, 活动的结束时间
+    const timeEl = document.querySelector(".time")
+    const productJSON = {
+      name: "iPhone",
+      newPrice: 4999,
+      oldPrice: 5999,
+      endTime: 1659252301637
+    }
+    timeEl.textContent = formatTime(productJSON.endTime, "hh:mm:ss yyyy*MM*dd")
+```
 
 ![案例练习 – 时间格式化](C:\Users\admin\Desktop\系统笔记\img_js_高级\案例练习 – 时间格式化.png)
 
@@ -5377,6 +5602,20 @@ const sessionCache = new Cache(false);
 ------
 
 #### 认识防抖debounce函数
+
+```js
+  <script src="https://cdn.jsdelivr.net/npm/underscore@1.13.4/underscore-umd-min.js"></script>
+  <script>
+
+    // 1.获取input元素
+    const inputEl = document.querySelector("input")
+    
+    // 2.防抖处理代码
+    let counter = 1
+    inputEl.oninput = _.debounce(function() {
+      console.log(`发送网络请求${counter++}:`, this.value)
+    }, 10000)
+```
 
 ![认识防抖debounce函数](C:\Users\admin\Desktop\系统笔记\img_js_高级\认识防抖debounce函数.png)
 
