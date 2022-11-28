@@ -5441,13 +5441,17 @@ function parseLyric(lyricString) {
 
 ------
 
-#### 网页的渲染过程 – 前后端分离
+#### 网页的渲染过程 – 前后端分离(客户端渲染)
 
 ![网页的渲染过程 – 前后端分离](C:\Users\admin\Desktop\系统笔记\img_js_高级\网页的渲染过程 – 前后端分离.png)
 
 ------
 
 #### 什么是HTTP？
+
+- http 是客户端和服务器沟通的协议，通过这个协议向服务器发送请求
+  - 请求对象
+  - 响应对象
 
 ![什么是HTTP？](C:\Users\admin\Desktop\系统笔记\img_js_高级\什么是HTTP？.png)
 
@@ -5461,6 +5465,8 @@ function parseLyric(lyricString) {
 
 #### HTTP的组成
 
+请求-图片
+
 ![HTTP的组成](C:\Users\admin\Desktop\系统笔记\img_js_高级\HTTP的组成.png)
 
 ------
@@ -5472,6 +5478,8 @@ function parseLyric(lyricString) {
 ------
 
 #### HTTP的请求方式
+
+- HEAD，用于下载文件，返回响应头，从响应头拿到文件大小，根据大小来决定是否下载文件
 
 ![HTTP的请求方式](C:\Users\admin\Desktop\系统笔记\img_js_高级\HTTP的请求方式.png)
 
@@ -5485,6 +5493,19 @@ function parseLyric(lyricString) {
 
 #### HTTP Request Header（二）
 
+- HTTP是应用层协议，基于TCP协议，向服务端发送请求
+- TCP是中间人，需要经过 握手、挥手
+
+TCP-图片
+
+TCP2-图片
+
+- accept-encoding
+  - 通过 webpack 把JS文件压缩成gz文件，上传到服务器，把压缩的文件放入服务器
+  - 请求，拿到压缩文件，不用解压，浏览器会自动解压执行
+
+压缩JS-图片
+
 ![HTTP Request Header（二）](C:\Users\admin\Desktop\系统笔记\img_js_高级\HTTP Request Header（二）.png)
 
 ------
@@ -5492,6 +5513,8 @@ function parseLyric(lyricString) {
 #### HTTP Response响应状态码
 
 - https://developer.mozilla.org/zh-CN/docs/web/http/status
+
+错误码-图片
 
 ![HTTP Response响应状态码](C:\Users\admin\Desktop\系统笔记\img_js_高级\HTTP Response响应状态码.png)
 
@@ -5511,6 +5534,37 @@ function parseLyric(lyricString) {
 
 #### AJAX发送请求
 
+- 使用类XHR创建AJAX对象
+
+```js
+    // 1.创建XMLHttpRequest对象
+    const xhr = new XMLHttpRequest()
+
+    // 2.监听状态的改变(宏任务)
+    // 监听四种状态
+    xhr.onreadystatechange = function() {
+      // 1.如果状态不是DONE状态，不是4，没有下载完成, 直接返回
+      if (xhr.readyState !== XMLHttpRequest.DONE) return
+
+      // 2.确定拿到了数据
+      console.log(xhr.response)
+    }
+    // 6.onload监听数据加载完成
+    xhr.onload = function() {
+      console.log("onload")
+    }
+
+    // 3.配置请求open;异步请求
+    xhr.open("get", "http://123.207.32.32:8000/home/multidata")
+// 5.实际开发中要使用异步请求, 异步请求不会阻塞js代码继续执行；第三个参数false是同步请求
+    xhr.open("get", "http://123.207.32.32:8000/home/multidata", false)
+
+    // 4.发送请求(浏览器帮助发送对应请求)
+    xhr.send()
+	    // 5.同步必须等到有结果后, 才会继续执行
+    console.log(xhr.response)
+```
+
 ![AJAX发送请求](C:\Users\admin\Desktop\系统笔记\img_js_高级\AJAX发送请求.png)
 
 ------
@@ -5529,11 +5583,74 @@ function parseLyric(lyricString) {
 
 #### 响应数据和响应类型
 
+```js
+    // 1.
+    const xhr = new XMLHttpRequest()
+
+    // 2.onload监听数据加载完成
+    xhr.onload = function() {
+      // const resJSON = JSON.parse(xhr.response)
+      console.log(xhr.response)
+      console.log(xhr.responseText)
+      console.log(xhr.responseXML)
+    }
+
+    // 3.告知xhr获取到的数据的类型
+    xhr.responseType = "json"
+    xhr.responseType = "text"
+    xhr.responseType = "xml"
+
+    // 4.配置网络请求
+    // 4.1.json类型的接口
+    xhr.open("get", "http://123.207.32.32:8000/home/multidata")
+    // 4.2.json类型的接口
+    // xhr.open("get", "http://123.207.32.32:1888/01_basic/hello_json")
+    // 4.3.text类型的接口
+    // xhr.open("get", "http://123.207.32.32:1888/01_basic/hello_text")
+    // 4.4.xml类型的接口
+    // xhr.open("get", "http://123.207.32.32:1888/01_basic/hello_xml")
+
+    // 5.发送网络请求
+    xhr.send()
+```
+
 ![响应数据和响应类型](C:\Users\admin\Desktop\系统笔记\img_js_高级\响应数据和响应类型.png)
 
 ------
 
 #### HTTP响应的状态status
+
+```js
+      // 1.创建对象
+      const xhr = new XMLHttpRequest();
+
+      // 2.监听结果
+      xhr.onload = function () {
+        console.log(xhr.status, xhr.statusText);
+        // 根据http的状态码判断是否请求成功
+        if (xhr.status >= 200 && xhr.status < 300) {
+          // 成功
+          console.log(xhr.response);
+        } else {
+          // 错误
+          console.log(xhr.status, xhr.statusText);
+        }
+      };
+
+      xhr.onerror = function () {
+        console.log("onerror", xhr.status, xhr.statusText);
+      };
+
+      // 3.设置响应类型
+      xhr.responseType = "json";
+
+      // 4.配置网络请求
+      // xhr.open("get", "http://123.207.32.32:8000/abc/cba/aaa")
+      xhr.open("get", "http://123.207.32.32:8000/home/multidata");
+
+      // 5.发送网络请求
+      xhr.send();
+```
 
 ![HTTP响应的状态status](C:\Users\admin\Desktop\系统笔记\img_js_高级\HTTP响应的状态status.png)
 
@@ -5627,11 +5744,648 @@ function parseLyric(lyricString) {
 
 ------
 
+#### 手写防抖
+
+- 基本实现;用于面试
+
+```js
+    function myDebounce(fn, delay) {
+      // 1.用于记录上一次事件触发的timer
+      let timer = null
+
+      // 2.触发事件时执行的函数
+      const _debounce = () => {
+        // 2.1.如果有再次触发(更多次触发)事件, 那么取消上一次的事件
+        if (timer) clearTimeout(timer)
+
+        // 2.2.延迟去执行对应的fn函数(传入的回调函数)
+        timer = setTimeout(() => {
+          fn()
+          timer = null // 执行过函数之后, 将timer重新置null
+        }, delay);
+      }
+
+      // 返回一个新的函数
+      return _debounce
+    }
+```
+
+- 绑定this和参数
+
+```js
+      function hydebounce(fn, delay) {
+        // 1.用于记录上一次事件触发的timer
+        let timer = null;
+
+        // 2.触发事件时执行的函数;_debounce是被inputEl调用，this是inputEl
+          // ...args 多个参数
+        const _debounce = function (...args) {
+          // 箭头函数本身没有this，这里拿不到
+          // 2.1.如果有再次触发(更多次触发)事件, 那么取消上一次的事件
+          if (timer) clearTimeout(timer);
+
+          // 2.2.延迟去执行对应的fn函数(传入的回调函数)
+          timer = setTimeout(() => {
+            // 箭头this = 上层 this = inputEl
+            fn.apply(this, args);
+            timer = null; // 执行过函数之后, 将timer重新置null
+          }, delay);
+        };
+
+        // 返回一个新的函数
+        return _debounce;
+      }
+    </script>
+
+    <script>
+      // 获取input元素
+      const inputEl = document.querySelector("input");
+
+      // 自己实现的防抖
+      let counter = 1;
+      // event 是 input的event
+      inputEl.oninput = hydebounce(function (event) {
+        console.log(`发送网络请求${counter++}:`, this, event);
+      }, 1000);
+```
+
+- 取消功能
+  - 在输入后，执行前，离开页面；这时这个请求应该取消
+
+```js
+    function hydebounce(fn, delay) {
+      // 1.用于记录上一次事件触发的timer
+      let timer = null
+
+      // 2.触发事件时执行的函数
+      const _debounce = function(...args) {
+        // 2.1.如果有再次触发(更多次触发)事件, 那么取消上一次的事件
+        if (timer) clearTimeout(timer)
+
+        // 2.2.延迟去执行对应的fn函数(传入的回调函数)
+        timer = setTimeout(() => {
+          fn.apply(this, args)
+          timer = null // 执行过函数之后, 将timer重新置null
+        }, delay);
+      }
+
+      // 3.给_debounce绑定一个取消的函数
+      _debounce.cancel = function() {
+        if (timer) clearTimeout(timer)
+      }
+
+      // 返回一个新的函数
+      return _debounce
+    }
+  </script>
+
+  <script>
+    // 1.获取input元素
+    const inputEl = document.querySelector("input")
+    const cancelBtn = document.querySelector(".cancel")
+
+    // 3.自己实现的防抖
+    let counter = 1
+    const debounceFn = hydebounce(function(event) {
+      console.log(`发送网络请求${counter++}:`, this, event)
+    }, 5000)
+    inputEl.oninput = debounceFn
+
+    // 4.实现取消的功能
+    cancelBtn.onclick = function() {
+      debounceFn.cancel()
+    }
+```
+
+- 立即执行
+  - 每次搜索的第一次立即执行，第二次延迟，完成后，依此循环：下次搜索的第一次立即执行，第二次延迟
+
+```js
+    // 原则: 一个函数进行做一件事情, 一个变量也用于记录一种状态
+
+    function hydebounce(fn, delay, immediate = false) {
+      // 1.用于记录上一次事件触发的timer
+      let timer = null
+      let isInvoke = false
+
+      // 2.触发事件时执行的函数
+      const _debounce = function(...args) {
+        // 2.1.如果有再次触发(更多次触发)事件, 那么取消上一次的事件
+        if (timer) clearTimeout(timer)
+
+        // 第一次操作是不需要延迟
+        if (immediate && !isInvoke) {
+          fn.apply(this, args)
+          // 第二次延迟
+          isInvoke = true
+          return
+        }
+
+        // 2.2.延迟去执行对应的fn函数(传入的回调函数)
+        timer = setTimeout(() => {
+          fn.apply(this, args)
+          timer = null // 执行过函数之后, 将timer重新置null
+          // 完成后，恢复初始化
+          isInvoke = false
+        }, delay);
+      }
+
+      // 3.给_debounce绑定一个取消的函数
+      _debounce.cancel = function() {
+        if (timer) clearTimeout(timer)
+        // 完成后，恢复初始化
+        timer = null
+        isInvoke = false
+      }
+
+      // 返回一个新的函数
+      return _debounce
+    }
+```
+
+- 获取返回值
+
+```js
+    // 原则: 一个函数进行做一件事情, 一个变量也用于记录一种状态
+
+    function hydebounce(fn, delay, immediate = false, resultCallback) {
+      // 1.用于记录上一次事件触发的timer
+      let timer = null
+      let isInvoke = false
+
+      // 2.触发事件时执行的函数
+      const _debounce = function(...args) {
+        return new Promise((resolve, reject) => {
+          try {
+            // 2.1.如果有再次触发(更多次触发)事件, 那么取消上一次的事件
+            if (timer) clearTimeout(timer)
+
+            // 第一次操作是不需要延迟
+            let res = undefined
+            if (immediate && !isInvoke) {
+              // res 是fn return 的值
+              res = fn.apply(this, args)
+              if (resultCallback) resultCallback(res)
+              // 成功返回结果，自动调用then拿到结果
+              resolve(res)
+              isInvoke = true
+              return
+            }
+
+            // 2.2.延迟去执行对应的fn函数(传入的回调函数)
+            timer = setTimeout(() => {
+              res = fn.apply(this, args)
+              if (resultCallback) resultCallback(res)
+              resolve(res)
+              timer = null // 执行过函数之后, 将timer重新置null
+              isInvoke = false
+            }, delay);
+          } catch (error) {
+            reject(error)
+          }
+        })
+      }
+
+      // 3.给_debounce绑定一个取消的函数
+      _debounce.cancel = function() {
+        if (timer) clearTimeout(timer)
+        timer = null
+        isInvoke = false
+      }
+
+      // 返回一个新的函数
+      return _debounce
+    }
+  </script>
+
+  <script>
+    // 1.获取input元素
+    const inputEl = document.querySelector("input")
+    const cancelBtn = document.querySelector(".cancel")
+
+    // 2.手动绑定函数和执行
+    const myDebounceFn = hydebounce(function(name, age, height) {
+      console.log("----------", name, age, height)
+      return "coderwhy 哈哈哈哈"
+    }, 1000, false)
+    // myDebounceFn给_debounce 传参
+    myDebounceFn("why", 18, 1.88).then(res => {
+      console.log("拿到执行结果:", res)
+    })
+```
+
+- 封装
+
+```js
+    const inputEl = document.querySelector("input")
+    const cancelBtn = document.querySelector(".cancel")
+
+    let counter = 1
+    const debounceFn = hydebounce(function(event) {
+      console.log(`发送网络请求${counter++}:`, this, event)
+    }, 1000)
+    inputEl.oninput = debounceFn
+
+    // 4.实现取消的功能
+    cancelBtn.onclick = function() {
+      debounceFn.cancel()
+    }
+```
+
+```js
+
+// 原则: 一个函数进行做一件事情, 一个变量也用于记录一种状态
+function hydebounce(fn, delay, immediate = false, resultCallback) {
+  // 1.用于记录上一次事件触发的timer
+  let timer = null
+  let isInvoke = false
+
+  // 2.触发事件时执行的函数
+  const _debounce = function(...args) {
+    return new Promise((resolve, reject) => {
+      try {
+        // 2.1.如果有再次触发(更多次触发)事件, 那么取消上一次的事件
+        if (timer) clearTimeout(timer)
+
+        // 第一次操作是不需要延迟
+        let res = undefined
+        if (immediate && !isInvoke) {
+          res = fn.apply(this, args)
+          if (resultCallback) resultCallback(res)
+          resolve(res)
+          isInvoke = true
+          return
+        }
+
+        // 2.2.延迟去执行对应的fn函数(传入的回调函数)
+        timer = setTimeout(() => {
+          res = fn.apply(this, args)
+          if (resultCallback) resultCallback(res)
+          resolve(res)
+          timer = null // 执行过函数之后, 将timer重新置null
+          isInvoke = false
+        }, delay);
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
+
+  // 3.给_debounce绑定一个取消的函数
+  _debounce.cancel = function() {
+    if (timer) clearTimeout(timer)
+    timer = null
+    isInvoke = false
+  }
+
+  // 返回一个新的函数
+  return _debounce
+}
+```
+
 #### 认识节流throttle函数
+
+- 防抖是只执行最后一次
+  - 输入框，只要不停止输入就一直不执行，直到停止输入后的多少S执行一次
+  - 用于输入框，在停止输入后多少S执行一次
+- 节流是在每个固定的时间执行一次
+  - 输入框，一直在输入中，也会按照固定的时间每2S执行一次
+  - 用于频繁点击按钮，1S内点击10次，执行一次
+  - 第一次一定会立即执行
 
 ![认识节流throttle函数](C:\Users\admin\Desktop\系统笔记\img_js_高级\认识节流throttle函数.png)
 
 ------
+
+#### 实现节流-面试
+
+```js
+    function hythrottle(fn, interval) {
+      let startTime = 0
+
+      const _throttle = function() {
+        const nowTime = new Date().getTime()// 时间戳 213324134
+        const waitTime = interval - (nowTime - startTime) // 1000 - (213324134 - 0) = - 213323134，完成第一次立即执行；第一次执行后 starttime = 213324134，nowTime = 213324135，1000-（213324134 - 213324135）= 999，不执行，startTime 还是213324135，一直等到 nowTime - startTime >= interval, waitTime <= 0 , 才会再次执行
+        // startTime是上次的时间，nowTime是这次的时间，间隔要大于等于interval，才执行
+        if (waitTime <= 0) {
+          fn()
+          startTime = nowTime
+        }
+      }
+
+      return _throttle
+    }
+// 使用
+    let counter = 1
+    inputEl.oninput = hythrottle(function() {
+      console.log(`发送网络请求${counter++}:`, this.value)
+    }, 1000)
+```
+
+#### 节流绑定this和参数
+
+- 如何传递的参数？
+
+```js
+    <script>
+      function hythrottle(fn, interval) {
+        let startTime = 0;
+        // 接收参数
+        const _throttle = function (...args) {
+          // console.log(args);
+          const nowTime = new Date().getTime();
+          const waitTime = interval - (nowTime - startTime);
+          if (waitTime <= 0) {
+            // 这个 this 是调用者 inputEl，fn函数的this就指向了 inputEl
+            // 因为fn函数内部使用到了event，所以在调用的时候就需要传入event
+            // 把接收的参数再传给fn
+            fn.apply(this, args);
+            // 函数独立调用，函数内的this是window
+            // fn();
+            startTime = nowTime;
+          }
+        };
+
+        return _throttle;
+      }
+    </script>
+
+    <script>
+      // 1.获取input元素
+      const inputEl = document.querySelector("input");
+      // 2.自己实现的节流函数
+      let counter = 1;
+      // hythrottle(fn,1000) 这个函数,在inputEl点击之前就已经执行了，hythrottle()直接调用执行的，hythrottle返回一个函数_throttle，就是在点击之前代码变成了：inputEl.oninput = _throttle，所以 input的默认事件参数event，只能传给 _throttle； inputEl.oninput = _throttle(event);所以在 _throttle 函数内部，接收了参数
+      inputEl.oninput = hythrottle(function (event) {
+        // this.value是input的value；event是input事件的默认参数event
+        // 默认this的函数独立调用，函数内的this是window
+        console.log(`发送网络请求${counter++}:`, this, this.value, event);
+      }, 1000);
+      // 在点击之前
+      inputEl.oninput = hythrottle(fn, 1000);
+      // input事件的默认参数event，可以直接传递给函数 _throttle；所以要在 _throttle 函数内部 进行接收参数
+      inputEl.oninput = _throttle(event);
+      // 多个参数，使用 ...arg 把全部参数传进去，在这里 ...arg 就是 event
+      inputEl.oninput = function (...arg) {
+        console.log(arg, "111");
+      };
+      // 点击，执行的是 _throttle(event)
+```
+
+#### 控制第一次的立即执行
+
+```js
+    // leading 默认立即执行
+    function hythrottle(fn, interval, leading = true) {
+      let startTime = 0
+
+      const _throttle = function(...args) {
+        // 1.获取当前时间
+        const nowTime = new Date().getTime()
+
+        // 对立即执行进行控制；startTime === 0 是第一次；在第一次的时候并且leading=false不是立即执行的时候，startTime = nowTime，waitTime > 0 ，就不会执行
+        if (!leading && startTime === 0) {
+          startTime = nowTime
+        }
+
+        // 2.计算需要等待的时间执行函数
+        const waitTime = interval - (nowTime - startTime)
+        if (waitTime <= 0) {
+          fn.apply(this, args)
+          startTime = nowTime
+        }
+      }
+
+      return _throttle
+    }
+    // 使用
+        let counter = 1
+    inputEl.oninput = hythrottle(function(event) {
+      console.log(`发送网络请求${counter++}:`, this.value, event)
+    }, 1000,false)
+```
+
+#### 了解-控制最后一次是否执行，默认不会执行
+
+```js
+      // { leading = true, trailing = false } = {}；是解构并赋值默认参数，第一个{}是解构并赋值默认参数，第二个{}是接收参数，接收 { trailing: true }，如果有值，就使用接收的值，没有值使用默认设置的值
+      function hythrottle(
+        fn,
+        interval,
+        { leading = true, trailing = false } = {}
+      ) {
+        let startTime = 0;
+        let timer = null;
+
+        const _throttle = function (...args) {
+          // 1.获取当前时间
+          const nowTime = new Date().getTime();
+
+          // 对立即执行进行控制
+          if (!leading && startTime === 0) {
+            startTime = nowTime;
+          }
+
+          // 2.计算需要等待的时间执行函数
+          const waitTime = interval - (nowTime - startTime);
+          if (waitTime <= 0) {
+            // 如果刚好在3S又点击了，取消之前在2S的时候添加的定时器，这样在3S的时候只会执行一个
+            if (timer) clearTimeout(timer);
+            fn.apply(this, args);
+            startTime = nowTime;
+            // 这里清空，下面的定时器才会开启
+            timer = null;
+            return;
+          }
+
+          // 3.判断是否需要执行尾部;这里的 waitTime 是多久之后执行最后一次；假如原本是 每3S执行一次，一直点击按钮在最后一个3S执行之后，继续点击按钮，在下一个3S没有到达3S的时候，比如在2S的时候又点击了，这时 因为不到3S，waitTime > 0 ，不会执行，也就是默认的尾部不执行，现在实现执行，需要先拿到剩余时间，把3S 减去 从上次3S执行完的时间 到 点击时的时间，就是 剩余多少时间才满足 3S 去执行，这个剩余时间就是 waitTime，把 waitTime给定时器，定时器去执行尾部，这个3S固定时间现在是，点击之前的时间 加上 剩余时间 waitTime，就等于3S，waitTime = 0，完成尾部执行，完成最后一次按照 固定的3S执行一次
+          // 如果没有定时器，在开启定时器；否则会每次都开启新的定时器
+          // A:在满足 waitTime <= 0 的最后一次执行完成后，就开启定时器，准备尾部执行，如果又满足 waitTime <= 0，就清除定时器，然后再次开启定时器，并不是只在：B:一直点击按钮在最后一个3S执行之后，继续点击按钮，在下一个3S没有到达3S的时候，开启定时器；B是属于A的
+          if (trailing && !timer) {
+            timer = setTimeout(() => {
+              // console.log("执行timer")
+              // 执行最后一次
+              fn.apply(this, args);
+              // 重置时间为这次最新时间，setTimeout执行完的时间；nowTime 是上次点击时获取的最新时间，在时间线上，上次的值在前面，值小，这次最新时间在后面，值大；startTime 值小，导致 (nowTime - startTime) 变大，  interval - (nowTime - startTime) 变 小，小到 <=0执行，就会导致执行，出现多余的错误执行
+              startTime = new Date().getTime();
+              // 定时器执行，清空
+              timer = null;
+            }, waitTime);
+          }
+        };
+
+        return _throttle;
+      }
+      // 使用
+            let counter = 1;
+      inputEl.oninput = hythrottle(
+        function (event) {
+          console.log(`发送网络请求${counter++}:`, this.value, event);
+        },
+        3000,
+        { trailing: true }
+      );
+```
+
+#### 获取返回值
+
+- 通过 promise 获取返回值
+- 有尾部执行功能，才有取消功能
+
+```js
+      function hythrottle(
+        fn,
+        interval,
+        { leading = true, trailing = false } = {}
+      ) {
+        let startTime = 0;
+        let timer = null;
+
+        const _throttle = function (...args) {
+          return new Promise((resolve, reject) => {
+            try {
+              // 1.获取当前时间
+              const nowTime = new Date().getTime();
+
+              // 对立即执行进行控制
+              if (!leading && startTime === 0) {
+                startTime = nowTime;
+              }
+
+              // 2.计算需要等待的时间执行函数
+              const waitTime = interval - (nowTime - startTime);
+              if (waitTime <= 0) {
+                // console.log("执行操作fn")
+                if (timer) clearTimeout(timer);
+                // res：fn 执行的返回值
+                const res = fn.apply(this, args);
+                resolve(res);
+                startTime = nowTime;
+                timer = null;
+                return;
+              }
+
+              // 3.判断是否需要执行尾部
+              if (trailing && !timer) {
+                timer = setTimeout(() => {
+                  // console.log("执行timer")
+                  const res = fn.apply(this, args);
+                  resolve(res);
+                  startTime = new Date().getTime();
+                  timer = null;
+                }, waitTime);
+              }
+            } catch (error) {
+              reject(error);
+            }
+          });
+        };
+        // 取消
+        _throttle.cancel = function () {
+          if (timer) clearTimeout(timer);
+          startTime = 0;
+          timer = null;
+        };
+
+        return _throttle;
+      }
+      // 使用
+            let counter = 1;
+
+      const throttleFn = hythrottle(
+        function (event) {
+          console.log(`发送网络请求${counter++}:`, this.value, event);
+          return "throttle return value";
+        },
+        3000,
+        { trailing: true }
+      );
+
+      throttleFn("aaaa").then((res) => {
+        // 返回值
+        console.log("res:", res); // "throttle return value";
+      });
+
+      // 取消
+      cancelBtn.onclick = function () {
+        throttleFn.cancel();
+      };
+```
+
+#### 封装 throttleFn
+
+```js
+function hythrottle(fn, interval, { leading = true, trailing = false } = {}) {
+  let startTime = 0
+  let timer = null
+
+  const _throttle = function(...args) {
+    return new Promise((resolve, reject) => {
+      try {
+         // 1.获取当前时间
+        const nowTime = new Date().getTime()
+
+        // 对立即执行进行控制
+        if (!leading && startTime === 0) {
+          startTime = nowTime
+        }
+
+        // 2.计算需要等待的时间执行函数
+        const waitTime = interval - (nowTime - startTime)
+        if (waitTime <= 0) {
+          // console.log("执行操作fn")
+          if (timer) clearTimeout(timer)
+          const res = fn.apply(this, args)
+          resolve(res)
+          startTime = nowTime
+          timer = null
+          return
+        } 
+
+        // 3.判断是否需要执行尾部
+        if (trailing && !timer) {
+          timer = setTimeout(() => {
+            // console.log("执行timer")
+            const res = fn.apply(this, args)
+            resolve(res)
+            startTime = new Date().getTime()
+            timer = null
+          }, waitTime);
+        }
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
+
+  _throttle.cancel = function() {
+    if (timer) clearTimeout(timer)
+    startTime = 0
+    timer = null
+  }
+
+  return _throttle
+}
+```
+
+- 使用
+
+```js
+      // A-渲染的数据
+      var a = "";
+      // 自己实现的节流函数
+      let counter = 1;
+      const throttleFn = hythrottle(function (event) {
+        console.log(`发送网络请求${counter++}:`, this.value, event);
+        // 这是请求返回的数据
+        const b = +a + +1;
+        // B-每次请求改变渲染的数据
+        a = b;
+        console.log(a);
+      }, 3000);
+      // 使用
+      inputEl.oninput = throttleFn;
+```
 
 #### 节流函数的应用场景
 
@@ -5673,11 +6427,395 @@ function parseLyric(lyricString) {
 
 #### 自定义深拷贝函数
 
+##### 浅拷贝、深拷贝
+
+```js
+    const info = {
+      name: "why",
+      age: 18,
+      friend: {
+        name: "kobe"
+      },
+      running: function() {},
+      [Symbol()]: "abc",
+    }
+    info.obj = info
+
+    // 1.操作一: 引用赋值
+    const obj1 = info
+
+    // 2.操作二: 浅拷贝
+    const obj2 = { ...info }
+    obj2.name = "james"
+    // 深层会被改变，深层依然是引用赋值；只有第一层是新创建的对象
+    obj2.friend.name = "james"
+    console.log(info.friend.name)
+    // 将 info 拷贝到 空对象 {}，生成 obj3
+    const obj3 = Object.assign({}, info)
+    obj3.name = "curry"
+    // 同上，会被改变
+    obj3.friend.name = "curry"
+    console.log(info.friend.name)
+
+    // 3.操作三: 深拷贝
+    // 3.1.JSON方法，JSON.parse会创建新对象，深拷贝会忽略函数，不会拷贝函数，不能拷贝源对象的属性 info.obj
+    const obj4 = JSON.parse(JSON.stringify(info))
+    // 深拷贝，不会被改变
+    info.friend.name = "curry"
+    console.log(obj4.friend.name)
+    console.log(obj4)
+```
+
+##### 实现深拷贝
+
+```js
+    // 深拷贝函数
+    function deepCopy(originValue) {
+      // 1.如果是原始类型, 直接返回
+      if (!isObject(originValue)) {
+        return originValue
+      }
+
+      // 2.如果是对象类型, 才需要创建对象
+      const newObj = {}
+      for (const key in originValue) {
+        newObj[key] = deepCopy(originValue[key]);
+      }
+      return newObj
+    }
+
+    const info = {
+      name: "why",
+      age: 18,
+      friend: {
+        name: "kobe",
+        address: {
+          name: "洛杉矶",
+          detail: "斯坦普斯中心"
+        }
+      }
+    }
+
+    const newObj = deepCopy(info)
+```
+
+##### 判断是否为对象
+
+- typeof 不能区分null，得到object
+
+```js
+// 需求: 判断一个标识符是否是对象类型
+function isObject(value) {
+  // null,object,function,array
+  // null -> object
+  // function -> function -> true
+  // object/array -> object -> true
+  const valueType = typeof value
+ // 返回 true\false
+  return (value !== null) && ( valueType === "object" || valueType === "function" )
+}
+const name = "why"
+const age = 18
+const foo = {}
+const bar = function() {}
+const arr = []
+
+console.log(isObject(null)) // false
+console.log(isObject(bar)) // true
+console.log(isObject(name)) // false
+console.log(isObject(foo)) // true
+console.log(isObject(arr)) // true
+```
+
+##### 深拷贝-数组拷贝
+
+```js
+      // 深拷贝函数
+      function deepCopy(originValue) {
+        // 1.如果是原始类型, 直接返回
+        if (!isObject(originValue)) {
+          return originValue;
+        }
+
+        // 2.如果是对象类型, 才需要创建对象；数组创建数组
+        const newObj = Array.isArray(originValue) ? [] : {};
+        for (const key in originValue) {
+          newObj[key] = deepCopy(originValue[key]);
+        }
+        return newObj;
+      }
+
+      const books = [
+        {
+          name: "黄金时代",
+          price: 28,
+          desc: { intro: "这本书不错", info: "这本书讲了一个很有意思的故事" },
+        },
+        { name: "你不知道JavaScript", price: 99 },
+      ];
+      const newBooks = deepCopy(books);
+```
+
+##### 深拷贝-其他类型
+
+- new Set 得到的数组，支持for of，不支持for in
+- originValue instanceof Set ，判断 originValue 是否为 Set
+- 函数类型，直接返回
+
+```js
+      // 深拷贝函数
+      function deepCopy(originValue) {
+        // 0.如果值是Symbol的类型
+        if (typeof originValue === "symbol") {
+          return Symbol(originValue.description);
+        }
+
+        // 1.如果是原始类型, 直接返回
+        if (!isObject(originValue)) {
+          return originValue;
+        }
+
+        // 2.如果是set类型
+        if (originValue instanceof Set) {
+          const newSet = new Set();
+          // Set 支持for of，不支持for in
+          for (const setItem of originValue) {
+            // add(deepCopy(setItem)) 是为了添加对象；直接add 只加数组
+            newSet.add(deepCopy(setItem));
+          }
+          return newSet;
+        }
+
+        // 3.如果是函数function类型, 不需要进行深拷贝
+        if (typeof originValue === "function") {
+          return originValue;
+        }
+
+        // 2.如果是对象类型, 才需要创建对象
+        const newObj = Array.isArray(originValue) ? [] : {};
+        // 遍历普通的key
+        for (const key in originValue) {
+          newObj[key] = deepCopy(originValue[key]);
+        }
+        // 单独遍历symbol；key为symbol；通过getOwnPropertySymbols从originValue里面拿到是symbol的key
+        const symbolKeys = Object.getOwnPropertySymbols(originValue);
+        for (const symbolKey of symbolKeys) {
+          newObj[Symbol(symbolKey.description)] = deepCopy(
+            originValue[symbolKey]
+          );
+        }
+
+        return newObj;
+      }
+
+      const set = new Set(["abc", "cba", "nba"]);
+      const s1 = Symbol("s1");
+      const s2 = Symbol("s2");
+      const info = {
+        name: "why",
+        age: 18,
+        friend: {
+          name: "kobe",
+          address: {
+            name: "洛杉矶",
+            detail: "斯坦普斯中心",
+          },
+        },
+
+        // 1.特殊类型: Set
+        set: set,
+
+        // 2.特性类型: function
+        running: function () {
+          console.log("running~");
+        },
+
+        // 3.值的特殊类型: Symbol
+        symbolKey: Symbol("abc"),
+
+        // 4.key是symbol时
+        [s1]: "aaaa",
+        [s2]: "bbbb",
+      };
+
+      const newObj = deepCopy(info);
+      console.log(newObj);
+```
+
+##### 深拷贝-循环引用
+
+- 当对象的key = 对象本身时，会无限递归 
+- `info.self = info `
+
+```js
+    // 深拷贝函数
+    // D 创建的map为弱引用且只是用于临时保存对象的，用完之后要解除内存占有，所以使用弱引用，map = new WeakMap()，避免占有内存；放入参数中生成map，只在第一次创建，递归时传入，保证多次递归使用的是同个map
+    function deepCopy(originValue, map = new WeakMap()) {
+      // const map = new WeakMap() 这里每次递归都会创建map
+
+      // 0.如果值是Symbol的类型
+      if (typeof originValue === "symbol") {
+        return Symbol(originValue.description)
+      }
+
+      // 1.如果是原始类型, 直接返回
+      if (!isObject(originValue)) {
+        return originValue
+      }
+
+      // 2.如果是set类型
+      if (originValue instanceof Set) {
+        const newSet = new Set()
+        for (const setItem of originValue) {
+          newSet.add(deepCopy(setItem))
+        }
+        return newSet
+      }
+
+      // 3.如果是函数function类型, 不需要进行深拷贝
+      if (typeof originValue === "function") {
+        return originValue
+      }
+      // C 创建对象之前，先判断这次要创建的对象，之前有没有创建过
+      if (map.get(originValue)) {
+        // 有就直接使用之前的，避免再次创建，无限递归
+        return map.get(originValue)
+      }
+      // 4.如果是对象类型, 才需要创建对象
+      
+      const newObj = Array.isArray(originValue) ? []: {}
+      // B 每次创建对象的时候加入map
+      map.set(originValue, newObj)
+      // 遍历普通的key
+      for (const key in originValue) {
+        newObj[key] = deepCopy(originValue[key], map);
+      }
+      // 单独遍历symbol
+      const symbolKeys = Object.getOwnPropertySymbols(originValue)
+      for (const symbolKey of symbolKeys) {
+        newObj[Symbol(symbolKey.description)] = deepCopy(originValue[symbolKey], map)
+      }
+
+      return newObj
+    }
+
+    const info = {
+      name: "why",
+      age: 18,
+      friend: {
+        name: "kobe",
+        address: {
+          name: "洛杉矶",
+          detail: "斯坦普斯中心"
+        }
+      },
+      // self: info
+    }
+    // A 不处理会无限递归，处理 - BCD
+    info.self = info
+
+    let newObj = deepCopy(info)
+    console.log(newObj)
+    console.log(newObj.self === newObj)
+```
+
 ![自定义深拷贝函数](C:\Users\admin\Desktop\系统笔记\img_js_高级\自定义深拷贝函数.png)
 
 ------
 
 #### 自定义事件总线
+
+- 跨文件、跨组件，通信
+- 数据改变都是通过事件，所以监听事件，改变数据
+- 创建一个事件总线，在A通过事件总线发送事件，在B通过事件总线监听事件，并传入回调函数，通过回调函数
+
+事件总线-图片
+
+```js
+    // 类EventBus -> 事件总线对象；创建事件总线
+    class HYEventBus {
+      constructor() {
+        // 用于保存 监听事件的 回调函数
+        this.eventMap = {}
+      }
+      // 监听事件，监听什么事件A，监听后执行的回调函数B
+      // 回调函数需要保存，因为在 监听事件时，需要获取到并执行
+      // 在on时，把eventName, eventFn作为key、value加入eventMap中
+      on(eventName, eventFn) {
+        // 默认 this.eventMap 是空，没有key,eventFn作为value，也没有，会报错
+        let eventFns = this.eventMap[eventName]
+        if (!eventFns) {
+          // this.eventMap 空，就创建数组作为 value，用于存放回调函数
+          // this.eventMap =  {eventName1:[eventFn1,eventFn2],eventName2:[eventFn3,eventFn4],eventName3:[eventFn5,eventFn6]}
+          eventFns = [] // value
+          this.eventMap[eventName] = eventFns // object.key = value
+        }
+        // 把每个回调 eventFn（value） 加入到 保存回调的数组 eventFns 中，一个eventName（key）可能有多个eventFn（value）
+        eventFns.push(eventFn)
+      }
+      // 取消事件监听，取消 哪个 eventName 对应的 哪个 eventFn
+      off(eventName, eventFn) {
+        // 所有的回调
+        let eventFns = this.eventMap[eventName]
+        if (!eventFns) return
+        for (let i = 0; i < eventFns.length; i++) {
+          const fn = eventFns[i]
+          // 找到所有的回调 eventFns 中 和 要取消的 eventFn ，相同的，取消掉，把要取消的从 eventFns 中删除即可
+          if (fn === eventFn) {
+            eventFns.splice(i, 1)
+            break
+          }
+        }
+
+        // 如果eventFns已经清空了，value 为空，把 key 删除
+        if (eventFns.length === 0) {
+          delete this.eventMap[eventName]
+        }
+      }
+      // 发送事件，发送什么事件A，参数；发送事件后，在这里需要获取，监听事件中的事件名A的所有回调函数B，并执行
+      // 在emit时，在eventMap中查找eventName对应的value，并全部执行
+      // ...args 发送事件时，接收的参数，用于传递给监听事件中 eventName 对应的回调函数 的参数
+      emit(eventName, ...args) {
+        // 根据 eventName 在  this.eventMap 中 取值 eventFns，eventFns 存放的是所有的回调函数
+        let eventFns = this.eventMap[eventName]
+        if (!eventFns) return
+        // 执行所有的回调函数，并传入参数
+        eventFns.forEach(fn => {
+          fn(...args)
+        })
+      }
+    }
+
+
+    // 使用过程
+    const eventBus = new HYEventBus()
+
+    // 监听 navclick 事件，传入回调，以及回调要接收的参数
+    eventBus.on("navclick", (name, age, height) => {
+      console.log("navclick listener 01", name, age, height)
+    })
+    // 回调函数
+    const click =  () => {
+      console.log("navclick listener 02")
+    }
+    // 监听
+    eventBus.on("navclick", click)
+    // 取消监听
+    setTimeout(() => {
+      eventBus.off("navclick", click)
+    }, 5000);
+    // 监听
+    eventBus.on("asideclick", () => {
+      console.log("asideclick listener")
+    })
+
+
+    const navBtnEl = document.querySelector(".nav-btn")
+    navBtnEl.onclick = function() {
+      // 发送 navclick，并传入参数，参数传给，监听事件中 navclick 对应的回调函数
+      eventBus.emit("navclick", "why", 18, 1.88)
+    }
+```
 
 ![自定义事件总线](C:\Users\admin\Desktop\系统笔记\img_js_高级\自定义事件总线.png)
 
