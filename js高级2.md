@@ -5658,17 +5658,135 @@ TCP2-图片
 
 #### GET/POST请求传递参数
 
+```js
+    const formEl = document.querySelector(".info")
+    const sendBtn = document.querySelector(".send")
+    sendBtn.onclick = function() {
+      // 创建xhr对象
+      const xhr = new XMLHttpRequest()
+
+      // 监听数据响应
+      xhr.onload = function() {
+        console.log(xhr.response)//结果
+      }
+
+      // 配置请求
+      xhr.responseType = "json"
+
+      // 1.传递参数方式一: get -> query ；参数放入url中，可以被看到
+      xhr.open("get", "http://123.207.32.32:1888/02_param/get?name=why&age=18&address=广州市")
+
+      // 2.传递参数方式二: post -> urlencoded
+      xhr.open("post", "http://123.207.32.32:1888/02_param/posturl")
+      // 发送请求(请求体body)
+      xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded")// 设置传递参数的格式；setRequestHeader 设置请求头字段
+      xhr.send("name=why&age=18&address=广州市") // send 传参
+
+      // 3.传递参数方式三: post -> formdata
+      xhr.open("post", "http://123.207.32.32:1888/02_param/postform")
+      // formElement对象转成FormData对象
+      const formData = new FormData(formEl)
+      xhr.send(formData) // 传form表单
+
+      // 4.传递参数方式四: post -> json
+      xhr.open("post", "http://123.207.32.32:1888/02_param/postjson")
+      xhr.setRequestHeader("Content-type", "application/json")
+      xhr.send(JSON.stringify({name: "why", age: 18, height: 1.88}))
+    }
+```
+
 ![GETPOST请求传递参数](C:\Users\admin\Desktop\系统笔记\img_js_高级\GETPOST请求传递参数.png)
 
 ------
 
 #### ajax网络请求封装
 
+```js
+// 练习hyajax -> axios
+function hyajax({
+  url,
+  method = "get",
+  data = {},
+  timeout = 10000,
+  headers = {}, // token
+} = {}) {
+  // 1.创建对象
+  const xhr = new XMLHttpRequest()
+
+  // 2.创建Promise
+  const promise = new Promise((resolve, reject) => {
+
+    // 2.监听数据
+    xhr.onload = function() {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        resolve(xhr.response)
+      } else {
+        reject({ status: xhr.status, message: xhr.statusText })
+      }
+    }
+
+    // 3.设置类型
+    xhr.responseType = "json"
+    xhr.timeout = timeout
+
+    // 4.open方法
+    if (method.toUpperCase() === "GET") {
+      const queryStrings = []
+      for (const key in data) {
+        queryStrings.push(`${key}=${data[key]}`)
+      }
+      url = url + "?" + queryStrings.join("&")
+      xhr.open(method, url)
+      xhr.send()
+    } else {
+      xhr.open(method, url)
+      xhr.setRequestHeader("Content-type", "application/json")
+      xhr.send(JSON.stringify(data))
+    }
+  })
+
+  promise.xhr = xhr
+
+  return promise
+}
+// 使用
+    const promise = hyajax({
+      url: "http://123.207.32.32:1888/02_param/get",
+      data: {
+        username: "coderwhy",
+        password: "123456"
+      }
+    })
+
+    promise.then(res => {
+      console.log("res:", res)
+    }).catch(err => {
+      console.log("err:", err)
+    })
+```
+
 ![ajax网络请求封装](C:\Users\admin\Desktop\系统笔记\img_js_高级\ajax网络请求封装.png)
 
 ------
 
 #### 延迟时间timeout和取消请求
+
+- 通过 timeout 自动取消请求
+  - 不设置就是没有超时时间
+  - 一般10s
+- 手动设置取消请求
+
+```js
+    // 1-手动
+    xhr.onabort = function() {
+      console.log("请求被取消掉了")
+    }
+    // 2-timeout: 浏览器达到过期时间还没有获取到对应的结果时, 取消本次请求
+    xhr.timeout = 3000
+    xhr.ontimeout = function() {
+      console.log("timeout过期，取消请求后的操作")
+    }
+```
 
 ![延迟时间timeout和取消请求](C:\Users\admin\Desktop\系统笔记\img_js_高级\延迟时间timeout和取消请求.png)
 
@@ -5688,6 +5806,72 @@ TCP2-图片
 
 #### Fetch网络请求的演练
 
+```js
+    // 1.fetch发送get请求；直接使用fetch，它返回一个promise，then拿结果
+    // 1.1.未优化的代码
+    fetch("http://123.207.32.32:8000/home/multidata").then(res => {
+      // 1.获取到response
+      const response = res
+
+      // 2.获取具体的结果；json()代表是json格式，text就是text()
+      response.json().then(res => {
+        console.log("res:", res) // 结果
+      })
+    }).catch(err => {
+      console.log("err:", err)
+    })
+
+    // 1.2. 优化方式一:
+    fetch("http://123.207.32.32:8000/home/multidata").then(res => {
+      // 1.获取到response
+      const response = res
+      // 2.获取具体的结果
+      return response.json()
+    }).then(res => {
+      console.log("res:", res)
+    }).catch(err => {
+      console.log("err:", err)
+    })
+
+    // 1.3. 优化方式二:
+    async function getData() {
+      const response = await fetch("http://123.207.32.32:8000/home/multidata")
+      const res = await response.json()
+      console.log("res:", res)
+    }
+    getData()
+
+
+    // 2.post请求并且有参数
+    async function getData() {
+      const response = await fetch("http://123.207.32.32:1888/02_param/postjson", {
+        method: "post",
+        headers: {
+          "Content-type": "application/json"
+        },
+        body: JSON.stringify({
+          name: "why",
+          age: 18
+        })
+      })
+      
+      // const formData = new FormData()
+      // formData.append("name", "why")
+      // formData.append("age", 18)
+      // const response = await fetch("http://123.207.32.32:1888/02_param/postform", {
+      //   method: "post",
+      //   body: formData
+      // })
+
+      // 获取response状态
+      console.log(response.ok, response.status, response.statusText)
+
+      const res = await response.json()
+      console.log("res:", res)
+    }
+    getData()
+```
+
 ![Fetch网络请求的演练](C:\Users\admin\Desktop\系统笔记\img_js_高级\Fetch网络请求的演练.png)
 
 ------
@@ -5700,11 +5884,65 @@ TCP2-图片
 
 #### XMLHttpRequest文件上传
 
+- 可以监听文件上传进度
+
+```js
+const uploadBtn = document.querySelector(".upload")
+    uploadBtn.onclick = function() {
+      // 1.创建对象
+      const xhr = new XMLHttpRequest()
+
+      // 2.监听结果
+      xhr.onload = function() {
+        console.log(xhr.response)
+      }
+
+      xhr.onprogress = function(event) {
+        console.log(event)// 上传进度
+      }
+      
+
+      xhr.responseType = "json"
+      xhr.open("post", "http://123.207.32.32:1888/02_param/upload")
+
+      // 表单
+      const fileEl = document.querySelector(".file")
+      const file = fileEl.files[0] // 文件
+
+      const formData = new FormData()
+      formData.append("avatar", file) // 加入formData中
+
+      xhr.send(formData)
+    }
+```
+
 ![XMLHttpRequest文件上传](C:\Users\admin\Desktop\系统笔记\img_js_高级\XMLHttpRequest文件上传.png)
 
 ------
 
 #### Fetch文件上传
+
+- 不能监听文件上传进度
+
+```js
+    const uploadBtn = document.querySelector(".upload")
+    uploadBtn.onclick = async function() {
+      // 表单
+      const fileEl = document.querySelector(".file")
+      const file = fileEl.files[0]
+
+      const formData = new FormData()
+      formData.append("avatar", file)
+
+      // 发送fetch请求
+      const response = await fetch("http://123.207.32.32:1888/02_param/upload", {
+        method: "post",
+        body: formData
+      })
+      const res = await response.json()
+      console.log("res:", res)
+    }
+```
 
 ![Fetch文件上传](C:\Users\admin\Desktop\系统笔记\img_js_高级\Fetch文件上传.png)
 
