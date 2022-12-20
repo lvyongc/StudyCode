@@ -386,6 +386,8 @@ data: function() {
 #### template元素
 
 - template 不会被渲染出来
+- v-if
+- v-for
 
 ```js
 <!-- 如果div没有实际的意义, 那么可以使用template替换 -->
@@ -428,6 +430,8 @@ data: function() {
 - 有key
   - 会复用插入前的，而不是修改
   - 只会新建一个，无需修改其他
+  - 根据key找到之前的VNode进行复用;
+  - 没有VNode可以复用, 再创建新的VNode
 
 key的作用在虚拟DOM中diff算法-图片
 
@@ -537,6 +541,7 @@ key的作用在虚拟DOM中diff算法-图片
 - 在数据不发生变化时，计算属性是不需要重新计算的，只执行一次
 - 如果依赖的数据发生变化，在使用时，计算属性依然会重新进行计算
   - 依赖数据改变，重新计算，后面计算的时候，数据不变，无论调用多少次，都只执行一次
+  - 性能高
 - methods，调用几次就执行几次
 
 ```js
@@ -619,7 +624,7 @@ set设置值-图片
           console.log("info数据发生了变化:", newValue, oldValue)
           console.log(newValue.name, oldValue.name)
 
-          // 3.获取原生对象
+          // 3.Proxy 转 原生对象
           // console.log({ ...newValue }) 放入一个新对象
           console.log(Vue.toRaw(newValue)) // 原始对象
         }
@@ -665,7 +670,817 @@ set设置值-图片
 
 #### 侦听器watch的其他方式（二）
 
+#### 求和
 
+- splice 操作数组
 
+```js
+// 选中加class
+<tr
+              v-for="(item, index) in books"
+              :key="item.id"
+              @click="rowClick(index)"
+              :class="{ active: index === currentIndex }"
+>
+ rowClick(index) {
+            this.currentIndex = index;
+}
 
+<button @click="removeBook(index, item)">移除</button>       
+// 删除点击的
+removeBook(index, item) {
+            this.books.splice(index, 1);
+},
+// 求和             
+{
+    id: 5,
+    name: '《你不知道JavaScript》',
+    date: '2014-8',
+    price: 88.00,
+    count: 1
+  }        
+totalPrice() {
+          // 1.直接遍历books
+          let price = 0
+          for (const item of this.books) {
+            price += item.price * item.count
+          }
+          return price
+
+          // 2.reduce(自己决定)
+          // preValue 上次的值，初始0，item 是这次的
+          return this.books.reduce((preValue, item) => {
+            return preValue + item.price * item.count
+          }, 0)
+        }
+```
+
+### v-model
+
+手动双向绑定-图片
+
+```js
+    <!-- 1.手动的实现了双向绑定 -->
+    <input type="text" :value="message" @input="inputChange">
+
+    <!-- 2.v-model实现双向绑定 -->
+    <input type="text" v-model="message">
+        
+ inputChange(event) {
+          this.message = event.target.value
+ }
+```
+
+#### 基本使用
+
+#### v-model的原理
+
+#### 事实上v-model更加复杂
+
+#### v-model绑定textarea
+
+#### v-model绑定checkbox
+
+```js
+
+  <div id="app">
+    <!-- 1.checkbox单选框: 绑定到属性中的值是一个Boolean -->
+    <label for="agree">
+      <input id="agree" type="checkbox" v-model="isAgree"> 同意协议
+    </label>
+    <h2>单选框: {{isAgree}}</h2>
+    <hr>
+
+    <!-- 2.checkbox多选框: 绑定到属性中的值是一个Array -->
+    <!-- 注意: 多选框当中, 必须明确的绑定一个value值 -->
+    <!-- hobbies 是选中的值，值是 value 的值 -->
+    <div class="hobbies">
+      <h2>请选择你的爱好:</h2>
+      <label for="sing">
+        <input id="sing" type="checkbox" v-model="hobbies" value="sing"> 唱
+      </label>
+      <label for="jump">
+        <input id="jump" type="checkbox" v-model="hobbies" value="jump"> 跳
+      </label>
+      <label for="rap">
+        <input id="rap" type="checkbox" v-model="hobbies" value="rap"> rap
+      </label>
+      <label for="basketball">
+        <input id="basketball" type="checkbox" v-model="hobbies" value="basketball"> 篮球
+      </label>
+      <h2>爱好: {{hobbies}}</h2>
+    </div>
+  </div>
+```
+
+#### v-model绑定radio
+
+单选-图片
+
+#### v-model绑定select
+
+select-图片
+
+#### v-model的值绑定
+
+```js
+  <div id="app">
+    <!-- 1.select的值绑定；循环 -->
+    <select multiple size="3" v-model="fruits">
+      <option v-for="item in allFruits" 
+              :key="item.value" 
+              :value="item.value">
+        {{item.text}}
+      </option>
+    </select>
+    <h2>多选: {{fruits}}</h2>
+
+    <hr>
+
+    <!-- 2.checkbox的值绑定 -->
+    <div class="hobbies">
+      <h2>请选择你的爱好:</h2>
+      <template v-for="item in allHobbies" :key="item.value">
+        <label :for="item.value">
+          <input :id="item.value" type="checkbox" v-model="hobbies" :value="item.value"> {{item.text}}
+        </label>
+      </template>
+      <h2>爱好: {{hobbies}}</h2>
+    </div>
+  </div>
+  
+        data() {
+        return {
+          // 水果
+          allFruits: [
+            { value: "apple", text: "苹果" },
+            { value: "orange", text: "橘子" },
+            { value: "banana", text: "香蕉" },
+          ],
+          fruits: [],
+
+          // 爱好
+          allHobbies: [
+            { value: "sing", text: "唱" },
+            { value: "jump", text: "跳" },
+            { value: "rap", text: "rap" },
+            { value: "basketball", text: "篮球" }
+          ],
+          hobbies: []
+        }
+      }
+```
+
+#### v-model修饰符 - lazy
+
+```js
+      <!-- 1.lazy: 绑定change事件，失去焦点时，再修改值  -->
+      <input type="text" v-model.lazy="message" />
+      <h2>message: {{message}}</h2>
+
+      <hr />
+
+      <!-- 2.number: 自动将内容转换成数字 -->
+      <!-- type="text" 输入的默认是字符串 -->
+      <input type="text" v-model.number="counter" />
+      <h2>counter:{{counter}}-{{typeof counter}}</h2>
+      <!-- type="number" 只能输入数字 -->
+      <input type="number" v-model="counter2" />
+      <h2>counter2:{{counter2}}-{{typeof counter2}}</h2>
+
+      <hr />
+
+      <!-- 3.trim: 去除首尾的空格 -->
+      <input type="text" v-model.trim="content" />
+      <h2>content: {{content}}</h2>
+
+      <hr />
+
+      <!-- 4.使用多个修饰符 -->
+      <input type="text" v-model.lazy.trim="content" />
+      <h2>content: {{content}}</h2>
+```
+
+#### v-model修饰符 - number
+
+#### v-model修饰符 - trim
+
+#### v-mode组件上使用
+
+### 组件化开发
+
+- 组件树
+- 名字使用 短横岗 - 
+- 全局组件的特点: 
+  - 默认注册
+  - 一旦注册成功后, 可以在任意其他组件的template中使用 
+  - 即使没有使用到，也会被打包，增加体积
+  - app.component 
+- 局部组件
+  - 在使用的时候注册，不使用不注册不打包
+  - 在哪里使用，就在哪里注册
+  - components 
+
+```js
+main.js
+import { createApp } from 'vue'
+import App from './components/App.vue'
+// 引入
+import ProductItem from "./components/ProductItem.vue"
+
+const app = createApp(App)
+
+// 全局注册
+app.component("product-item", ProductItem)
+
+app.mount('#app')
+
+// 组件 a.vue
+<template>
+  <div class="product">
+    <h2>我是商品标题</h2>
+    <p>我是商品描述, 9.9秒杀</p>
+    <div>价格: {{price}}</div>
+  </div>
+</template>
+
+// 页面 b.vue
+<template>
+  <h2>{{title}}</h2>
+  <h2>当前计数: {{counter}}</h2>
+  <button @click="increment">+1</button>
+  <button @click="decrement">-1</button>
+//  局部 引入 注册 再 使用
+  <a><a/>
+  // 全局 直接使用
+  <product-item></product-item>
+</template>
+// 引入
+import a from './a.vue'
+export default {
+    // 注册
+  components: {
+      a
+  }
+｝
+```
+
+#### 人处理问题的方式
+
+#### 认识组件化开发
+
+#### 组件化开发
+
+#### Vue的组件化
+
+#### 注册组件的方式
+
+#### 注册全局组件
+
+#### 全局组件的逻辑
+
+#### 组件的名称
+
+#### 注册局部组件
+
+#### 布局组件注册代码
+
+#### Vue的开发模式
+
+#### 单文件的特点
+
+#### 如何支持SFC
+
+#### VSCode对SFC文件的支持
+
+### Vue CLI脚手架
+
+#### Vue CLI 安装和使用 
+
+- `vue -V` 查看安装的版本
+
+#### vue create 项目的过程
+
+#### 项目的目录结构
+
+#### Vue CLI的运行原理
+
+#### 配置路径别名
+
+```js
+const { defineConfig } = require('@vue/cli-service')
+module.exports = defineConfig({
+  transpileDependencies: true,
+  configureWebpack: {
+    resolve: {
+      // 配置路径别名
+      // @是已经配置好的路径别名: 对应的是src路径;是cli默认的
+      alias: {
+        "utils": "@/utils" 
+      }
+    }
+  }
+})
+```
+
+- jsconfig.json
+  - vscode 配置
+
+```js
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "esnext",
+    "baseUrl": "./",
+    "moduleResolution": "node",
+    "paths": {
+      // @
+      "@/*": [
+        "src/*"
+      ],
+      // 别名
+      "utils/*": [
+        "src/utils/*"
+      ]
+    },
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "scripthost"
+    ]
+  }
+}
+```
+
+- vue 版本
+  - main.js
+
+```js
+import { createApp } from 'vue' // 不支持template选项
+// import { createApp } from 'vue/dist/vue.esm-bundler' // compile代码
+import App from './App.vue' // vue-loader: template -> createVNode过程
+// createVNode VNode  VDOM  DOM
+import "./utils/abc/cba/nba/index"
+
+/**
+ * 1.jsconfig.json的演练
+ *   作用: 给VSCode来进行读取, VSCode在读取到其中的内容时, 给我们的代码更加友好的提示.
+ * 2.引入的vue的版本
+ *   默认vue版本: runtime, vue-loader完成template的编译过程
+ *   vue.esm-bundler: runtime + compile, 对template进行编译
+ * 
+ * 3.补充: 单文件Vue style是有自己的作用域
+ *   style -> scoped
+ * 4.补充: vite创建一个Vue项目
+ */
+
+// 元素 -> createVNode: vue中的源码来完成
+// compile的代码
+// const App = {
+//   template: `<h2>Hello Vue3 App</h2>`,
+//   data() {
+//     return {}
+//   }
+// }
+
+createApp(App).mount('#app')
+```
+
+#### vscode插件
+
+-  vue2  vetur
+-  vue3  volar
+
+#### 创建 vue 项目
+
+- cli 、vite
+
+创建项目-图片
+
+创建项目2-图片
+
+### 组件间通信 
+
+- 自定义组件 名 用 大驼峰
+
+#### 认识组件的嵌套 
+
+#### 组件的拆分 
+
+#### 组件的通信 
+
+#### 父子组件之间通信的方式
+
+#### 父组件传递给子组件 
+
+```js
+age: {
+        type: Number,
+        required: true,
+        default: 0
+      },
+      height: {
+        type: Number,
+        default: 2
+      },
+      // 重要的原则: 对象类型写默认值时, 需要编写default的函数, 函数返回默认值
+      friend: {
+        type: Object,
+        default() {
+          return { name: "james" }
+        }
+      },
+      hobbies: {
+        type: Array,
+        default: () => ["篮球", "rap", "唱跳"]
+      }
+```
+
+#### Props的数组用法 
+
+#### Props的对象用法 
+
+#### type的类型都可以是哪些
+
+#### 对象类型的其他写法
+
+#### Prop 的大小写命名
+
+#### 非Prop的Attribute 
+
+- 子组件没有接收的 prop 属性
+  - 包括 class、style、id属性等
+- 默认放在 子组件的 根元素标签上
+- 把所有 非Prop的Attribute 绑定到一个元素上
+  - $attrs
+  - ` <div class="others" v-bind="$attrs"></div> `
+- 把 其中一个 非Prop的Attribute 绑定到一个元素上
+  - ` <div class="others" v-bind="$attrs.one"></div> `
+- 不希望组件的根元素继承attribute，可以在组件中设置
+  -  inheritAttrs: false 
+
+```JS
+  export default {
+    inheritAttrs: false
+    props: {
+    }
+  }
+```
+
+#### 禁用Attribute继承和多根节点 
+
+#### 子组件传递给父组件 
+
+```js
+      // 子
+      btnClick(count) {
+        console.log("btnClick:", count)
+        // 让子组件发出去一个自定义事件
+        // 第一个参数自定义的事件名称
+        // 第二个参数是传递的参数
+        this.$emit("add", 100)
+      }
+      // 父；父接收的参数名，是自定义的；count
+	 <add-counter @add="addBtnClick"></add-counter>
+	 addBtnClick(count) {
+        this.counter += count
+      }
+```
+
+- 存放组件发出的事件
+
+```js
+	// 存放组件发出的事件，方便阅读
+    // emits数组语法,放发送的事件名
+    emits: ["add"]
+```
+
+#### 自定义事件的流程 
+
+#### 自定义事件的参数和验证（了解） 
+
+#### 组件间通信案例练习 
+
+案例1
+
+案例2
+
+### 插槽Slot/非父子通信 
+
+#### 认识插槽Slot 
+
+- 在使用 组件的时候，利用 插槽 传入 自定义内容
+
+插槽-图片
+
+插槽2-图片
+
+- 当父组件，没有传入内容时，使用 子组件 插槽的默认值
+
+插槽默认值-图片
+
+- 具名 插槽
+
+具名插槽-图片
+
+- 动态插槽名
+
+动态插槽名-图片
+
+- 作用域插槽
+  - 子组件把循环项，传递给父组件，父组件 再通过 插槽把循环性 插入 子组件的插槽；但是 以什么形式 展示，是父组件决定的
+  - 循环项，第一个 是 按钮，第二个是 超链接，第三个是 文字
+  - 把 子组件的数据，传递给 父组件的插槽，来使用
+
+作用域插槽-图片
+
+- 推荐-直接写 ，完整-简写-写法，避免 出错
+
+```js
+	 <template #default="props">
+        <a href="#">{{ props.item }}</a>
+      </template>
+```
+
+插槽写法-图片
+
+#### 如何使用插槽slot 
+
+#### 插槽的默认内容
+
+#### 多个插槽的效果
+
+#### 插槽的基本使用 
+
+#### 具名插槽的使用
+
+#### 动态插槽名 
+
+#### 具名插槽使用的时候缩写 
+
+#### 渲染作用域 
+
+#### 渲染作用域案例 
+
+#### 认识作用域插槽 
+
+#### 作用域插槽的案例 
+
+#### 独占默认插槽的缩写 
+
+#### 默认插槽和具名插槽混合
+
+#### 非父子组件的通信 
+
+### 全局事件总线mitt库 
+
+#### 使用事件总线工具 
+
+#### Mitt的事件取消 
+
+### Provide和Inject
+
+- 响应式 Provide 数据，使用 computed
+
+```js
+ // provide一般都是写成函数
+    provide() {
+      return {
+        name: "why",
+        age: 18,
+        message: computed(() => this.message) // 默认 有 return 返回
+      }
+    }
+```
+
+provide - 图片
+
+#### Provide和Inject基本使用 
+
+#### Provide和Inject函数的写法
+
+#### 处理响应式数据
+
+### 认识生命周期 
+
+#### 生命周期的流程 
+
+- 父组件的一个生命周期内，完成子组件的整个生命周期
+
+生命周期的历程-图片
+
+```js
+
+    // 1.组件被创建之前
+    beforeCreate() {
+      console.log("beforeCreate")
+    },
+    // 2.组件被创建完成
+    created() {
+      console.log("created")
+      console.log("1.发送网络请求, 请求数据")
+      console.log("2.监听eventbus事件")
+      console.log("3.监听watch数据")
+    },
+    // 3.组件template准备被挂载
+    beforeMount() {
+      console.log("beforeMount")
+    },
+    // 4.组件template被挂载: 虚拟DOM -> 真实DOM
+    mounted() {
+      console.log("mounted")
+      console.log("1.获取DOM")
+      console.log("2.使用DOM")
+    },
+    // 5.数据发生改变
+    // 5.1. 准备更新DOM
+    beforeUpdate() {
+      console.log("beforeUpdate")
+    },
+    // 5.2. 更新DOM
+    updated() {
+      console.log("updated")
+    },
+
+    // 6.卸载VNode -> DOM元素
+    // 6.1.卸载之前
+    beforeUnmount() {
+      console.log("beforeUnmount")
+    },
+    // 6.2.DOM元素被卸载完成
+    unmounted() {
+      console.log("unmounted")
+    }
+```
+
+#### $refs的使用 
+
+- 获取 组件、原生DOM元素
+
+```js
+    <h2 ref="title" class="title" :style="{ color: titleColor }">{{ message }}</h2>
+    <button ref="btn" @click="changeTitle">修改title</button>
+
+    <banner ref="banner"/>       
+// 1.不要主动的去获取DOM, 并且修改DOM内容
+        // this.message = "你好啊, 李银河!"
+        // this.titleColor = "blue"
+
+        // 2.获取h2/button元素
+        console.log(this.$refs.title)
+        console.log(this.$refs.btn)
+
+        // 3.获取banner组件: 组件实例
+        console.log(this.$refs.banner)
+        
+        // 3.1.在父组件中可以主动的调用子组件的对象方法
+        this.$refs.banner.bannerClick()
+
+        // 3.2.获取banner组件实例, 获取banner中的元素
+        console.log(this.$refs.banner.$el)
+
+        // 3.3.如果banner template是多个根, 拿到的是第一个node节点
+        // 注意: 开发中不推荐一个组件的template中有多个根元素
+        // console.log(this.$refs.banner.$el.nextElementSibling)
+
+        // 4.组件实例还有两个属性(了解):
+        console.log(this.$parent) // 获取父组件
+        console.log(this.$root) // 获取根组件 
+```
+
+#### $parent和 
+
+#### $root
+
+#### 切换组件案例 
+
+#### v-if显示不同的组件 
+
+#### 动态组件的实现 
+
+#### 动态组件的传值
+
+```js
+<template>
+  <div class="app">
+    <div class="tabs">
+      <template v-for="(item, index) in tabs" :key="item">
+        <button :class="{ active: currentTab === item }" 
+                @click="itemClick(item)">
+          {{ item }}
+        </button>
+      </template>
+    </div>
+    <div class="view">
+      <!-- 1.第一种做法: v-if进行判断逻辑, 决定要显示哪一个组件 -->
+      <!-- <template v-if="currentIndex === 0">
+        <home></home>
+      </template>
+      <template v-else-if="currentIndex === 1">
+        <about></about>
+      </template>
+      <template v-else-if="currentIndex === 2">
+        <category></category>
+      </template> -->
+
+      <!-- 2.第二种做法: 动态组件 component -->
+      <!-- is中的组件需要来自两个地方: 1.全局注册的组件 2.局部注册的组件 -->
+      <!-- <component :is="tabs[currentIndex]"></component> -->
+      <!-- currentTab 是组件名，name age 是参数 传递给 currentTab 组件，homeClick 是监听 currentTab 组件发送的事件 -->
+      <component name="why" 
+                 :age="18"
+                 @homeClick="homeClick"
+                 :is="currentTab">
+      </component>
+    </div>
+  </div>
+</template>
+
+<script>
+  import Home from './views/Home.vue'
+  import About from './views/About.vue'
+  import Category from './views/Category.vue'
+
+  export default {
+    components: {
+      Home,
+      About,
+      Category
+    },
+    data() {
+      return {
+        tabs: ["home", "about", "category"],
+        // currentIndex: 0
+        currentTab: "home" // 默认 加载 home组件
+      }
+    },
+    methods: {
+      itemClick(tab) { // 点击改变 加载的组件
+        this.currentTab = tab
+      },
+      homeClick(payload) { // 监听子组件的回调函数和参数
+        console.log("homeClick:", payload)
+      }
+    }
+  }
+</script>
+```
+
+#### 认识keep-alive
+
+缓存组件-图片
+
+#### keep-alive属性
+
+#### 缓存组件的生命周期 
+
+#### Webpack的代码分包
+
+```js
+// import函数可以让webpack对导入文件进行分包处理
+// import 异步导入，返回 promise
+import("./utils/math").then(res => {
+  res.sum(20, 30) // sum 文件中的函数
+})
+```
+
+#### Vue中实现异步组件
+
+- 单独打包一个组件为一个文件，在使用到的时候，再下载使用
+- 默认是把所有组件打包到一个文件中，体积大，增加首屏渲染时间
+
+```js
+  import { defineAsyncComponent } from 'vue'  
+// defineAsyncComponent 生成 异步组件，函数参数是 import函数返回的 promise；AsyncCategory是一个异步组件
+  // 异步组件在 webpack打包的时候，会单独打包到一个文件中
+  const AsyncCategory = defineAsyncComponent(() => import("./views/Category.vue"))
+  
+    components: {
+      // 名字：值
+      Category: AsyncCategory
+    }
+```
+
+#### 异步组件的写法二（了解） 
+
+### 组件的v-model
+
+组件model-图片
+
+组件model自定义-图片
+
+#### 组件v-model的实现 
+
+#### 绑定多个属性
+
+### 认识Mixin 
+
+#### Mixin的基本使用 
+
+#### Mixin的合并规则 
+
+#### 全局混入Mixin
+
+- 每个组件，在 created生命周期时，都执行 打印代码
 
