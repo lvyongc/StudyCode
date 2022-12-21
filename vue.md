@@ -1060,6 +1060,10 @@ createApp(App).mount('#app')
 
 创建项目2-图片
 
+### 掌握程度
+
+程度-图片
+
 ### 组件间通信 
 
 - 自定义组件 名 用 大驼峰
@@ -1484,3 +1488,534 @@ import("./utils/math").then(res => {
 
 - 每个组件，在 created生命周期时，都执行 打印代码
 
+### Composition API 
+
+- 代码逻辑，由分散到集中
+- 利于 维护、复用
+
+optionsAPI到CompositionAPI转变-图片
+
+#### Options API的弊端 
+
+#### 大组件的逻辑分散 
+
+#### 认识Composition API
+
+#### setup函数
+
+- 在 setup 函数 中 编写 Composition API 
+- setup 中 没有 this
+- template 中用到的数据，必须在 setup中 return
+  - 通过setup的返回值来替代 data 选项
+- setup 中的响应式数据，需要手动 定义
+  - ref 
+  - reactive 
+  - 默认定义的数据，都不是响应式数据
+
+setup-图片
+
+#### setup定义数据
+
+```js
+<!-- 默认情况下在template中使用ref时, vue会自动对其进行解包(取出其中value) -->    
+<!-- 使用的时候不需要写.value -->
+    <h2>当前计数: {{ counter }}</h2>
+    <h2>当前计数: {{ info.counter }}</h2>
+    <!-- 这样,修改，不需要写 value -->
+    <button @click="counter++">+1</button>
+    <!-- 这样，修改的时候需要写.value -->
+    <button @click="info.counter.value++">+1</button>
+    
+// 引入响应式 函数
+  import { reactive, ref } from 'vue'
+  export default {
+    setup() {
+      // 1.定义普通的数据: 可以正常的被使用
+      // 缺点: 数据不是响应式的
+      let message = "Hello World"
+
+      // 2.定义响应式数据
+      // 2.1.reactive函数: 定义复杂类型的数据，对象或者数组类型
+      const account = reactive({
+        username: "hei",
+        password: "123456"
+      })
+      function changeAccount() {
+        account.username = "ha"
+      }
+
+      // 2.2.ref函数: 定义简单类型的数据(也可以定义复杂类型的数据)
+      // 定义响应式数据；定义一个响应式数据 counter，值 为 0
+      const counter = ref(0)
+      function increment() {
+        // 通过· value 访问 值，改变值
+        counter.value++
+      }
+
+      // 3.ref是浅层解包
+      const info = {
+        counter
+        // counter:counter
+      }
+      // 必须返回，才能在 template中，使用
+      return {
+        message,
+        changeMessage,
+        account,
+        changeAccount,
+        counter,
+        increment,
+        info
+      }
+    }
+  }
+```
+
+#### reactive & ref 场景
+
+```js
+    <form>
+      账号: <input type="text" v-model="account.username">
+      密码: <input type="password" v-model="account.password">
+    </form>
+
+  import { onMounted, reactive, ref } from 'vue'
+    setup() {
+      // 定义响应式数据: reactive/ref
+      // 强调: ref也可以定义复杂的数据
+      const info = ref({})
+      console.log(info.value)
+
+      // 1.reactive的应用场景
+      // 1.1.条件一: reactive应用于本地的数据
+      // 1.2.条件二: 多个数据之间是有关系/联系(聚合的数据, 组织在一起会有特定的作用)
+      const account = reactive({
+        username: "coderwhy", // 账号、密码，是一起的，是一组数据；多个数据放在一起，方便使用
+        password: "1234567"
+      })
+
+      // 2.ref的应用场景: 其他的场景基本都用ref(computed)
+      // 2.1.定义本地的一些简单数据
+      const message = ref("Hello World")
+      const counter = ref(0)
+      const name = ref("why")
+      const age = ref(18)
+
+      // 2.定义从网络中获取的数据也是使用ref
+      const musics = ref([]) ;// 定义响应式数据 musics 为值为空数组
+      onMounted(() => {
+        const serverMusics = ["海阔天空", "小苹果", "野狼"]
+        // 通过 value 改变 值
+        musics.value = serverMusics
+      })
+
+      return {
+        account,
+        username,
+        password,
+        name,
+        age
+      }
+    }
+```
+
+#### setup函数的参数
+
+#### setup函数的返回值 
+
+#### Reactive API 
+
+#### Ref API 
+
+#### Ref自动解包
+
+#### 认识readonly
+
+- 传入给其他地方（组件）的这个响应式对象希 
+
+  望在另外一个地方（组件）被使用，但是不能被修改
+
+##### 单项数据流
+
+- 父组件传递给子组件的数据，只能用，不能修改
+- 需要 发送事件到父组件，让父组件去修改
+- 原因
+  - 多个子组件公用父组件的一个数据
+  - 其中一个子组件修改了父组件的数据，不方便找到，是哪个子组件修改了数据；如果通过发送事件来改变，可以很快找到是哪个子组件
+  - setup 的参数 context的 emit 发送事件
+
+```js
+    setup(props, context) {
+      function showInfobtnClick() {
+        context.emit("changeInfoName", "kobe")
+      }
+      return {
+        showInfobtnClick
+      }
+    }
+```
+
+#### readonly的使用 
+
+- roInfo 不能修改，但是可以修改 info，从而 改变 roInfo
+
+```js
+  import { reactive, readonly } from 'vue'
+     const info = reactive({
+        name: "why",
+        age: 18,
+        height: 1.88
+      })
+      
+      // 使用readOnly包裹info
+      const roInfo = readonly(info)
+      function changeRoInfoName(payload) {
+        info.name = payload
+      }
+```
+
+#### readonly的应用
+
+#### Reactive判断的API 
+
+#### toRefs 
+
+- 对reactive返回的对象进行解构获取值，解构的值，不再是响应式的
+- toRefs的函数，可以将reactive返回的对象中的属性都转成ref
+
+#### toRef 
+
+- 只希望转换 reactive对象中的 一个属性为ref, 那么可以使用toRef的方法 
+
+#### ref其他的API 
+
+- unref ，如果是 ref，返回 ref的值，如果不是ref，返回本身
+- shallowRef ٱ 第一层后的不是响应式
+  - 如果深层也要响应式，通过 triggerRef ٱ手动 触发 info的所有 响应式
+
+#### setup不可以使用this 
+
+- setup 函数，没有绑定 this
+
+#### 之前关于this的描述问题
+
+#### 如何发现官方文档的错误 
+
+#### computed 
+
+- 返回 一个ref
+
+```js
+import { reactive, computed, ref } from 'vue'
+
+const fullname = computed(() => {
+      return names.firstName + " " + names.lastName
+})
+      // 完整写法
+      const fullname = computed({
+        set: function(newValue) {
+          const tempNames = newValue.split(" ")
+          names.firstName = tempNames[0]
+          names.lastName = tempNames[1]
+        },
+        get: function() {
+          return names.firstName + " " + names.lastName
+        }
+      })
+      
+      // 修改 computed 
+     function setFullname() {
+        fullname.value = "123"
+      }
+	// computed
+      const score = ref(89)
+      const scoreLevel = computed(() => {
+        return score.value >= 60 ? "及格": "不及格"
+      })
+```
+
+#### setup中使用ref 
+
+- ref 获取 组件、元素
+
+组件ref-图片
+
+#### 生命周期钩子 
+
+```js
+    import { onMounted, onUpdated, onUnmounted } from 'vue'
+    setup() {
+      // 在执行setup函数的过程中, 你需要注册别的生命周期函数
+      onMounted(() => {
+        console.log("onmounted")
+      })
+    }
+```
+
+#### Provide函数 
+
+```js
+  import { provide, ref } from 'vue'
+  setup() {
+      const name = ref("why")
+
+      provide("name", name) // 响应式数据
+      provide("age", 18) // 普通数据
+
+      return {
+        name
+      }
+    }
+    
+   // 子组件
+     import { inject } from 'vue'
+    setup() {
+      const name = inject("name")
+      const age = inject("age")
+      const height = inject("height", 1.88) // 第二个值，是默认值 1.88
+
+      return {
+        name,
+        age,
+        height
+      }
+    }
+```
+
+#### Inject函数 
+
+#### 数据的响应式 
+
+#### 侦听数据的变化 
+
+#### Watch的使用 
+
+```js
+
+  import { reactive, ref, watch } from 'vue'
+
+  export default {
+    setup() {
+      // 1.定义数据
+      const message = ref("Hello World")
+      const info = reactive({
+        name: "why",
+        age: 18,
+        friend: {
+          name: "kobe"
+        }
+      })
+
+      // 2.侦听数据的变化
+      watch(message, (newValue, oldValue) => {
+        console.log(newValue, oldValue) // false
+      })
+      watch(info, (newValue, oldValue) => {
+        console.log(newValue, oldValue)
+        console.log(newValue === oldValue) // true
+      }, {
+        immediate: true // 开始就执行一次，即时 监听的数据，没有发生改变
+        // reactive 对象，是默认 深度
+      })
+
+      // 3.监听 reactive数据变化后, 获取普通对象
+      // 函数 返回 解构的 reactive，解构后就变成了普通对象 ，() => ({ ...info })
+      watch(() => ({ ...info }), (newValue, oldValue) => {
+        console.log(newValue, oldValue)
+      }, {
+        immediate: true,
+        deep: true // 深度 监听，解构的 reactive deep 默认 是 false
+      })
+
+      return {
+        message,
+        info
+      }
+    }
+  }
+```
+
+#### 侦听多个数据源 
+
+#### watch的选项 
+
+#### watchEffect 
+
+- 和 watch 的区别
+  - watch 指定监听数据，可以拿到新旧值，默认不执行，需要设置 immediate 
+  - watchEffect 自动收集依赖，只能拿到新值，默认直接执行
+
+```js
+    setup() {
+      const counter = ref(0)
+      const name = ref("why")
+      // 明确指定 监听的数据
+      watch(counter, (newValue, oldValue) => {})
+
+      // 自动监听
+      // 1.watchEffect传入的函数默认会直接被执行
+      // 2.在执行的过程中, 会自动的收集依赖(watchEffect 的参数函数 依赖哪些响应式的数据)
+      // 如果 依赖的响应式数据，发送改变，自动执行 代码
+      const stopWatch = watchEffect(() => {
+        console.log("-------", counter.value, name.value) // 这是依赖的数据 name counter
+
+        // 判断counter.value > 10
+        if (counter.value >= 10) {
+          // 大于10 ，停止 监听，调用 watchEffect 的返回值：stopWatch
+          stopWatch()
+        }
+      })
+
+      return {
+        counter,
+        name
+      }
+    }
+```
+
+#### watchEffect的停止侦听 
+
+#### hooks
+
+##### useCounter 案例
+
+- 把相同 逻辑 抽取到 一个函数中
+
+hook1-图片
+
+hook2-图片
+
+##### useTitle 案例 
+
+- 传参，标题 随 内容 改变
+
+hook3-图片
+
+#### script setup语法 
+
+```js
+<template>
+  <div>AppContent: {{ message }}</div>
+  <button @click="changeMessage">修改message</button>
+  <show-info name="why" 
+             :age="18"
+             @info-btn-click="infoBtnClick"
+             ref="showInfoRef">
+  </show-info>
+  <show-info></show-info>
+  <show-info></show-info>
+</template>
+
+<script setup>
+  // 1.所有编写在顶层中的代码, 都是默认暴露给template可以使用
+  import { ref, onMounted } from 'vue'
+// 子组件 导入 后，直接拿去使用
+  import ShowInfo from './ShowInfo.vue'
+
+  // 2.定义响应式数据
+  const message = ref("Hello World")
+  console.log(message.value)
+
+  // 3.定义绑定的函数
+  function changeMessage() {
+    message.value = "你好啊"
+  }
+
+  function infoBtnClick(payload) {
+    console.log("监听到showInfo内部的点击:", payload)
+  }
+
+  // 4.获取组件实例
+  const showInfoRef = ref()
+  onMounted(() => {
+    showInfoRef.value.foo()
+  })
+
+</script>
+
+<style scoped>
+</style>
+```
+
+- 文件 结构 template 可以放中间，方便 上下 查看 代码
+
+```js
+<script setup>
+  // 定义props
+  const props = defineProps({
+    // defineProps 直接拿来使用
+    name: {
+      type: String,
+      default: "默认值",
+    },
+    age: {
+      type: Number,
+      default: 0,
+    },
+  });
+
+  // 绑定函数, 并且发出事件
+  const emits = defineEmits(["infoBtnClick"]); // defineEmits 直接拿来使用
+  function showInfoBtnClick() {
+    emits("infoBtnClick", "showInfo内部发生了点击");
+  }
+
+  // 定义foo的函数
+  function foo() {
+    console.log("foo function");
+  }
+  // defineExpose 定义 暴露 出去 的 属性，父组件通过 ref 是否可以调用 子组件的 属性
+  // <script setup> 默认是 不暴露的，需要使用，手动 暴露
+  // defineExpose 直接拿来使用
+  defineExpose({
+    foo,
+  });
+</script>
+
+<template>
+  <div>ShowInfo: {{ name }}-{{ age }}</div>
+  <button @click="showInfoBtnClick">showInfoButton</button>
+</template>
+
+<style scoped></style>
+```
+
+#### 顶层的绑定会被暴露给模板 
+
+#### 导入的组件直接使用 
+
+#### defineProps() 和 defineEmits()
+
+#### defineExpose() 
+
+### 自定义指令
+
+#### 认识自定义指令 
+
+#### 聚焦的默认实现 
+
+#### 局部自定义指令 
+
+#### 自定义全局指令 
+
+#### 指令的生命周期 
+
+#### 指令的参数和修饰符 
+
+#### 自定义指令练习
+
+#### 时间格式化指令
+
+### 认识Teleport 
+
+#### 代码的效果 
+
+#### 和组件结合使用 
+
+#### 多个teleport 
+
+#### 异步组件和Suspense 
+
+### 认识Vue插件
+
+#### 插件的编写方式 

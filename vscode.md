@@ -2,3 +2,6 @@
 
 - 插件
   - path intellisense
+- chrome插件
+  - fehelper
+  - vue dev
