@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>地图</title>
+    <style>
+        html{height: 100%}
+        body{height: 100%;margin: 0}
+        #main{
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<!--建立dom 容器-->
+<div id="main"></div>
+<!--引入echarts-->
+<script src="../js/echarts.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/bmap.min.js"></script>
+<script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=EcMeTlWuNyyqL4GwZT5Nmlj9mtpvhE9Y"></script>
+<script>
+    let dom = document.getElementById("main");
+    let chart = echarts.init(dom);
+
+    const option = {
+        /*
+        * bmap 百度地图
+        *   center[经度,纬度] 地图中心点位，如[116.404, 39.915]
+        *   zoom 缩放级别
+        *   roam 是否可以拖拽缩放
+        *       scale
+        *       move
+        *       true
+        * */
+        bmap:{
+            /*center:[116.404, 39.915],
+            zoom:15,
+            roam:true*/
+        }
+
+    };
+    chart.setOption(option);
+
+    const map=chart.getModel().getComponent('bmap').getBMap();
+
+    map.setMapStyleV2({
+        styleId: '5453dc64d711215271444d4abeaf6b44'
+    });
+
+    var point = new BMap.Point(116.404, 39.915);
+    //初始化地图，设置中心点坐标和地图级别
+    map.centerAndZoom(point, 15);
+    map.enableScrollWheelZoom(true);
+
+
+</script>
+</body>
+</html>

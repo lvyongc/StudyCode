@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>折线</title>
+    <style>
+        #main{
+            margin: 20px;
+            width: 700px;
+            height: 500px;
+        }
+    </style>
+</head>
+<body>
+<!--建立dom 容器-->
+<div id="main"></div>
+<!--引入echarts-->
+<script src="../js/echarts.min.js"></script>
+<script>
+    /*基于准备好的dom，初始化echarts实例*/
+    const myChart = echarts.init(document.getElementById('main'));
+
+    /*图表配置项*/
+    const option = {
+        /*x轴
+        *   data 类目轴数据
+        *   boundaryGap 边界留白
+        *   axisLabel 标签
+        *       margin 标签偏移量
+        * */
+        xAxis:{
+            data:['html','css','js','canvas'],
+            boundaryGap:0
+        },
+
+
+        /*y轴*/
+        yAxis: {
+            axisLabel:{
+                margin:20
+            }
+        },
+
+        /*series 系列集合
+        *   type 系列类型，line
+        *   name 系列名
+        *   data 系列数据，[20,10,30,40]
+        *   smooth 平滑
+        *   itemStyle 项目样式
+        *       color 颜色
+        *   areaStyle 区域样式
+        *       color 区域颜色
+        *       opacity 透明度
+        *   symbolSize 标记点大小
+        *   symbol 标记图形
+        *       内置形状 'circle', 'rect', 'roundRect', 'triangle', 'diamond', 'pin', 'arrow', 'none'
+        *       'image://url' 图片
+        *       'path://' svg
+        * */
+        series:[
+            {
+                type:'line',
+                data:[40,30,50,100],
+                smooth:true,
+                itemStyle:{
+                    color:'#00acec'
+                },
+                areaStyle:{
+                    color:'#00acec',
+                    opacity:0.2
+                },
+                symbolSize:50,
+                // symbol:'none'
+                symbol:'image://./images/bs.png'
+            },
+            {
+                type:'line',
+                data:[80,70,60,150],
+                smooth:true,
+                itemStyle:{
+                    color:'#0000ec'
+                },
+                areaStyle:{
+                    color:'#0000ec',
+                    opacity:0.2
+                }
+            },
+        ]
+
+    };
+
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+</script>
+</body>
+</html>
