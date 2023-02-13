@@ -1,0 +1,11 @@
+FormData对象上传文件
+
+- upload事件
+  - onloadstart   上传开始
+  - onprogress  数据传输进行中
+    - evt.total ：需要传输的总大小；
+    - evt.loaded :当前上传的文件大小；
+  - onabort 上传操作终止
+  - onerror  上传失败
+  - onload 上传成功
+  - onloadend 上传完成（不论成功与否）
