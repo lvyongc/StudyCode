@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+
+        let data = {};
+
+        function dispatch(payload) {
+
+            // 修改数据是 dispatch 方法默认的行为
+            data = Object.assign(data, payload);
+
+        }
+        
+
+        // 在不修改dispatch方法的情况下对dispatch方法进行扩展
+        // 装饰者模式 : 通过一个函数对原函数进行包装，返回一个新函数
+        let newDispatch = dispatch;
+        dispatch = function(payload) {
+            console.log('这是日志');
+            newDispatch(payload);
+        }
+
+
+
+        dispatch({id: 1});
+        console.log(data);
+
+    </script>
+
+</body>
+</html>
