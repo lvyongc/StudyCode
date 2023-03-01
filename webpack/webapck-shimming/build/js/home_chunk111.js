@@ -1,0 +1,1 @@
+(self.webpackChunk_1=self.webpackChunk_1||[]).push([["home"],{737:()=>{var e=document.createElement("h1");e.textContent="home page",document.body.append(e)}}]);
